@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>dev.fredessaytours</title>
+        <meta name="description" content="In development essay tours of frederic" />
+        <meta name="keywords" content="Essay Tours, Fredericksburg Tours" />
+        <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}"/>
+        <!--<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/ico">-->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/ico"/> 
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">Essay Tours of Fredericksburg!</a>
+            </div>
+              <ul class="nav navbar-nav">
+                <li>
+                  <div class="dropdown" id="headerDropdown">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Action <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">Action</a></li>
+                      <li><a href="#">Another action</a></li>
+                      <li><a href="#">Something else here</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="#">Separated link</a></li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+          </div>
+        </nav>
+        <div class="siteContent">
+          {%block content %}
+          {% endblock %}
+        </div>
+        <script src="{{ url_for('static', filename = 'js/jquery-1.11.3.min.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/bootstrap/bootstrap.min.js') }}"></script>
+    </body>
+</html>
