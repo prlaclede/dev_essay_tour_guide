@@ -2,8 +2,8 @@ import os
 import uuid, hashlib, psycopg2, psycopg2.extras
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 
-from flask import Flask, render_template, request
 app = Flask(__name__)
+
 
 def connectToEssayDB():
   connectionString = 'dbname=alien user=essaytouradmin password=essaytourpass host=localhost'
@@ -20,8 +20,8 @@ def mainIndex():
 @app.route('/mapPage')
 def mapPage():
     return render_template('mapPage.html', selectedMenu='Explore')
-
+    
 
 if __name__ == '__main__':
-    app.debug=True
-    app.run(host='0.0.0.0', port=8080)
+  app.debug=True
+  app.run(host='0.0.0.0', port=8080)
