@@ -5,24 +5,15 @@ body, html {
     padding: 0;
 }
 
-#headerDropdown {
-  padding: 10px 0 0 0;
-  float: right;
-}
-
-.splashWrapper {
+.splash-wrapper {
   text-align: center;
 }
 
-#splashContinue, #splashLogin, #splashRegister {
-  
-}
-
-.mapContainer {
+.map-container {
   float: left;
 }
 
-.sideContainer {
+.side-container {
   float: right;
   max-height: 100vh;
   width: 30%;
@@ -30,11 +21,15 @@ body, html {
   overflow-y: scroll;
 }
 
-.recentEssayInformation {
+.recent-essays {
   display: inline-block;
   width: 100%;
 }
 
-.essayLink {
+.essay-link {
   float: right;
+}
+
+#register-footer, #login-footer {
+  margin: 50px 0 0 0;
 }

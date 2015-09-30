@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div id="loginModal" class="modal fade" role="dialog">
+<div id="login-modal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
@@ -8,21 +8,22 @@
         <h4 class="modal-title">Login</h4>
       </div>
       <div class="modal-body">
+        <div class="alert alert-success">
+          If you already have an account, login here!
+        </div>
         <form action="action_page">
-            <div class="form-group" id="newPostSection">
-              <div class="col-xs-4">
-                <label for="loginUsername">Email:</label>
-                <input type="text" class="form-control" id="loginUsername" placeholder="Enter Username...">
+            <div class="form-group">
+              <div class="col-xs-6">
+                <input type="text" class="popupTextBox form-control" id="log-email" placeholder="Enter Email...">
               </div>
-              <div class="col-xs-4">
-                <label for="loginPassword">Password:</label>
-                <input type="password" class="form-control" id="loginPassword" placeholder="Enter password..." >
+              <div class="col-xs-6">
+                <input type="password" class="popupTextBox form-control" id="log-pass" placeholder="Enter Password..." >
               </div>
-              <button class="btn btn-primary" type="button" id="submitNewPost">Login</button>
             </div>
         </form>
       </div>
-      <div class="modal-footer">
+      <div id="login-footer" class="modal-footer">
+        <button class="btn btn-primary" type="button">Login</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

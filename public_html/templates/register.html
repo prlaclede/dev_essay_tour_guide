@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div id="registerModal" class="modal fade" role="dialog">
+<div id="register-modal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
@@ -8,28 +8,29 @@
         <h4 class="modal-title">Register</h4>
       </div>
       <div class="modal-body">
-        <p>This information will be submitted to the site admin for approval.</p>
-        <p>Upon approval you will recieve an email with instructions to set your password.</p>
+        <div class="alert alert-success">
+          This information will be submitted to the site admin for approval.
+          Upon approval you will recieve an email with instructions to set your password.
+        </div>
         <form action="action_page">
             <div class="form-group" id="newPostSection">
-              <div class="col-xs-4">
-                <label for="registerFirstName">First Name:</label>
-                <input type="text" class="form-control" id="registerFirstName" placeholder="Enter First Name...">
+              <span>
+                <div class="col-xs-6">
+                  <input type="text" class="popupTextBox form-control" id="reg-first" placeholder="Enter First Name...">
+                </div>
+                <div class="col-xs-6">
+                  <input type="text" class="popupTextBox form-control" id="reg-last" placeholder="Enter Last Name...">
+                </div>
+              </span>
+              <div class="col-xs-12">
+                <input type="text" class="popupTextBox form-control" id="reg-email" placeholder="Enter Email...">
               </div>
-              <div class="col-xs-4">
-                <label for="registerLastName">Last Name:</label>
-                <input type="text" class="form-control" id="registerLastName" placeholder="Enter Last Name...">
-              </div>
-              <div class="col-xs-4">
-                <label for="registerEmail">Email:</label>
-                <input type="text" class="form-control" id="registerEmail" placeholder="Enter Email...">
-              </div>
-              <button class="btn btn-primary" type="button" id="submitNewPost">Request Account!</button>
             </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <div id="register-footer" class="modal-footer">
+        <button type="button" class="btn btn-primary">Request Account!</button>
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

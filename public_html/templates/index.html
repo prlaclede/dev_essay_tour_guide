@@ -2,16 +2,16 @@
 
 {% block content %}
 <div class="jumbotron">
-  <div class="splashWrapper">
+  <div class="splash-wrapper">
       <h1>Welcome To <strong>ETG</strong> <i>(The Essay Tour Guide Application)</i></h1>
       <p>Feel free to browse around, read some essays written the the students of the University of Mary Washington!</p>
       <p><a class="btn btn-primary btn-lg" id='splashContinue' href="mapPage" role="button">Continue to Map...</a></p>
       <p>Or login...</p>
       {% include "login.html" %}
-      <p><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Login</button></p>
+      <p><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">Login</button></p>
       <p>Don't have an account, register for one!</p>
       {% include "register.html" %}
-      <p><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">Register</button></p>
+      <p><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#register-modal">Register</button></p>
   </div>
 </div>
 {% endblock %}
