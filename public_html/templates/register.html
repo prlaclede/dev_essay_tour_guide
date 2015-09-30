@@ -1,0 +1,36 @@
+<!-- Modal -->
+<div id="registerModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Register</h4>
+      </div>
+      <div class="modal-body">
+        <p>This information will be submitted to the site admin for approval.</p>
+        <p>Upon approval you will recieve an email with instructions to set your password.</p>
+        <form action="action_page">
+            <div class="form-group" id="newPostSection">
+              <div class="col-xs-4">
+                <label for="registerFirstName">First Name:</label>
+                <input type="text" class="form-control" id="registerFirstName" placeholder="Enter First Name...">
+              </div>
+              <div class="col-xs-4">
+                <label for="registerLastName">Last Name:</label>
+                <input type="text" class="form-control" id="registerLastName" placeholder="Enter Last Name...">
+              </div>
+              <div class="col-xs-4">
+                <label for="registerEmail">Email:</label>
+                <input type="text" class="form-control" id="registerEmail" placeholder="Enter Email...">
+              </div>
+              <button class="btn btn-primary" type="button" id="submitNewPost">Request Account!</button>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

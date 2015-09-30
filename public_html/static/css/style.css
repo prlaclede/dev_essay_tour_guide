@@ -1,4 +1,31 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 #headerDropdown {
   padding: 10px 0 0 0;
   float: right;
+}
+
+.splashWrapper {
+  text-align: center;
+}
+
+#splashContinue, #splashLogin, #splashRegister {
+  
+}
+
+.mapContainer {
+  float: left;
+}
+
+.sideContainer {
+  float: right;
+  min-height: 100vh;
+  width: 30%;
+  max-width: 300px;
+  overflow-y: scroll;
 }

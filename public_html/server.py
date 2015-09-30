@@ -6,7 +6,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 def connectToEssayDB():
-  connectionString = 'dbname=alien user=essayTourAdmin password=essayAdminPass host=localhost'
+  connectionString = 'dbname=alien user=essaytouradmin password=essaytourpass host=localhost'
   try:
     return psycopg2.connect(connectionString)
   except:
@@ -16,6 +16,10 @@ def connectToEssayDB():
 @app.route('/')
 def mainIndex():
     return render_template('index.html', selectedMenu='Home')
+    
+@app.route('/mapPage')
+def mapPage():
+    return render_template('mapPage.html', selectedMenu='Explore')
 
 
 if __name__ == '__main__':

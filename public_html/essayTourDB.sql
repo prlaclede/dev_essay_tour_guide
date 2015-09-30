@@ -1,60 +1,75 @@
-DROP DATABASE IF EXISTS essayTourDB; 
-CREATE DATABASE essayTourDB;
-DROP USER IF EXISTS essayTourAdmin; 
-CREATE USER essayTourAdmin with password 'essayAdminPass'; 
-\c essayTourDB;
+DROP DATABASE IF EXISTS essaytourdb; 
+CREATE DATABASE essaytourdb;
+DROP USER IF EXISTS essaytouradmin; 
+CREATE USER essaytouradmin with password 'essaytourpass'; 
+\c essaytourdb;
 CREATE EXTENSION pgcrypto; 
 
-DROP TABLE IF EXISTS users;
-CREATE TABLE IF NOT EXISTS users 
+DROP TABLE IF EXISTS accounts;
+CREATE TABLE IF NOT EXISTS accounts
 (
-    user_id serial, 
-    inst_id_fk NOT NULL references instructions(inst_id),
-    email varchar(40) NOT NULL, 
-    password varchar(100) NOT NULL,
-    PRIMARY KEY (id),
-    UNIQUE(username)
-);
-
-DROP TABLE IF EXISTS documents;
-CREATE TABLE IF NOT EXISTS documents
-(
-    doc_id serial,
-    user_id_fk serial NOT NULL references users(user_id),
-    doc_name varchar(140) NOT NULL,
-    doc_location text NOT NULL,
-    PRIMARY KEY (doc_id)
+    id serial, 
+    account_name varchar(20) NOT NULL,
+    PRIMARY KEY(id),
+    UNIQUE(account_name)
 );
 
 DROP TABLE IF EXISTS instructions;
 CREATE TABLE IF NOT EXISTS instructions
 (
-    inst_id serial,
-    inst_name varchar(50) NOT NULL,
-    inst_type varchar(20) NOT NULL, 
-    inst_location text NOT NULL,
-    PRIMARY KEY (inst_id)
+    id serial,
+    name varchar(20) NOT NULL, 
+    location text NOT NULL,
+    PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS locations;
-CREATE TABLE IF NOT EXISTS locations
+DROP TABLE IF EXISTS markers;
+CREATE TABLE IF NOT EXISTS markers
 (
-    loc_id serial,
-    doc_id_fk serial NOT NULL references documents(doc_id),
-    loc_name varchar(50) NOT NULL,
-    map_location_fk int NOT NULL references users(id),
-    PRIMARY KEY (loc_id)
+    id serial,
+    name varchar(50) NOT NULL,
+    address varchar(200) NOT NULL, 
+    lat decimal NOT NULL, 
+    long decimal NOT NULL,
+    PRIMARY KEY (id)
 );
 
-GRANT select, insert on users, messages, subscription, rooms to chat;
-GRANT ALL on sequence users_id_seq, messages_id_seq, subscription_id_seq, rooms_id_seq to chat;
+DROP TABLE IF EXISTS users;
+CREATE TABLE IF NOT EXISTS users 
+(
+    id serial, 
+    email varchar(40) NOT NULL, 
+    password varchar(300) NOT NULL,
+    account_type_id_fk serial NOT NULL references accounts(id), 
+    instr_id_fk serial NOT NULL references instructions(id),
+    PRIMARY KEY (id),
+    UNIQUE(email)
+);
 
-insert into users (username, password) VALUES ('test', crypt('testpass', gen_salt('bf')));
-insert into users (username, password) VALUES ('test2', crypt('testpass2', gen_salt('bf')));
+DROP TABLE IF EXISTS essays;
+CREATE TABLE IF NOT EXISTS essays
+(
+    id serial,
+    title varchar(140) NOT NULL,
+    location text NOT NULL,
+    marker_id_fk serial NOT NULL references markers(id),
+    user_id_fk serial NOT NULL references users(id),
+    PRIMARY KEY (id)
+);
 
-INSERT INTO messages (name_fk, message, room) VALUES ('test', 'first message', default);
-INSERT INTO messages (name_fk, message, room) VALUES ('test', 'second message', default);
-INSERT INTO messages (name_fk, message, room) VALUES ('test2', 'first message second user', default);
-INSERT INTO messages (name_fk, message, room) VALUES ('test2', 'second message second user', default);
+GRANT select, insert on users, markers, instructions, essays, accounts to essayTourAdmin;
+GRANT ALL on sequence users_id_seq, markers_id_seq, instructions_id_seq, essays_id_seq, accounts_id_seq to chat;
 
-INSERT INTO rooms (roomName) VALUES ('General');
+INSERT INTO accounts (account_name) VALUES ('admin');
+INSERT INTO accounts (account_name) VALUES ('user');
+INSERT INTO accounts (account_name) VALUES ('guest');
+
+INSERT INTO instructions (name, location) VALUES ('Admin Instructions', 'www.admin.placeholder.com');
+INSERT INTO instructions (name, location) VALUES ('User Instructions', 'www.user.placeholder.com');
+INSERT INTO instructions (name, location) VALUES ('Guest Instructions', 'www.guest.placeholder.com');
+
+INSERT INTO markers (name, address, lat, long) VALUES ('Kenmore Park', 'Kenmore Ave, Fredericksburg, VA 22401', 38.306095, -77.469753);
+
+INSERT INTO users (email, password, account_type_id_fk, instr_id_fk) VALUES ('user1', crypt('user1pass', gen_salt('bf')), 1, 1);
+
+INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', 'www.essay.placeholder.com', 1, 1);
