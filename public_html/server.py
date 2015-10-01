@@ -11,11 +11,14 @@ def connectToEssayDB():
     return psycopg2.connect(connectionString)
   except:
     print("Can't connect to database alien")
-    
+
+def returnImage(image, *args):
+  print ('image: ', image)
+  return render_template('icon.html', image=image, classes=args);
 
 @app.route('/')
 def mainIndex():
-    return render_template('index.html', selectedMenu='Home')
+    return render_template('index.html', selectedMenu='Home', returnImage = returnImage)
     
 @app.route('/mapPage')
 def mapPage():

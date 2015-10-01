@@ -40,6 +40,9 @@ CREATE TABLE IF NOT EXISTS users
     id serial, 
     email varchar(40) NOT NULL, 
     password varchar(300) NOT NULL,
+    first_name varchar(20), 
+    last_name varchar(20),
+    pending boolean default true,
     account_type_id_fk serial NOT NULL references accounts(id), 
     instr_id_fk serial NOT NULL references instructions(id),
     PRIMARY KEY (id),
@@ -52,13 +55,14 @@ CREATE TABLE IF NOT EXISTS essays
     id serial,
     title varchar(140) NOT NULL,
     location text NOT NULL,
+    pending boolean default true,
     marker_id_fk serial NOT NULL references markers(id),
     user_id_fk serial NOT NULL references users(id),
     PRIMARY KEY (id)
 );
 
 GRANT select, insert on users, markers, instructions, essays, accounts to essayTourAdmin;
-GRANT ALL on sequence users_id_seq, markers_id_seq, instructions_id_seq, essays_id_seq, accounts_id_seq to chat;
+GRANT ALL on sequence users_id_seq, markers_id_seq, instructions_id_seq, essays_id_seq, accounts_id_seq to essayTourAdmin;
 
 INSERT INTO accounts (account_name) VALUES ('admin');
 INSERT INTO accounts (account_name) VALUES ('user');
