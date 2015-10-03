@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    
     $("#svg-icons").load("static/img/icons.svg");
     
     function loadSvg(icon, addClass) {
