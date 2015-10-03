@@ -74,6 +74,6 @@ INSERT INTO instructions (name, location) VALUES ('Guest Instructions', 'www.gue
 
 INSERT INTO markers (name, address, lat, long) VALUES ('Kenmore Park', 'Kenmore Ave, Fredericksburg, VA 22401', 38.306095, -77.469753);
 
-INSERT INTO users (email, password, account_type_id_fk, instr_id_fk) VALUES ('user1', crypt('user1pass', gen_salt('bf')), 1, 1);
+INSERT INTO users (email, password, account_type_id_fk, instr_id_fk) VALUES ('admin', crypt('adminp@$$', gen_salt('bf')), 1, 1);
 
 INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', 'www.essay.placeholder.com', 1, 1);
