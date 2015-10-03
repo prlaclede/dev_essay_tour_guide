@@ -1,7 +1,11 @@
 import os
-import uuid, hashlib, psycopg2, psycopg2.extras
+import uuid, hashlib, psycopg2, psycopg2.extras, logging
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from flask.ext.socketio import SocketIO, emit
+
+#logger.basicConfig(filename='example.log',level=logging.DEBUG) #setup for a log file
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -9,7 +13,6 @@ app.config['SECRET_KEY'] = 'secret!'
 app.secret_key = os.urandom(24).encode('hex')
 
 socketio = SocketIO(app)
-
 
 def connectToEssayDB():
   connectionString = 'dbname=alien user=essaytouradmin password=essaytourpass host=localhost'
@@ -32,7 +35,7 @@ def mapPage():
     
 @socketio.on('login_event')
 def userLogin(message):
-  print 'woot'
+  logger.info('woot')
   emit('user_login', {'data': message['data']}, broadcast=True)
 
 if __name__ == '__main__':

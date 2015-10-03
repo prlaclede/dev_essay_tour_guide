@@ -1,9 +1,10 @@
 /* global io */
 
 $(document).ready(function() {
-    var socket = io.connect('https://' + document.domain + ':' + location.port + '/test');
+    var socket = io.connect('https://' + document.domain + ':' + location.port);
     socket.on('user_login', function(msg) {
-        $('#log').append('<p>Received: ' + msg.data + '</p>');
+        $('#log').append('???');
+        console.log('socket recieve login');
     });
     $('#submit_login').on("click", function() {
         console.log('something happened');
