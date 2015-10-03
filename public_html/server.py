@@ -30,27 +30,25 @@ def returnImage(image, *args):
 
 @app.route('/')
 def mainIndex():
-  return render_template('index.html', selectedMenu='Home', returnImage = returnImage)
-    
-@app.route('/mapPage')
-def mapPage():
-  return render_template('mapPage.html', selectedMenu='Explore')
+  return render_template('index.html', returnImage = returnImage)
     
 @socketio.on('login_event')
 def userLogin(message):
   logger.info('checking DB for user')
   conn = connectToEssayDB()
   cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-  query = ("SELECT email, first_name, last_name, pending FROM users WHERE email=%s AND password = crypt(%s, password)")
+  query = ("SELECT email, first_name, last_name, pending FROM users WHERE email = %s AND password = crypt(%s, password)")
   cur.execute(query, (message['email'], message['pass']))
   if (cur.fetchone()):
     results = cur.fetchall()
-    logger.info('user found')
+    #logger.info('user found')
+    #logger.info(results['pending'])
     if (results['pending'] == True):
-      emit('user_login', {'messageType': 'warning', 'message': 'Account still pending admin approval.'}, broadcast=True)
+      emit('user_login', {'messageType': 'info', 'message': 'Account still pending admin approval.'}, broadcast=True)
+    else:
+      emit('user_login', {'messageType': 'success', 'message': 'Sucessful login!'}, broadcast=True)
   else:
-    emit('user_login', {'messageType': 'error', 'message': 'Email and/or Password information is incorrect!'}, broadcast=True)
-  emit('user_login', message, broadcast=True)
+    emit('user_login', {'messageType': 'warning', 'message': 'Email and/or Password information is incorrect!'}, broadcast=True)
 
 if __name__ == '__main__':
   app.debug=True

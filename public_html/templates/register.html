@@ -1,33 +1,16 @@
-<!-- Modal -->
-<div id="register_modal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Register</h4>
+<form action="action_page">
+    <div class="form-group" id="newPostSection">
+      <span>
+        <div class="col-xs-5">
+          <input type="text" class="popupTextBox form-control" id="reg_first" placeholder="Enter First Name...">
+        </div>
+        <div class="col-xs-5">
+          <input type="text" class="popupTextBox form-control" id="reg_last" placeholder="Enter Last Name...">
+        </div>
+      </span>
+      <div class="col-xs-10">
+        <input type="text" class="popupTextBox form-control" id="reg_email" placeholder="Enter Email...">
       </div>
-      <div class="modal-body">
-        <form action="action_page">
-            <div class="form-group" id="newPostSection">
-              <span>
-                <div class="col-xs-6">
-                  <input type="text" class="popupTextBox form-control" id="reg_first" placeholder="Enter First Name...">
-                </div>
-                <div class="col-xs-6">
-                  <input type="text" class="popupTextBox form-control" id="reg_last" placeholder="Enter Last Name...">
-                </div>
-              </span>
-              <div class="col-xs-12">
-                <input type="text" class="popupTextBox form-control" id="reg_email" placeholder="Enter Email...">
-              </div>
-            </div>
-        </form>
-      </div>
-      <div id="register-footer" class="modal-footer">
-        <button type="button" class="btn btn-primary">Request Account!</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+      <button id="splashRegisterButton" type="button" class="btn btn-primary">Register</button>
     </div>
-  </div>
-</div>
+</form>

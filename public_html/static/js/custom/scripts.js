@@ -2,8 +2,6 @@
 
 $(document).ready(function() {
     
-    var socket = io.connect('https://' + document.domain + ':' + location.port);
-    
     socket.on('user_login', function(msg) {
         $('.modal-header').after(generateAlert(msg['messageType'], msg['message']));
     });
@@ -15,8 +13,6 @@ $(document).ready(function() {
     });
     
     $("#svg-icons").load("static/img/icons.svg");
-    
-    $('#splash_modal').modal('show');
     
     function loadSvg(icon, addClass) {
       var image = "<div class='im " + addClass + "'> \

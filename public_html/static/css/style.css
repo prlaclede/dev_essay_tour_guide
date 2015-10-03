@@ -5,8 +5,12 @@ body, html {
     padding: 0;
 }
 
-.splash-wrapper {
+#splash-wrapper {
   text-align: center;
+}
+
+#splashLoginButton, #splashRegisterButton {
+  float: right;
 }
 
 .map-container {
