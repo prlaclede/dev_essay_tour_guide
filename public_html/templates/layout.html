@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icons.css') }}"/>
         <!--<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/ico">-->
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/ico"/>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     </head>
     <body>
       <div id='svg-icons'></div>
@@ -53,6 +54,7 @@
         </div>
         <script src="{{ url_for('static', filename = 'js/jquery-1.11.3.min.js') }}"></script>
         <script src="{{ url_for('static', filename = 'js/bootstrap/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename = 'js/server.js') }}"></script>
         <script src="{{ url_for('static', filename = 'js/custom/scripts.js') }}"></script>
     </body>
 </html>

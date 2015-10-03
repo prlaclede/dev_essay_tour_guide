@@ -3,7 +3,7 @@ import uuid, hashlib, psycopg2, psycopg2.extras
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from flask.ext.socketio import SocketIO, emit
 
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'secret!'
 app.secret_key = os.urandom(24).encode('hex')
@@ -30,7 +30,7 @@ def mainIndex():
 def mapPage():
   return render_template('mapPage.html', selectedMenu='Explore')
     
-@socketio.on('login_event', namespace='/')
+@socketio.on('login_event')
 def userLogin(message):
   print 'woot'
   emit('user_login', {'data': message['data']}, broadcast=True)
