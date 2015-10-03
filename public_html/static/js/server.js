@@ -8,7 +8,7 @@ $(document).ready(function() {
         $('.modal-header').after(generateAlert(msg['messageType'], msg['message']));
     });
     
-    $('#submit_login').on("click", function() {
+    $('#splashLoginButton').on("click", function() {
         console.log('something happened');
         socket.emit('login_event', {email: $('#log_email').val(), pass: $('#log_pass').val()});
         return false;

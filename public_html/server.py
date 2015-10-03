@@ -39,14 +39,9 @@ def userLogin(message):
   cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
   query = ("SELECT email, first_name, last_name, pending FROM users WHERE email = %s AND password = crypt(%s, password)")
   cur.execute(query, (message['email'], message['pass']))
-  if (cur.fetchone()):
-    results = cur.fetchall()
-    #logger.info('user found')
-    #logger.info(results['pending'])
-    if (results['pending'] == True):
-      emit('user_login', {'messageType': 'info', 'message': 'Account still pending admin approval.'}, broadcast=True)
-    else:
-      emit('user_login', {'messageType': 'success', 'message': 'Sucessful login!'}, broadcast=True)
+  results = cur.fetchall()
+  if (len(results) != 0):
+    emit('user_login', {'messageType': 'success', 'message': 'Sucessful login!'}, broadcast=True)
   else:
     emit('user_login', {'messageType': 'warning', 'message': 'Email and/or Password information is incorrect!'}, broadcast=True)
 
