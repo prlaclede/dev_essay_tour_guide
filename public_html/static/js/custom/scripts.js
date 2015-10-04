@@ -1,18 +1,33 @@
-/* global io */
-
 $(document).ready(function() {
     
-    socket.on('user_login', function(msg) {
+    /*socket.on('user_login', function(msg) {
         $('.modal-header').after(generateAlert(msg['messageType'], msg['message']));
-    });
+    });*/
+    $('#splash_modal').modal('show');
     
-    $('#submit_login').on("click", function() {
-        console.log('something happened');
-        socket.emit('login_event', {email: $('#log_email').val(), pass: $('#log_pass').val()});
-        return false;
+    $('#splashLoginButton').on("click", function() {
+        console.log('submitting form');
+        $.ajax({
+            url: '/login',
+            data: $('#loginForm').serialize(),
+            type: 'POST',
+            success: function (response) {
+                if (JSON.parse(response)['valid'] == 'true') {
+                    console.log('valid user');
+                    $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
+                } else {
+                    $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+                }
+            },
+            error: function (error) {
+                console.log("error" + error);
+            }
+        })
     });
     
     $("#svg-icons").load("static/img/icons.svg");
+    
+    
     
     function loadSvg(icon, addClass) {
       var image = "<div class='im " + addClass + "'> \
