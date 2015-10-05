@@ -9,8 +9,13 @@ body, html {
   text-align: center;
 }
 
-#splashLoginButton, #splashRegisterButton {
+#splashLoginButton, #splashRegisterButton, #accountActionButton {
   float: right;
+}
+
+#accountActionButton {
+  margin: 15px 0px 0px 0px;
+  display: none;
 }
 
 .splash-panel:hover {

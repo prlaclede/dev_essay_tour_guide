@@ -2,25 +2,20 @@ import os
 import uuid, hashlib, psycopg2, psycopg2.extras, logging
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify, json
 from flask.ext.login import LoginManager, UserMixin, login_required
-from flask.ext.wtf import Form
-from wtforms import StringField, BooleanField
-from wtforms.validators import DataRequired
 
 #setup for different levels of log files later
 #logger.basicConfig(filename='debug.log',level=logging.DEBUG) 
 #logger.basicConfig(filename='error.log',level=logging.ERROR) 
-#just logging to the console 
+#just logging to the console for now
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = "somethingsecret"
-
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-app.config['SECRET_KEY'] = 'secret!'
+app.config['SECRET_KEY'] = 'theSecretestKey'
 app.secret_key = os.urandom(24).encode('hex')
 
 def connectToEssayDB():
@@ -40,14 +35,16 @@ class User(UserMixin):
     #def get(cls,id):
         #return userLogin(id, password)
 
-def returnImage(image, *args):
-  print ('image: ', image)
-  return render_template('icon.html', image=image, classes=args);
-
 @app.route('/')
 def mainIndex():
   loggedIn = False;
   return render_template('index.html', loggedIn = False, returnImage = returnImage)
+  
+@app.route('/loadImage', methods=['POST'])
+def returnImage(image, *args):
+  print ('image: ', image)
+  return json.dumps({'image': image, 'classes' : args})
+  #return render_template('icon.html', image=image, classes=args);
   
 @app.route('/login', methods=['POST'])
 def login():
@@ -55,9 +52,8 @@ def login():
   userPass = request.form['userLoginPass']
   logger.info(userEmail + " " + userPass)
   return(userLogin(userEmail, userPass))
-  #return render_template('index.html', loggedIn = True, returnImage = returnImage)
     
-#@socketio.on('login_event')
+    
 def userLogin(email, password):
   logger.info('checking DB for user')
   conn = connectToEssayDB()

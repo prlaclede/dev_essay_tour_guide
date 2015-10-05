@@ -1,9 +1,12 @@
 $(document).ready(function() {
     
-    /*socket.on('user_login', function(msg) {
-        $('.modal-header').after(generateAlert(msg['messageType'], msg['message']));
-    });*/
+    //TODO: incapsulate into INIT function for extendability purposes
     $('#splash_modal').modal('show');
+    $("#svg-icons").load("static/img/icons.svg");
+    
+    $('div.im').each(function() {
+        $(this).load($(this));
+    });
     
     $('#splashLoginButton').on("click", function() {
         console.log('submitting form');
@@ -15,6 +18,8 @@ $(document).ready(function() {
                 if (JSON.parse(response)['valid'] == 'true') {
                     console.log('valid user');
                     $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
+                    $('#splash_modal').modal('hide');
+                    $('#accountActionButton').show();
                 } else {
                     $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
                 }
@@ -24,10 +29,6 @@ $(document).ready(function() {
             }
         })
     });
-    
-    $("#svg-icons").load("static/img/icons.svg");
-    
-    
     
     function loadSvg(icon, addClass) {
       var image = "<div class='im " + addClass + "'> \
