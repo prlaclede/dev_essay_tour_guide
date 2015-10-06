@@ -4,8 +4,9 @@ $(document).ready(function() {
     $('#splash_modal').modal('show');
     $("#svg-icons").load("static/img/icons.svg");
     
-    $('div.im').each(function() {
-        $(this).load($(this));
+    $('#splash_modal').on('hide.bs.modal', function () {
+        console.log('hide.bs.modal');
+        $('#accountActionButton').html('Login').show();
     });
     
     $('#splashLoginButton').on("click", function() {
@@ -19,7 +20,12 @@ $(document).ready(function() {
                     console.log('valid user');
                     $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
                     $('#splash_modal').modal('hide');
-                    $('#accountActionButton').show();
+                    if (JSON.parse(response)['accType'] == 1) {
+                        $('#accountActionButton').html('Logout').show().after(generateSVG('adminAccount', 'accIcon'))
+                        $('#accountActionSpan').append("<h5>Welcome " + JSON.parse(response)['firstName'] + " " + JSON.parse(response)['lastName'] + "</h5>");
+                    } else {
+                        $('#accountActionButton').html('Logout').show().after(generateSVG('basicAccount', 'accIcon'));
+                    }
                 } else {
                     $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
                 }
@@ -30,7 +36,7 @@ $(document).ready(function() {
         })
     });
     
-    function loadSvg(icon, addClass) {
+    function generateSVG(icon, addClass) {
       var image = "<div class='im " + addClass + "'> \
                     <svg viewBox='0 0 34 34'> \
                       <g> \

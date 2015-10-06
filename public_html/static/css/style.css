@@ -5,6 +5,10 @@ body, html {
     padding: 0;
 }
 
+.im {
+  fill: #525151;
+}
+
 #splash-wrapper {
   text-align: center;
 }
@@ -13,9 +17,39 @@ body, html {
   float: right;
 }
 
-#accountActionButton {
+#accountActionSpan { 
+  display: inline;
+  float: right;
   margin: 15px 0px 0px 0px;
+}
+
+#accountActionButton {
+  display: inline;
   display: none;
+}
+
+.accIcon {
+  display: inline;
+  float: right;
+  width: 50px;
+  height: 50px;
+}
+
+#brandLink {
+  display: inline-flex;
+}
+
+#brandLink:hover > .brandIcon {
+  fill: white;
+}
+
+.brandIcon {
+  height: 32px;
+  width: 32px;
+}
+
+#brandLink > .brandIcon {
+  fill: #b2dbfb;
 }
 
 .splash-panel:hover {

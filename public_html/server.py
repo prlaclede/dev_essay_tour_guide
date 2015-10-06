@@ -58,12 +58,14 @@ def userLogin(email, password):
   logger.info('checking DB for user')
   conn = connectToEssayDB()
   cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-  query = ("SELECT email, first_name, last_name, pending FROM users WHERE email = %s AND password = crypt(%s, password)")
+  query = ("SELECT email, first_name, last_name, pending, account_type_id_fk FROM users WHERE email = %s AND password = crypt(%s, password)")
   cur.execute(query, (email, password))
   results = cur.fetchall()
   if (len(results) != 0):
     logger.info('user found')
-    return json.dumps({'valid': 'true'});
+    firstName = results[0]['first_name']
+    lastName = results[0]['last_name']
+    return json.dumps({'valid': 'true', 'accType': results[0]['account_type_id_fk'], 'firstName': firstName, 'lastName': lastName});
   else:
    logger.info('user not found')
    return json.dumps({'valid': 'false'});

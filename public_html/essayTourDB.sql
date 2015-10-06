@@ -74,7 +74,9 @@ INSERT INTO instructions (name, location) VALUES ('Guest Instructions', 'www.gue
 
 INSERT INTO markers (name, address, lat, long) VALUES ('Kenmore Park', 'Kenmore Ave, Fredericksburg, VA 22401', 38.306095, -77.469753);
 
-INSERT INTO users (email, password, pending, account_type_id_fk, instr_id_fk) VALUES ('admin', crypt('adminp@$$', gen_salt('bf')), false,  1, 1);
-INSERT INTO users (email, pending, account_type_id_fk, instr_id_fk) VALUES ('tempUser', true,  2, 2);
+INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
+    VALUES ('admin@admin.com', crypt('adminp@$$', gen_salt('bf')), 'Ally', 'Gator', false,  1, 1);
+    
+INSERT INTO users (email, pending, account_type_id_fk, instr_id_fk) VALUES ('tempUser@tmp.tmp', true,  2, 2);
 
 INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', 'www.essay.placeholder.com', 1, 1);
