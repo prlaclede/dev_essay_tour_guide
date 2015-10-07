@@ -1,6 +1,7 @@
 $(document).ready(function() {
     
     //TODO: incapsulate into INIT function for extendability purposes
+    $('[data-toggle="popover"]').popover();
     $('#splash_modal').modal('show');
     $("#svg-icons").load("static/img/icons.svg");
     
