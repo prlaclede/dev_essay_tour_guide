@@ -25,6 +25,7 @@ $(document).ready(function() {
                         $('#accountActionSpan').append("<h5>Welcome " + JSON.parse(response)['firstName'] + " " + JSON.parse(response)['lastName'] + "</h5>");
                     } else {
                         $('#accountActionButton').html('Logout').show().after(generateSVG('basicAccount', 'accIcon'));
+                        $('#accountActionSpan').append("<h5>Welcome " + JSON.parse(response)['firstName'] + " " + JSON.parse(response)['lastName'] + "</h5>");
                     }
                 } else {
                     $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
