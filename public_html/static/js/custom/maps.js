@@ -22,7 +22,7 @@ function initialize() {
   marker.setMap(map);
   google.maps.event.addListener(map,'center_changed', function() { checkBounds(); });
   
-  var infowindow = new google.maps.InfoWindow({
+  var infowindow = new google.maps.InfoWindow ({
   content:"You're here-ish"
   });
 
