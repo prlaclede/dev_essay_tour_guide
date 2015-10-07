@@ -5,7 +5,6 @@ $(document).ready(function() {
     $("#svg-icons").load("static/img/icons.svg");
     
     $('#splash_modal').on('hide.bs.modal', function () {
-        console.log('hide.bs.modal');
         $('#accountActionButton').html('Login').show();
     });
     

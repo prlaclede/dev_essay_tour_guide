@@ -44,7 +44,6 @@ def mainIndex():
 def returnImage(image, *args):
   print ('image: ', image)
   return json.dumps({'image': image, 'classes' : args})
-  #return render_template('icon.html', image=image, classes=args);
   
 @app.route('/login', methods=['POST'])
 def login():
