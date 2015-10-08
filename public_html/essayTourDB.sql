@@ -65,8 +65,5 @@ INSERT INTO markers (name, address, latitude, longitude) VALUES ('UMW', '...', 3
 
 INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
     VALUES ('admin@admin.com', AES_ENCRYPT('adminp@$$', 'passpls'), 'Ally', 'Gator', false,  1, 1);
-    
-INSERT INTO users (email, pending, account_type_id_fk, instr_id_fk) VALUES ('tempUser@tmp.tmp', true,  2, 2);
-INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) VALUES ('proto@type.com', crypt('protopass', gen_salt('bf')), 'proto', 'type', false, 2, 2);
 
 INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', 'www.essay.placeholder.com', 1, 1);
