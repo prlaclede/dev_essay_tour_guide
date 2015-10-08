@@ -1,68 +1,55 @@
 DROP DATABASE IF EXISTS essaytourdb; 
 CREATE DATABASE essaytourdb;
-DROP USER IF EXISTS essaytouradmin; 
-CREATE USER essaytouradmin with password 'essaytourpass'; 
-\c essaytourdb;
-CREATE EXTENSION pgcrypto; 
+DROP USER essaytouradmin; 
+CREATE USER essaytouradmin IDENTIFIED BY 'essaytourpass'; 
+USE essaytourdb;
 
 DROP TABLE IF EXISTS accounts;
-CREATE TABLE IF NOT EXISTS accounts
-(
-    id serial, 
-    account_name varchar(20) NOT NULL,
-    PRIMARY KEY(id),
-    UNIQUE(account_name)
+CREATE TABLE accounts (
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    account_name VARCHAR(20) NOT NULL UNIQUE
 );
 
 DROP TABLE IF EXISTS instructions;
-CREATE TABLE IF NOT EXISTS instructions
-(
-    id serial,
-    name varchar(20) NOT NULL, 
-    location text NOT NULL,
-    PRIMARY KEY (id)
+CREATE TABLE instructions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL, 
+    location TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS markers;
-CREATE TABLE IF NOT EXISTS markers
-(
-    id serial,
-    name varchar(50) NOT NULL,
-    address varchar(200) NOT NULL, 
-    lat decimal NOT NULL, 
-    long decimal NOT NULL,
-    PRIMARY KEY (id)
+CREATE TABLE markers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    address VARCHAR(200) NOT NULL, 
+    latitude MEDIUMINT NOT NULL, 
+    longitude MEDIUMINT NOT NULL
 );
 
 DROP TABLE IF EXISTS users;
-CREATE TABLE IF NOT EXISTS users 
-(
-    id serial, 
-    email varchar(40) NOT NULL, 
-    password varchar(300),
-    first_name varchar(20), 
-    last_name varchar(20),
-    pending boolean default true,
-    account_type_id_fk serial NOT NULL references accounts(id), 
-    instr_id_fk serial NOT NULL references instructions(id),
-    PRIMARY KEY (id),
-    UNIQUE(email)
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(40) NOT NULL UNIQUE, 
+    password VARCHAR(300),
+    first_name VARCHAR(20), 
+    last_name VARCHAR(20),
+    pending boolean DEFAULT true,
+    account_type_id_fk INT NOT NULL REFERENCES accounts(id), 
+    instr_id_fk INT NOT NULL REFERENCES instructions(id)
 );
 
 DROP TABLE IF EXISTS essays;
-CREATE TABLE IF NOT EXISTS essays
-(
-    id serial,
-    title varchar(140) NOT NULL,
-    location text NOT NULL,
-    pending boolean default true,
-    marker_id_fk serial NOT NULL references markers(id),
-    user_id_fk serial NOT NULL references users(id),
-    PRIMARY KEY (id)
+CREATE TABLE essays (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(140) NOT NULL,
+    location TEXT NOT NULL,
+    pending boolean DEFAULT true,
+    marker_id_fk INT NOT NULL REFERENCES markers(id),
+    user_id_fk INT NOT NULL REFERENCES users(id)
 );
 
-GRANT select, insert on users, markers, instructions, essays, accounts to essayTourAdmin;
-GRANT ALL on sequence users_id_seq, markers_id_seq, instructions_id_seq, essays_id_seq, accounts_id_seq to essayTourAdmin;
+
+GRANT ALL ON * TO essaytouradmin;
 
 INSERT INTO accounts (account_name) VALUES ('admin');
 INSERT INTO accounts (account_name) VALUES ('user');
@@ -72,10 +59,12 @@ INSERT INTO instructions (name, location) VALUES ('Admin Instructions', 'www.adm
 INSERT INTO instructions (name, location) VALUES ('User Instructions', 'www.user.placeholder.com');
 INSERT INTO instructions (name, location) VALUES ('Guest Instructions', 'www.guest.placeholder.com');
 
-INSERT INTO markers (name, address, lat, long) VALUES ('Kenmore Park', 'Kenmore Ave, Fredericksburg, VA 22401', 38.306095, -77.469753);
+INSERT INTO markers (name, address, latitude, longitude) 
+    VALUES ('Kenmore Park', 'Kenmore Ave, Fredericksburg, VA 22401', 38.306095, -77.469753);
+INSERT INTO markers (name, address, latitude, longitude) VALUES ('UMW', '...', 38.301511, -77.474094);
 
 INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
-    VALUES ('admin@admin.com', crypt('adminp@$$', gen_salt('bf')), 'Ally', 'Gator', false,  1, 1);
+    VALUES ('admin@admin.com', AES_ENCRYPT('adminp@$$', 'passpls'), 'Ally', 'Gator', false,  1, 1);
     
 INSERT INTO users (email, pending, account_type_id_fk, instr_id_fk) VALUES ('tempUser@tmp.tmp', true,  2, 2);
 

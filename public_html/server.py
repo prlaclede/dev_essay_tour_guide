@@ -51,6 +51,14 @@ def login():
   userPass = request.form['userLoginPass']
   logger.info(userEmail + " " + userPass)
   return(userLogin(userEmail, userPass))
+  
+@app.route('/loadMarkers')
+def getMarkers():
+  conn = connectToEssayDB();
+  cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+  query = ("SELECT * FROM markers")
+  cur.execute(query)
+  results = cur.fetchall()
     
     
 def userLogin(email, password):

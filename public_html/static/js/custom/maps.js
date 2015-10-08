@@ -14,7 +14,7 @@ function initialize() {
   };
   var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
   
-  var marker=new google.maps.Marker ({
+  var marker = new google.maps.Marker ({
     position: new google.maps.LatLng(38.301511, -77.474094),
     animation: google.maps.Animation.BOUNCE
   });
