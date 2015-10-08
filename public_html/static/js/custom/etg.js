@@ -1,6 +1,7 @@
 $(document).ready(function() {
     
     //TODO: incapsulate into INIT function for extendability purposes
+    $('[data-toggle="popover"]').popover();
     $('#splash_modal').modal('show');
     $("#svg-icons").load("static/img/icons.svg");
     
@@ -24,6 +25,7 @@ $(document).ready(function() {
                         $('#accountActionSpan').append("<h5>Welcome " + JSON.parse(response)['firstName'] + " " + JSON.parse(response)['lastName'] + "</h5>");
                     } else {
                         $('#accountActionButton').html('Logout').show().after(generateSVG('basicAccount', 'accIcon'));
+                        $('#accountActionSpan').append("<h5>Welcome " + JSON.parse(response)['firstName'] + " " + JSON.parse(response)['lastName'] + "</h5>");
                     }
                 } else {
                     $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
