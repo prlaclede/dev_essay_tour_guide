@@ -1,5 +1,5 @@
 import os
-import uuid, hashlib, psycopg2, psycopg2.extras, logging
+import uuid, hashlib, MySQLdb, MySQLdb.cursors, logging
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify, json
 from flask.ext.login import LoginManager, UserMixin, login_required
 
@@ -19,9 +19,8 @@ app.config['SECRET_KEY'] = 'theSecretestKey'
 app.secret_key = os.urandom(24).encode('hex')
 
 def connectToEssayDB():
-  connectionString = 'dbname=essaytourdb user=essaytouradmin password=essaytourpass host=localhost'
   try:
-    return psycopg2.connect(connectionString)
+    return MySQLdb.connect(host = "localhost", user = "essaytouradmin", passwd = "essaytourpass", db = "essaytourdb", cursorclass=MySQLdb.cursors.DictCursor)
   except:
     print("Can't connect to database alien")
     
@@ -55,7 +54,7 @@ def login():
 @app.route('/loadMarkers')
 def getMarkers():
   conn = connectToEssayDB();
-  cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+  cur = connectToEssayDB()
   query = ("SELECT * FROM markers")
   cur.execute(query)
   results = cur.fetchall()
@@ -64,9 +63,10 @@ def getMarkers():
 def userLogin(email, password):
   logger.info('checking DB for user')
   conn = connectToEssayDB()
-  cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-  query = ("SELECT email, first_name, last_name, pending, account_type_id_fk FROM users WHERE email = %s AND password = crypt(%s, password)")
-  cur.execute(query, (email, password))
+  cur = conn.cursor()
+  
+  query = ("SELECT email, first_name, last_name, pending, account_type_id_fk FROM users WHERE email = %s AND AES_DECRYPT(password, %s) = %s")
+  cur.execute(query, (email, 'passpls', password))
   results = cur.fetchall()
   if (len(results) != 0):
     logger.info('user found')
