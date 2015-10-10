@@ -1,4 +1,31 @@
+loadScript('https://maps.googleapis.com/maps/api/js?v=3.key=AIzaSyDeovcMJI1fqgbiZeyKwNDiBI3N8ghcmEc&callback=initialize',
+          function() { 
+            console.log('google-loader has been loaded, but not the maps-API ');
+          });
+          
+          
+          /*function loadScript() {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "https://maps.googleapis.com/maps/api/js?v=3.key=AIzaSyDeovcMJI1fqgbiZeyKwNDiBI3N8ghcmEc&callback=initialize";
+  document.body.appendChild(script);
+}*/
+
+//window.onload = loadScript;
+
+          
+function loadScript(src,callback){
+
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  if(callback)script.onload=callback;
+  script.src = src;
+  document.body.appendChild(script);
+}
+
 function initialize() {
+  
+  console.log('maps-API has been loaded, ready to use');
   
   var mapProp = {
     center: new google.maps.LatLng(38.301461, -77.473635),
@@ -14,20 +41,10 @@ function initialize() {
   };
   var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
   
-  var marker = new google.maps.Marker ({
-    position: new google.maps.LatLng(38.301511, -77.474094),
-    animation: google.maps.Animation.BOUNCE
-  });
-  
-  marker.setMap(map);
   google.maps.event.addListener(map,'center_changed', function() { checkBounds(); });
   
   var infowindow = new google.maps.InfoWindow ({
   content:"You're here-ish"
-  });
-
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map,marker);
   });
   
   // responsivly update map size based on screen
@@ -47,34 +64,62 @@ function initialize() {
       var C = map.getCenter();
       var X = C.lng();
       var Y = C.lat();
-
+  
       var AmaxX = allowedBounds.getNorthEast().lng();
       var AmaxY = allowedBounds.getNorthEast().lat();
       var AminX = allowedBounds.getSouthWest().lng();
       var AminY = allowedBounds.getSouthWest().lat();
-
+  
       if (X < AminX) {X = AminX;}
       if (X > AmaxX) {X = AmaxX;}
       if (Y < AminY) {Y = AminY;}
       if (Y > AmaxY) {Y = AmaxY;}
-
+  
       map.setCenter(new google.maps.LatLng(Y,X));
     }
   }
-} 
 
-
-
-/*function loadScript() {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = "https://maps.googleapis.com/maps/api/js?v=3.key=AIzaSyDeovcMJI1fqgbiZeyKwNDiBI3N8ghcmEc&callback=initialize";
-  document.body.appendChild(script);
-}*/
-
-//window.onload = loadScript;
-
-
-
+ /* $.ajax({
+      url: '/loadMarkers',
+      //data: $('#loginForm').serialize(),
+      type: 'POST',
+      success: function (response) {
+        placeMarkers(response['data'])
+        console.log(response['data'])
+      },
+      error: function (error) {
+          console.log("error" + error);
+      }
+  });*/
+  
+  $.getJSON( "/loadMarkers", function(response) {
+    var data = response['data']
+    placeMarkers(response);
+  });
+  
+  //var marker = new google.maps.Marker ({
+  //  position: new google.maps.LatLng(38.301511, -77.474094),
+  //  animation: google.maps.Animation.BOUNCE
+  //});
+  
+  //google.maps.event.addListener(marker, 'click', function() {
+  //  infowindow.open(map,marker);
+  //});
+    
+  //marker.setMap(map);
+  
+  function placeMarkers(markersJSON) {
+      $.each(markersJSON, function() {
+        $.each(this, function(key, val) {
+          console.log(this['latitude']);
+          var newMarker = new google.maps.Marker ({
+            position: new google.maps.LatLng(this['latitude'], this['longitude']),
+            animation: google.maps.Animation.BOUNCE,
+          });
+          newMarker.setMap(map);
+        }); 
+      }); 
+  }  
+}
 
 

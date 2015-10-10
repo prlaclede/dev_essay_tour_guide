@@ -49,15 +49,17 @@ def login():
   userEmail = request.form['userLoginEmail']
   userPass = request.form['userLoginPass']
   logger.info(userEmail + " " + userPass)
-  return(userLogin(userEmail, userPass))
+  return (userLogin(userEmail, userPass))
   
 @app.route('/loadMarkers')
 def getMarkers():
-  conn = connectToEssayDB();
-  cur = connectToEssayDB()
+  conn = connectToEssayDB()
+  cur = conn.cursor()
   query = ("SELECT * FROM markers")
   cur.execute(query)
   results = cur.fetchall()
+  #print(results)
+  return jsonify(data=results)
     
     
 def userLogin(email, password):

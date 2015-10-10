@@ -22,8 +22,8 @@ CREATE TABLE markers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     address VARCHAR(200) NOT NULL, 
-    latitude MEDIUMINT NOT NULL, 
-    longitude MEDIUMINT NOT NULL
+    latitude DOUBLE(8,6) NOT NULL, 
+    longitude DOUBLE(8,6) NOT NULL
 );
 
 DROP TABLE IF EXISTS users;
