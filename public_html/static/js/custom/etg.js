@@ -1,5 +1,6 @@
 $(document).ready(function() {
     
+    var rumble = $('.yis').find('audio')[0];
     //TODO: incapsulate into INIT function for extendability purposes
     $('[data-toggle="popover"]').popover();
     $('#splash_modal').modal('show');
@@ -7,6 +8,24 @@ $(document).ready(function() {
     
     $('#splash_modal').on('hide.bs.modal', function () {
         $('#accountActionButton').html('Login').show();
+    });
+    
+    $('#rumbleButton').jrumble({
+    	x: 6,
+    	y: 6,
+    	rotation: 6,
+    	speed: 5,
+    	opacity: true,
+    	opacityMin: .05
+    });
+    
+    $('#rumbleButton').hover(function() {
+	    $(this).trigger('startRumble');
+	    rumble.play();
+    }, function() {
+    	$(this).trigger('stopRumble');
+    	rumble.pause();
+    	rumble.currentTime = 0;
     });
     
     $('#splashLoginButton').on("click", function() {

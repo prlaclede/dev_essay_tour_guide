@@ -1,18 +1,7 @@
-loadScript('https://maps.googleapis.com/maps/api/js?v=3.key=AIzaSyDeovcMJI1fqgbiZeyKwNDiBI3N8ghcmEc&callback=initialize',
+/*loadScript('https://maps.googleapis.com/maps/api/js?v=3.key=AIzaSyDeovcMJI1fqgbiZeyKwNDiBI3N8ghcmEc',
           function() { 
             console.log('google-loader has been loaded, but not the maps-API ');
           });
-          
-          
-          /*function loadScript() {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = "https://maps.googleapis.com/maps/api/js?v=3.key=AIzaSyDeovcMJI1fqgbiZeyKwNDiBI3N8ghcmEc&callback=initialize";
-  document.body.appendChild(script);
-}*/
-
-//window.onload = loadScript;
-
           
 function loadScript(src,callback){
 
@@ -21,9 +10,11 @@ function loadScript(src,callback){
   if(callback)script.onload=callback;
   script.src = src;
   document.body.appendChild(script);
-}
+}*/
 
-function initialize() {
+var map
+
+$(function () {
   
   console.log('maps-API has been loaded, ready to use');
   
@@ -39,20 +30,14 @@ function initialize() {
     rotateControl:true, 
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
-  var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+  map = new google.maps.Map($("#googleMap")[0], mapProp);
+  $(window).resize(function() {
+    google.maps.event.trigger($("#googleMap")[0], 'resize');
+  });
   
   google.maps.event.addListener(map,'center_changed', function() { checkBounds(); });
-  
-  var infowindow = new google.maps.InfoWindow ({
-  content:"You're here-ish"
-  });
-  
-  // responsivly update map size based on screen
-  $(window).resize(function() {
-    var center = map.getCenter();
-    google.maps.event.trigger(map, "resize");
-    map.setCenter(center);
-  });
+ 
+  google.maps.event.addListener(map,'resize', function() { resize(); });
   
   var allowedBounds = new google.maps.LatLngBounds (
    new google.maps.LatLng(38.273763, -77.485478), 
@@ -78,48 +63,48 @@ function initialize() {
       map.setCenter(new google.maps.LatLng(Y,X));
     }
   }
-
- /* $.ajax({
-      url: '/loadMarkers',
-      //data: $('#loginForm').serialize(),
-      type: 'POST',
-      success: function (response) {
-        placeMarkers(response['data'])
-        console.log(response['data'])
-      },
-      error: function (error) {
-          console.log("error" + error);
-      }
-  });*/
   
-  $.getJSON( "/loadMarkers", function(response) {
-    var data = response['data']
-    placeMarkers(response);
+  var markerGet = $.getJSON("/loadMarkers");
+
+  var essayGet = $.getJSON("/loadEssays");
+  
+  $.when(markerGet).done(function(markerResponse) {
+    $.each(markerResponse, function() {
+      $.each(this, function(key, value) {
+        $.getJSON("/loadEssays", {markerID: this['id']}).done(function(essayResponse) {
+          console.log(this['id']);
+          placeMarkers(markerResponse, essayResponse);
+        });
+      });
+    });
   });
   
-  //var marker = new google.maps.Marker ({
-  //  position: new google.maps.LatLng(38.301511, -77.474094),
-  //  animation: google.maps.Animation.BOUNCE
-  //});
-  
-  //google.maps.event.addListener(marker, 'click', function() {
-  //  infowindow.open(map,marker);
-  //});
-    
-  //marker.setMap(map);
-  
-  function placeMarkers(markersJSON) {
-      $.each(markersJSON, function() {
-        $.each(this, function(key, val) {
-          console.log(this['latitude']);
-          var newMarker = new google.maps.Marker ({
-            position: new google.maps.LatLng(this['latitude'], this['longitude']),
-            animation: google.maps.Animation.BOUNCE,
-          });
-          newMarker.setMap(map);
-        }); 
+  function placeMarkers(markersJSON, essayJSON) {
+    $.each(markersJSON, function() {
+      $.each(this, function(key, val) {
+        var newMarker = new google.maps.Marker ({
+          position: new google.maps.LatLng(this['latitude'], this['longitude']),
+          animation: google.maps.Animation.BOUNCE,
+        });
+        var infowindow = new google.maps.InfoWindow ({
+          content: getEssays(essayJSON)
+        });
+        google.maps.event.addListener(newMarker, 'click', function() {
+          infowindow.open(map, newMarker);
+        });
+        newMarker.setMap(map);
       }); 
-  }  
-}
-
-
+    }); 
+  }
+  
+  function getEssays(essayJSON) {
+    var someElement; //to be appended to as html element
+    $.each(essayJSON, function() {
+      $.each(this, function(key, val) {
+        console.log(this['location'])
+       // return this['location'];  
+      });
+      return "jlsdkfj"
+    });
+  }
+});

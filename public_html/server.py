@@ -60,6 +60,19 @@ def getMarkers():
   results = cur.fetchall()
   #print(results)
   return jsonify(data=results)
+  
+@app.route('/loadEssays')
+def getEssays():
+  markerID = request.args.get('markerID', 0, type=int)
+  print("marker id: ",  markerID)
+  conn = connectToEssayDB()
+  cur = conn.cursor()
+  query = ("SELECT * FROM essays WHERE marker_id_fk = %s")
+  cur.execute(query, markerID)
+  results = cur.fetchall()
+  if (len(results) != 0):
+    logger.info("essay(s) found for location")
+  return jsonify(data=results)
     
     
 def userLogin(email, password):
