@@ -46,7 +46,7 @@
             <span id="accountActionSpan">
               {% if not session.user %}
                 <button type="button" id="accountActionButton" class="btn btn-info" data-poload="login.html" data-placement="bottom">Login</button>
-                <h5 id="welcomeMessage"></h5>
+                <h5 id="welcomeMessage">Welcome Guest</h5>
               {% else %}
                 <button type="button" id="accountActionButton" class="btn btn-info" data-poload="login.html" data-placement="bottom">Logout</button>
                 <h5 id="welcomeMessage">Welcome {{ session['user']['first_name'] }} {{ session['user']['last_name'] }}</session></h5>

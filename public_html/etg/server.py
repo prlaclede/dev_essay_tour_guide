@@ -49,10 +49,9 @@ def returnImage(image, *args):
   print ('image: ', image)
   return json.dumps({'image': image, 'classes' : args})
   
-@app.route('/checkUser', methods=['POST'])
-def checkUser():
-  if (session.get('user') != None):
-    return jsonify(user=session.get('user'))
+@app.route('/checkUser')
+def getUser():
+  return jsonify(user=session.get('user'))
   
 @app.route('/login', methods=['POST'])
 def login():

@@ -4,11 +4,24 @@ $(document).ready(function() {
     $('#splash_modal').modal('show');
     $("#svg-icons").load("static/img/icons.svg");
 
-    $.getJSON('/checkUser').done(function(response) {
-        if (response != undefined) {
-            console.log(response);
+    $.getJSON('/checkUser', function(response) {
+        var user = response['user'];
+        if (user != null) {
+            loadUser(user);
         }
     });
+    
+    function loadUser (user) {
+        if (user['account_type_id_fk'] == 1) {
+            $('#accountActionButton').html('Logout').show();
+            $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
+                .after(generateSVG('adminAccount', 'accIcon'));
+        } else {
+            $('#accountActionButton').html('Logout').show();
+            $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
+                .after(generateSVG('basicAccount', 'accIcon'));;
+        }
+    }
     
     $('#splash_modal').on('hide.bs.modal', function () {
         $('#accountActionButton').html('Login').show();
@@ -26,15 +39,7 @@ $(document).ready(function() {
                     console.log('valid user');
                     $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
                     $('#splash_modal').modal('hide');
-                    if (user['accType'] == 1) {
-                        $('#accountActionButton').html('Logout').show();
-                        $('#welcomeMessage')/*.html("Welcome " + user['first_name'] + " " + user['last_name'])*/
-                            .after(generateSVG('adminAccount', 'accIcon'));
-                    } else {
-                        $('#accountActionButton').html('Logout').show();
-                        $('#welcomeMessage')/*.html("Welcome " + user['first_name'] + " " + user['last_name'])*/
-                            .after(generateSVG('basicAccount', 'accIcon'));;
-                    }
+                    loadUser(user);
                 } else {
                     $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
                 }
