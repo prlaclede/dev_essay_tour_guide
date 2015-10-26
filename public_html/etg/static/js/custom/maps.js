@@ -69,33 +69,33 @@ $(function () {
   var essayGet = $.getJSON("/loadEssays");
   
   $.when(markerGet).done(function(markerResponse) {
-    console.log(markerResponse);
-    $.each(markerResponse, function() {
-      $.each(this, function(key, value) {
-        $.getJSON("/loadEssays", {markerID: this['id']}).done(function(essayResponse) {
-          console.log(this['id']);
-          placeMarkers(markerResponse, essayResponse);
-        });
+    var markers = markerResponse['markerList'];
+    $.each(markers, function() {
+      var marker = this;
+      $.getJSON("/loadEssays", {markerID: this['id']}).done(function(essayResponse) {  
+        var essay = essayResponse['essayList'][0];
+        console.log(essay);
+        placeMarkers(marker, essay);
       });
     });
   });
   
   function placeMarkers(markersJSON, essayJSON) {
-    $.each(markersJSON, function() {
-      $.each(this, function(key, val) {
-        var newMarker = new google.maps.Marker ({
-          position: new google.maps.LatLng(this['latitude'], this['longitude']),
-          animation: google.maps.Animation.BOUNCE,
-        });
-        var infowindow = new google.maps.InfoWindow ({
-          content: getEssays(essayJSON)
-        });
-        google.maps.event.addListener(newMarker, 'click', function() {
-          infowindow.open(map, newMarker);
-        });
-        newMarker.setMap(map);
-      }); 
-    }); 
+    console.log(markersJSON);
+    var newMarker = new google.maps.Marker ({
+      position: new google.maps.LatLng(markersJSON['latitude'], markersJSON['longitude']),
+      animation: google.maps.Animation.BOUNCE,
+    });
+    if (essayJSON != undefined) {
+      console.log(essayJSON['title']);
+      var infowindow = new google.maps.InfoWindow ({
+        content: essayJSON['title']
+      });
+      google.maps.event.addListener(newMarker, 'click', function() {
+        infowindow.open(map, newMarker);
+      });
+    }
+    newMarker.setMap(map);
   }
   
   function getEssays(essayJSON) {
