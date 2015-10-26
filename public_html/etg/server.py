@@ -37,17 +37,22 @@ def load_user(user_id):
 @app.route('/')
 def mainIndex():
   loggedIn = False;
-  if (session.get('username') == None):
+  if (session.get('user') == None):
     print('no user')
     return render_template('index.html', loggedIn = False, returnImage = returnImage)
   else: 
-    print(session.get('username'))
-    return render_template('index.html', loggedIn = True, returnImage = returnImage, firstName = session.get('firstName'), last_name = session.get('lastName'))
+    print(session.get('user'))
+    return render_template('index.html', loggedIn = True, returnImage = returnImage)
   
 @app.route('/loadImage', methods=['POST'])
 def returnImage(image, *args):
   print ('image: ', image)
   return json.dumps({'image': image, 'classes' : args})
+  
+@app.route('/checkUser', methods=['POST'])
+def checkUser():
+  if (session.get('user') != None):
+    return jsonify(user=session.get('user'))
   
 @app.route('/login', methods=['POST'])
 def login():
@@ -79,7 +84,8 @@ def userLogin(email, password):
 
   if (len(user) != 0):
     logger.info('user found')
-    session['username'] = (user[0]['email'])
+    session['user'] = (user[0])
+    print(session.get('user'))
     return jsonify(user=user)
   else:
     logger.info('user not found')

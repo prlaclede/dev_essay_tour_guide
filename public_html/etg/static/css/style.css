@@ -25,7 +25,11 @@ body, html {
 
 #accountActionButton {
   display: inline;
-  display: none;
+}
+
+#welcomeMessage {
+  float: right;
+  margin: 7px 10px 0px 5px;
 }
 
 .accIcon {

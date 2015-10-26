@@ -3,6 +3,12 @@ $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
     $('#splash_modal').modal('show');
     $("#svg-icons").load("static/img/icons.svg");
+
+    $.getJSON('/checkUser').done(function(response) {
+        if (response != undefined) {
+            console.log(response);
+        }
+    });
     
     $('#splash_modal').on('hide.bs.modal', function () {
         $('#accountActionButton').html('Login').show();
@@ -21,11 +27,13 @@ $(document).ready(function() {
                     $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
                     $('#splash_modal').modal('hide');
                     if (user['accType'] == 1) {
-                        $('#accountActionButton').html('Logout').show().after(generateSVG('adminAccount', 'accIcon'))
-                        $('#accountActionSpan').append("<h5>Welcome " + user['first_name'] + " " + user['last_name'] + "</h5>");
+                        $('#accountActionButton').html('Logout').show();
+                        $('#welcomeMessage')/*.html("Welcome " + user['first_name'] + " " + user['last_name'])*/
+                            .after(generateSVG('adminAccount', 'accIcon'));
                     } else {
-                        $('#accountActionButton').html('Logout').show().after(generateSVG('basicAccount', 'accIcon'));
-                        $('#accountActionSpan').append("<h5>Welcome " + user['first_name'] + " " + user['last_name'] + "</h5>");
+                        $('#accountActionButton').html('Logout').show();
+                        $('#welcomeMessage')/*.html("Welcome " + user['first_name'] + " " + user['last_name'])*/
+                            .after(generateSVG('basicAccount', 'accIcon'));;
                     }
                 } else {
                     $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
