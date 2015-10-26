@@ -69,6 +69,7 @@ $(function () {
   var essayGet = $.getJSON("/loadEssays");
   
   $.when(markerGet).done(function(markerResponse) {
+    console.log(markerResponse);
     $.each(markerResponse, function() {
       $.each(this, function(key, value) {
         $.getJSON("/loadEssays", {markerID: this['id']}).done(function(essayResponse) {

@@ -64,6 +64,6 @@ INSERT INTO markers (name, address, latitude, longitude)
 INSERT INTO markers (name, address, latitude, longitude) VALUES ('UMW', '...', 38.301511, -77.474094);
 
 INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
-    VALUES ('admin@admin.com', AES_ENCRYPT('adminp@$$', 'passpls'), 'Ally', 'Gator', false,  1, 1);
+    VALUES ('admin@admin.com', MD5('adminp@$$'), 'Ally', 'Gator', false,  1, 1);
 
 INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', 'www.essay.placeholder.com', 1, 1);

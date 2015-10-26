@@ -1,7 +1,13 @@
 import os
-import uuid, hashlib, MySQLdb, MySQLdb.cursors, logging
+import uuid, hashlib, MySQLdb, MySQLdb.cursors, logging, md5
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify, json
 from flask.ext.login import LoginManager, UserMixin, login_required
+from modules import *
+
+init_db()
+#admin = User(email='admin@admin.com', password='adminp@$$', first_name='Ally', last_name='Gator', pending=False, account_type_id_fk=1, instr_id_fk=1)
+#db_session.add(admin)
+#db_session.commit()
 
 #setup for different levels of log files later
 #logger.basicConfig(filename='debug.log',level=logging.DEBUG) 
@@ -20,24 +26,23 @@ app.secret_key = os.urandom(24).encode('hex')
 
 def connectToEssayDB():
   try:
-    return MySQLdb.connect(host = "localhost", user = "essaytouradmin", passwd = "essaytourpass", db = "essaytourdb", cursorclass=MySQLdb.cursors.DictCursor)
+    return engine.connect()
   except:
     print("Can't connect to database alien")
     
-class User(UserMixin):
-
-    def __init__(self, username, password):
-        self.id = username
-        self.password = password
-
-    #@classmethod
-    #def get(cls,id):
-        #return userLogin(id, password)
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 @app.route('/')
 def mainIndex():
   loggedIn = False;
-  return render_template('index.html', loggedIn = False, returnImage = returnImage)
+  if (session.get('username') == None):
+    print('no user')
+    return render_template('index.html', loggedIn = False, returnImage = returnImage)
+  else: 
+    print(session.get('username'))
+    return render_template('index.html', loggedIn = True, returnImage = returnImage, firstName = session.get('firstName'), last_name = session.get('lastName'))
   
 @app.route('/loadImage', methods=['POST'])
 def returnImage(image, *args):
@@ -54,43 +59,32 @@ def login():
 @app.route('/loadMarkers')
 def getMarkers():
   conn = connectToEssayDB()
-  cur = conn.cursor()
-  query = ("SELECT * FROM markers")
-  cur.execute(query)
-  results = cur.fetchall()
-  #print(results)
-  return jsonify(data=results)
+  markerList = Marker.query.all()
+  return jsonify(markerList=[i.serialize for i in markerList])
   
 @app.route('/loadEssays')
 def getEssays():
   markerID = request.args.get('markerID', 0, type=int)
-  print("marker id: ",  markerID)
   conn = connectToEssayDB()
-  cur = conn.cursor()
-  query = ("SELECT * FROM essays WHERE marker_id_fk = %s")
-  cur.execute(query, markerID)
-  results = cur.fetchall()
-  if (len(results) != 0):
-    logger.info("essay(s) found for location")
-  return jsonify(data=results)
+  essayList = Essay.query.filter(Essay.marker_id_fk==markerID).all()
+  return jsonify(essayList=[i.serialize for i in essayList])
     
     
 def userLogin(email, password):
+  dk = md5.new(password).hexdigest()
   logger.info('checking DB for user')
   conn = connectToEssayDB()
-  cur = conn.cursor()
-  
-  query = ("SELECT email, first_name, last_name, pending, account_type_id_fk FROM users WHERE email = %s AND AES_DECRYPT(password, %s) = %s")
-  cur.execute(query, (email, 'passpls', password))
-  results = cur.fetchall()
-  if (len(results) != 0):
+  user = User.query.filter(and_(User.email==email, User.password==dk)).all()
+  user=[i.serialize for i in user]
+
+  if (len(user) != 0):
     logger.info('user found')
-    firstName = results[0]['first_name']
-    lastName = results[0]['last_name']
-    return json.dumps({'valid': 'true', 'accType': results[0]['account_type_id_fk'], 'firstName': firstName, 'lastName': lastName});
+    session['username'] = (user[0]['email'])
+    return jsonify(user=user)
   else:
-   logger.info('user not found')
-   return json.dumps({'valid': 'false'});
+    logger.info('user not found')
+    return jsonify(user=user)
+    
 
 if __name__ == '__main__':
   app.debug=True

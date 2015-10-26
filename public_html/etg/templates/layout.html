@@ -44,8 +44,7 @@
               </li>
             </ul>
             <span id="accountActionSpan">
-              <button type="button" id="rumbleButton" class="">RUMBLE!</button>
-              <button type="button" id="accountActionButton" class="btn btn-info" data-toggle="popover" title="Popover Header" data-content="I do nothing :D" data-placement="bottom"></button>
+              <button type="button" id="accountActionButton" class="btn btn-info" data-poload="login.html" data-placement="bottom"></button>
             </span>
           </div>
         </div>
@@ -53,8 +52,7 @@
         <div class="siteContent">
           {% block content %}
           {% endblock %}
-        </div>
-        
+        </div>  
         <script src="{{ url_for('static', filename = 'js/jquery-1.11.3.min.js') }}"></script>
         <script src="{{ url_for('static', filename = 'js/bootstrap/bootstrap.min.js') }}"></script>
         <script src="{{ url_for('static', filename = 'js/jquery.jrumble.1.3.js') }}"></script>

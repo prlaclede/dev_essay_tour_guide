@@ -15,16 +15,17 @@ $(document).ready(function() {
             data: $('#loginForm').serialize(),
             type: 'POST',
             success: function (response) {
-                if (JSON.parse(response)['valid'] == 'true') {
+                if (response != undefined) {
+                    var user = response['user'][0]
                     console.log('valid user');
                     $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
                     $('#splash_modal').modal('hide');
-                    if (JSON.parse(response)['accType'] == 1) {
+                    if (user['accType'] == 1) {
                         $('#accountActionButton').html('Logout').show().after(generateSVG('adminAccount', 'accIcon'))
-                        $('#accountActionSpan').append("<h5>Welcome " + JSON.parse(response)['firstName'] + " " + JSON.parse(response)['lastName'] + "</h5>");
+                        $('#accountActionSpan').append("<h5>Welcome " + user['first_name'] + " " + user['last_name'] + "</h5>");
                     } else {
                         $('#accountActionButton').html('Logout').show().after(generateSVG('basicAccount', 'accIcon'));
-                        $('#accountActionSpan').append("<h5>Welcome " + JSON.parse(response)['firstName'] + " " + JSON.parse(response)['lastName'] + "</h5>");
+                        $('#accountActionSpan').append("<h5>Welcome " + user['first_name'] + " " + user['last_name'] + "</h5>");
                     }
                 } else {
                     $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
@@ -34,6 +35,11 @@ $(document).ready(function() {
                 console.log("error" + error);
             }
         });
+    });
+    
+    $('#accountActionButton').click(function() {
+        var title = $(this).html();
+       $('#popup').modal('show').find('.modal-title').html(title);
     });
     
     function generateSVG(icon, addClass) {
