@@ -89,7 +89,7 @@ $(function () {
     if (essayJSON != undefined) {
       console.log(essayJSON['title']);
       var infowindow = new google.maps.InfoWindow ({
-        content: essayJSON['title']
+        content: getEssays(essayJSON)
       });
       google.maps.event.addListener(newMarker, 'click', function() {
         infowindow.open(map, newMarker);
@@ -99,13 +99,10 @@ $(function () {
   }
   
   function getEssays(essayJSON) {
-    var someElement; //to be appended to as html element
-    $.each(essayJSON, function() {
-      $.each(this, function(key, val) {
-        console.log(this['location'])
-       // return this['location'];  
-      });
-      return "jlsdkfj"
-    });
+    var someElement = "<div class='mapEssayLink'> \
+                        <h5 class='essayLinkTitle'>" + essayJSON['title'] + "</h5> \
+                        <button type='button' class='btn btn-info eassayLinkButton'>View</button> \
+                      </div>";
+    return someElement;
   }
 });
