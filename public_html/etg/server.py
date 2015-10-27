@@ -1,6 +1,7 @@
 import os
 import logging, md5
-from flask import Flask, session, render_template, request, redirect, url_for, jsonify, json
+from flask import (Flask, session, render_template, request, redirect, 
+url_for, jsonify, json)
 from UserAPI import user_api
 from modules import *
 

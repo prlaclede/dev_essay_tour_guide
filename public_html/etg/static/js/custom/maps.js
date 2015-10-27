@@ -99,8 +99,8 @@ $(function () {
   
   function getEssays(essayJSON) {
     var someElement = "<div class='mapEssayLink'> \
-                        <h5 class='essayLinkTitle'>" + essayJSON['title'] + "</h5> \
-                        <button type='button' class='btn btn-info eassayLinkButton'>View</button> \
+                        <h6 class='essayLinkTitle'>" + essayJSON['title'] + "</h6> \
+                        <a href='" + essayJSON['location'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
                       </div>";
     return someElement;
   }

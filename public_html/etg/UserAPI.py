@@ -1,5 +1,6 @@
 import logging, md5
-from flask import Blueprint, Flask, session, render_template, request, redirect, url_for, jsonify, json
+from flask import (Blueprint, Flask, session, render_template, request, 
+redirect, url_for, jsonify, json)
 from modules import *
 
 user_api = Blueprint('user_api', __name__)
