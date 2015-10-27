@@ -1,10 +1,11 @@
 import os
-import uuid, hashlib, MySQLdb, MySQLdb.cursors, logging, md5
+import logging, md5
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify, json
-from flask.ext.login import LoginManager, UserMixin, login_required
+from UserAPI import user_api
 from modules import *
 
 init_db()
+#for testing purposes
 #admin = User(email='admin@admin.com', password='adminp@$$', first_name='Ally', last_name='Gator', pending=False, account_type_id_fk=1, instr_id_fk=1)
 #db_session.add(admin)
 #db_session.commit()
@@ -18,8 +19,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
+app.register_blueprint(user_api)
 
 app.config['SECRET_KEY'] = 'theSecretestKey'
 app.secret_key = os.urandom(24).encode('hex')
@@ -30,9 +30,6 @@ def connectToEssayDB():
   except:
     print("Can't connect to database alien")
     
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get(user_id)
 
 @app.route('/')
 def mainIndex():
@@ -43,17 +40,6 @@ def mainIndex():
   else: 
     print(session.get('user'))
     return render_template('index.html', loggedIn = True)
-  
-@app.route('/checkUser')
-def checkUser():
-  return jsonify(user=session.get('user'))
-  
-@app.route('/login', methods=['POST'])
-def login():
-  userEmail = request.form['userLoginEmail']
-  userPass = request.form['userLoginPass']
-  logger.info(userEmail + " " + userPass)
-  return (userLogin(userEmail, userPass))
   
 @app.route('/loadMarkers')
 def loadMarkers():
@@ -81,22 +67,6 @@ def recentEssays():
   location = request.json['location'] 
   print(location)
   return render_template('recentEssay.html', name=name, location=location)
-    
-def userLogin(email, password):
-  dk = md5.new(password).hexdigest()
-  logger.info('checking DB for user')
-  conn = connectToEssayDB()
-  user = User.query.filter(and_(User.email==email, User.password==dk)).all()
-  user = [i.serialize for i in user]
-
-  if (len(user) != 0):
-    logger.info('user found')
-    session['user'] = (user[0])
-    print(session.get('user'))
-    return jsonify(user=user)
-  else:
-    logger.info('user not found')
-    return jsonify(user=user)
     
 
 if __name__ == '__main__':
