@@ -3,6 +3,26 @@ $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
     $('#splash_modal').modal('show');
     $("#svg-icons").load("static/img/icons.svg");
+    
+    $.getJSON('/loadRecentEssays', function(response) {
+       var essayList = response['essayList'];
+       $.each(essayList, function() {
+            console.log(essayList[0]);
+           $.ajax({
+                url: "/recentEssay",
+                data: JSON.stringify(essayList[0]),
+                type: "POST",
+                contentType: 'application/json',
+                dataType: "html",
+                success: function(response) {
+                    $('.recentEssays').find('ul').append(response);
+                },
+                error: function (error) {
+                    console.log("error" + JSON.stringify(error));
+                }
+            });
+       });
+    });
 
     $.getJSON('/checkUser', function(response) {
         var user = response['user'];
@@ -10,18 +30,6 @@ $(document).ready(function() {
             loadUser(user);
         }
     });
-    
-    function loadUser (user) {
-        if (user['account_type_id_fk'] == 1) {
-            $('#accountActionButton').html('Logout').show();
-            $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
-                .after(generateSVG('adminAccount', 'accIcon'));
-        } else {
-            $('#accountActionButton').html('Logout').show();
-            $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
-                .after(generateSVG('basicAccount', 'accIcon'));;
-        }
-    }
     
     $('#splash_modal').on('hide.bs.modal', function () {
         $('#accountActionButton').html('Login').show();
@@ -54,6 +62,18 @@ $(document).ready(function() {
         var title = $(this).html();
        $('#popup').modal('show').find('.modal-title').html(title);
     });
+    
+    function loadUser (user) {
+        if (user['account_type_id_fk'] == 1) {
+            $('#accountActionButton').html('Logout').show();
+            $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
+                .after(generateSVG('adminAccount', 'accIcon'));
+        } else {
+            $('#accountActionButton').html('Logout').show();
+            $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
+                .after(generateSVG('basicAccount', 'accIcon'));;
+        }
+    }
     
     function generateSVG(icon, addClass) {
       var image = "<div class='im " + addClass + "'> \

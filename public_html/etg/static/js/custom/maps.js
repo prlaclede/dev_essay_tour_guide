@@ -66,28 +66,27 @@ $(function () {
   
   var markerGet = $.getJSON("/loadMarkers");
 
-  var essayGet = $.getJSON("/loadEssays");
+  var essayGet = $.getJSON("/loadMarkerEssays");
   
   $.when(markerGet).done(function(markerResponse) {
     var markers = markerResponse['markerList'];
     $.each(markers, function() {
       var marker = this;
-      $.getJSON("/loadEssays", {markerID: this['id']}).done(function(essayResponse) {  
+      $.getJSON("/loadMarkerEssays", {
+        markerID: this['id']
+      }).done(function(essayResponse) {  
         var essay = essayResponse['essayList'][0];
-        console.log(essay);
         placeMarkers(marker, essay);
       });
     });
   });
   
   function placeMarkers(markersJSON, essayJSON) {
-    console.log(markersJSON);
     var newMarker = new google.maps.Marker ({
       position: new google.maps.LatLng(markersJSON['latitude'], markersJSON['longitude']),
       animation: google.maps.Animation.BOUNCE,
     });
     if (essayJSON != undefined) {
-      console.log(essayJSON['title']);
       var infowindow = new google.maps.InfoWindow ({
         content: getEssays(essayJSON)
       });

@@ -39,18 +39,13 @@ def mainIndex():
   loggedIn = False;
   if (session.get('user') == None):
     print('no user')
-    return render_template('index.html', loggedIn = False, returnImage = returnImage)
+    return render_template('index.html', loggedIn = False)
   else: 
     print(session.get('user'))
-    return render_template('index.html', loggedIn = True, returnImage = returnImage)
-  
-@app.route('/loadImage', methods=['POST'])
-def returnImage(image, *args):
-  print ('image: ', image)
-  return json.dumps({'image': image, 'classes' : args})
+    return render_template('index.html', loggedIn = True)
   
 @app.route('/checkUser')
-def getUser():
+def checkUser():
   return jsonify(user=session.get('user'))
   
 @app.route('/login', methods=['POST'])
@@ -61,25 +56,38 @@ def login():
   return (userLogin(userEmail, userPass))
   
 @app.route('/loadMarkers')
-def getMarkers():
+def loadMarkers():
   conn = connectToEssayDB()
   markerList = Marker.query.all()
   return jsonify(markerList=[i.serialize for i in markerList])
   
-@app.route('/loadEssays')
-def getEssays():
+@app.route('/loadMarkerEssays')
+def loadMarkerEssays():
   markerID = request.args.get('markerID', 0, type=int)
   conn = connectToEssayDB()
   essayList = Essay.query.filter(Essay.marker_id_fk==markerID).all()
   return jsonify(essayList=[i.serialize for i in essayList])
-    
+  
+@app.route('/loadRecentEssays')
+def getAll():
+  conn = connectToEssayDB()
+  essayList = Essay.query.limit(5).all()
+  essayList = [i.serialize for i in essayList]
+  return jsonify(essayList=essayList)
+
+@app.route('/recentEssay', methods=['POST'])
+def recentEssays():
+  name = request.json['title']
+  location = request.json['location'] 
+  print(location)
+  return render_template('recentEssay.html', name=name, location=location)
     
 def userLogin(email, password):
   dk = md5.new(password).hexdigest()
   logger.info('checking DB for user')
   conn = connectToEssayDB()
   user = User.query.filter(and_(User.email==email, User.password==dk)).all()
-  user=[i.serialize for i in user]
+  user = [i.serialize for i in user]
 
   if (len(user) != 0):
     logger.info('user found')
