@@ -84,13 +84,18 @@ $(function () {
   function placeMarkers(markersJSON, essayJSON) {
     var newMarker = new google.maps.Marker ({
       position: new google.maps.LatLng(markersJSON['latitude'], markersJSON['longitude']),
-      animation: google.maps.Animation.BOUNCE,
+      animation: google.maps.Animation.DROP,
     });
     if (essayJSON != undefined) {
       var infowindow = new google.maps.InfoWindow ({
         content: getEssays(essayJSON)
       });
       google.maps.event.addListener(newMarker, 'click', function() {
+        if (newMarker.getAnimation() !== null) {
+          newMarker.setAnimation(null);
+        } else {
+          newMarker.setAnimation(google.maps.Animation.BOUNCE);
+        }
         infowindow.open(map, newMarker);
       });
     }
