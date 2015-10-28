@@ -3,6 +3,11 @@ $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
     $('#splash_modal').modal('show');
     $("#svg-icons").load("static/img/icons.svg");
+    $(document).keypress(function(e){
+        if (e.which == 13){
+            $(".splashLoginButton").click();
+        }
+    });
     
     $.getJSON('/loadRecentEssays', function(response) {
        var essayList = response['essayList'];
@@ -61,6 +66,11 @@ $(document).ready(function() {
         $('#accountActionSpan').show();
         $('#accountActionButton').html('Login');
         $('#welcomeMessage').html('Welcome Guest');
+    });
+    
+    $('.mapMode').on('click', function() {
+        $('.mapMode').closest('li').removeClass('selectedMode');
+        $(this).closest('li').toggleClass('selectedMode'); 
     });
     
     $('#accountActionButton').click(function() {

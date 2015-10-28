@@ -46,7 +46,7 @@ $(function () {
   );
   
   function checkBounds() {    
-    if(! allowedBounds.contains(map.getCenter())) {
+    if(!allowedBounds.contains(map.getCenter())) {
       var C = map.getCenter();
       var X = C.lng();
       var Y = C.lat();
@@ -82,14 +82,27 @@ $(function () {
     });
   });
   
-  $('.mapEditToggle').on('click', function() {
+  var newMarkerListener;
+  
+  $('#mapAddToggle').on('click', function() {
+    console.log('add marker');
     $.getJSON('/setMapMode', {
       mode: 'edit'
     }).done(function(response) {
       console.log(response);
-      google.maps.event.addListener(map, 'click', function(event) {
+      newMarkerListener = google.maps.event.addListener(map, 'click', function(event) {
          placeNewMarker(event.latLng);
       });
+    });
+  });
+  
+  $('#mapViewToggle').on('click', function() {
+    console.log('add marker');
+    $.getJSON('/setMapMode', {
+      mode: 'view'
+    }).done(function(response) {
+      console.log(response);
+      newMarkerListener.remove();
     });
   });
   
