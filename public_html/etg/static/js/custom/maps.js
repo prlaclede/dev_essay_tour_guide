@@ -21,7 +21,7 @@ $(function () {
   
   var mapProp = {
     center: new google.maps.LatLng(38.301461, -77.473635),
-    zoom: 13,
+    zoom: 15,
     panControl:true,
     zoomControl:true,
     mapTypeControl:true,
@@ -97,7 +97,7 @@ $(function () {
   });
   
   $('#mapViewToggle').on('click', function() {
-    console.log('add marker');
+    console.log('view map');
     $.getJSON('/setMapMode', {
       mode: 'view'
     }).done(function(response) {
@@ -133,14 +133,20 @@ $(function () {
   }
   
   function getEssays(essayJSON) {
-    var someElement = "<div class='mapEssayLink'> \
+    var essayLink = "<div class='mapEssayLink'> \
                         <h6 class='essayLinkTitle'>" + essayJSON['title'] + "</h6> \
                         <a href='" + essayJSON['location'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
+                      </div>";
+    return essayLink;
+  }
+  
+  function generateUploadForm() {
+    var uploadForm = "<div class='essayUploadLink'> \
                         <h6 class='essayLinkTitle'>Upload Essay</h6> \
                         <span><input type='file' name='file'> \
                         <a href='#essaySubmit' type='button' class='btn btn-sm btn-info'>Submit</a></span> \
                       </div>";
-    return someElement;
+    return uploadForm;
   }
   
   function placeNewMarker(location) {
@@ -148,5 +154,13 @@ $(function () {
       position: location, 
       map: map
     });
+    var infoWindow = new google.maps.InfoWindow ({
+      content: generateUploadForm()
+    });
+    infoWindow.open(map, marker);
+    newMarkerListener.remove();
+    
+    $('#mapAddToggle').closest('li').removeClass('selectedMode');
+    $('#mapViewToggle').closest('li').addClass('selectedMode');
   }
 });
