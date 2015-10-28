@@ -105,6 +105,6 @@ body, html {
   border: 1px solid blue;
 }
 
-.mapEssayLink {
+.mapEssayLink, .essayUploadLink {
   text-align: center;
 }

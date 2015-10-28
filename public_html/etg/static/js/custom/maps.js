@@ -40,6 +40,10 @@ $(function () {
  
   google.maps.event.addListener(map,'resize', function() { resize(); });
   
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+    if (map.getZoom() < 13) map.setZoom(13);
+  });
+  
   var allowedBounds = new google.maps.LatLngBounds (
    new google.maps.LatLng(38.273763, -77.485478), 
    new google.maps.LatLng(38.352718, -77.460838)
