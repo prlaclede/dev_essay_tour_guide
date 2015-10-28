@@ -7,10 +7,10 @@ $(document).ready(function() {
     $.getJSON('/loadRecentEssays', function(response) {
        var essayList = response['essayList'];
        $.each(essayList, function() {
-            console.log(essayList[0]);
+            console.log(this);
            $.ajax({
                 url: "/recentEssay",
-                data: JSON.stringify(essayList[0]),
+                data: JSON.stringify(this),
                 type: "POST",
                 contentType: 'application/json',
                 dataType: "html",

@@ -34,7 +34,7 @@ def userLogin(email, password):
     dk = md5.new(password).hexdigest()
     logger.info('checking DB for user')
     conn = connectToEssayDB()
-    user = User.query.filter(and_(User.email==email, User.password==dk)).all()
+    user = User.query.filter(and_(User.email==email, User.password==dk, User.pending!=1)).all()
     user = [i.serialize for i in user]
     
     if (len(user) != 0):

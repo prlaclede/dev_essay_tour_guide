@@ -9,8 +9,9 @@ from modules import *
 
 init_db()
 #for testing purposes
-#admin = User(email='admin@admin.com', password='adminp@$$', first_name='Ally', last_name='Gator', pending=False, account_type_id_fk=1, instr_id_fk=1)
-#db_session.add(admin)
+#password = md5.new('basicpass').hexdigest()
+#user = User(email='basic@email.com', password=password, first_name='Mac', last_name="N'Cheese", pending=True, account_type_id_fk=2, instr_id_fk=2)
+#db_session.add(user)
 #db_session.commit()
 
 #setup for different levels of log files later

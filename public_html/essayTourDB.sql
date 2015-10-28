@@ -62,8 +62,23 @@ INSERT INTO instructions (name, location) VALUES ('Guest Instructions', 'www.gue
 INSERT INTO markers (name, address, latitude, longitude) 
     VALUES ('Kenmore Park', 'Kenmore Ave, Fredericksburg, VA 22401', 38.306095, -77.469753);
 INSERT INTO markers (name, address, latitude, longitude) VALUES ('UMW', '...', 38.301511, -77.474094);
+INSERT INTO markers (name, address, latitude, longitude) VALUES ('Confederate Cemetery', '...', 38.302521, -77.467195);
+INSERT INTO markers (name, address, latitude, longitude) VALUES ('Mary Washington Monument', '...', 38.305831, -77.468792);
+INSERT INTO markers (name, address, latitude, longitude) VALUES ('Mary Washington House', '...', 38.304945, -77.463134);
+INSERT INTO markers (name, address, latitude, longitude) VALUES ('Foode', '...', 38.303929, -77.460035);
+
 
 INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
     VALUES ('admin@admin.com', MD5('adminp@$$'), 'Ally', 'Gator', false,  1, 1);
+INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
+    VALUES ('basic@email.com', MD5('basicpass'), 'Mac', "N'Cheese", false,  2, 2);
+INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
+    VALUES ('jack@email.com', MD5('jackpass'), 'Jack', "O'lantran", false,  2, 2);
 
 INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', 'www.essay.placeholder.com', 1, 1);
+INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('UMW essay', 'www.essay.placeholder.com', 2, 1);
+INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('Confederate Essay', 'www.essay.placeholder.com', 3, 1);
+INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('Mary Wash Monument Essay', 'www.essay.placeholder.com', 4, 1);
+INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ('Mary Wash House Essay', 'www.essay.placeholder.com', 5, 1);
+INSERT INTO essays (title, location, marker_id_fk, user_id_fk) VALUES ("Great eats in F'Burg", 'www.essay.placeholder.com', 6, 1);
+
