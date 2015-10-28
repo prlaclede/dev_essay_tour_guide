@@ -25,5 +25,4 @@ def getAll():
 def recentEssays():
   name = request.json['title']
   location = request.json['location'] 
-  print(location)
   return render_template('recentEssay.html', name=name, location=location)

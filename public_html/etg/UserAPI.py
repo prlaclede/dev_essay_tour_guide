@@ -18,8 +18,13 @@ def connectToEssayDB():
 def login():
     userEmail = request.form['userLoginEmail']
     userPass = request.form['userLoginPass']
-    logger.info(userEmail + " " + userPass)
+    logger.info(userEmail)
     return (userLogin(userEmail, userPass))
+    
+@user_api.route('/logout')
+def logout():
+    session.clear()
+    return jsonify(success='success')
   
 @user_api.route('/checkUser')
 def checkUser():
@@ -35,7 +40,6 @@ def userLogin(email, password):
     if (len(user) != 0):
         logger.info('user found')
         session['user'] = (user[0])
-        print(session.get('user'))
         return jsonify(user=user)
     else:
         logger.info('user not found')

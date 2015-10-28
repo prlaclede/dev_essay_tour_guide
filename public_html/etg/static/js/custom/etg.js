@@ -31,25 +31,24 @@ $(document).ready(function() {
         }
     });
     
-    $('#splash_modal').on('hide.bs.modal', function () {
-        $('#accountActionButton').html('Login').show();
-    });
-    
-    $('#splashLoginButton').on("click", function() {
+    $('.splashLoginButton').on("click", function() {
         console.log('submitting form');
         $.ajax({
             url: '/login',
-            data: $('#loginForm').serialize(),
+            data: $(this).closest('#loginForm').serialize(),
             type: 'POST',
             success: function (response) {
                 if (response != undefined) {
-                    var user = response['user'][0]
-                    console.log('valid user');
-                    $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
-                    $('#splash_modal').modal('hide');
-                    loadUser(user);
-                } else {
-                    $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+                    var user = response['user'][0];
+                    if (user != undefined) {
+                        console.log('valid user');
+                        $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
+                        $('#splash_modal').modal('hide');
+                        $('#popup').modal('hide');
+                        loadUser(user);
+                    } else {
+                        $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+                    }
                 }
             },
             error: function (error) {
@@ -58,20 +57,32 @@ $(document).ready(function() {
         });
     });
     
+    $('#splash_modal').on('hide.bs.modal', function () {
+        $('#accountActionSpan').show();
+        $('#accountActionButton').html('Login');
+        $('#welcomeMessage').html('Welcome Guest');
+    });
+    
     $('#accountActionButton').click(function() {
-        var title = $(this).html();
-       $('#popup').modal('show').find('.modal-title').html(title);
+        var buttonText = $(this).html();
+        if (buttonText == 'Login') {
+            $('#popup').modal('show').find('.modal-title').html(buttonText);   
+        } else if (buttonText == 'Logout') {
+            $.getJSON('/logout').done(function (response) {
+                console.log(response);
+                window.location.reload();
+            });
+        }
     });
     
     function loadUser (user) {
+        $('#accountActionSpan').show();
+        $('#accountActionButton').html('Logout');
+        $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
         if (user['account_type_id_fk'] == 1) {
-            $('#accountActionButton').html('Logout').show();
-            $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
-                .after(generateSVG('adminAccount', 'accIcon'));
+                $('#welcomeMessage').after(generateSVG('adminAccount', 'accIcon'));
         } else {
-            $('#accountActionButton').html('Logout').show();
-            $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
-                .after(generateSVG('basicAccount', 'accIcon'));;
+                $('#welcomeMessage').after(generateSVG('basicAccount', 'accIcon'));;
         }
     }
     

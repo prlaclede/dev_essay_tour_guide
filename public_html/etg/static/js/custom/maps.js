@@ -10,7 +10,8 @@ function loadScript(src,callback){
   if(callback)script.onload=callback;
   script.src = src;
   document.body.appendChild(script);
-}*/
+}
+*/
 
 var map
 
@@ -81,6 +82,17 @@ $(function () {
     });
   });
   
+  $('.mapEditToggle').on('click', function() {
+    $.getJSON('/setMapMode', {
+      mode: 'edit'
+    }).done(function(response) {
+      console.log(response);
+      google.maps.event.addListener(map, 'click', function(event) {
+         placeNewMarker(event.latLng);
+      });
+    });
+  });
+  
   function placeMarkers(markersJSON, essayJSON) {
     var currentMarker;
     var newMarker = new google.maps.Marker ({
@@ -111,7 +123,17 @@ $(function () {
     var someElement = "<div class='mapEssayLink'> \
                         <h6 class='essayLinkTitle'>" + essayJSON['title'] + "</h6> \
                         <a href='" + essayJSON['location'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
+                        <h6 class='essayLinkTitle'>Upload Essay</h6> \
+                        <span><input type='file' name='file'> \
+                        <a href='#essaySubmit' type='button' class='btn btn-sm btn-info'>Submit</a></span> \
                       </div>";
     return someElement;
+  }
+  
+  function placeNewMarker(location) {
+    var marker = new google.maps.Marker({
+      position: location, 
+      map: map
+    });
   }
 });

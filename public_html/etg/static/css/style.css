@@ -13,18 +13,19 @@ body, html {
   text-align: center;
 }
 
-#splashLoginButton, #splashRegisterButton, #accountActionButton {
+.splashLoginButton, #splashRegisterButton {
   float: right;
 }
 
-#accountActionSpan { 
-  display: inline;
+#accountActionSpan {
+  display: none;
   float: right;
   margin: 15px 0px 0px 0px;
 }
 
 #accountActionButton {
   display: inline;
+  float: right;
 }
 
 #welcomeMessage {

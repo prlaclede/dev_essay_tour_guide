@@ -26,3 +26,14 @@ def loadMarkerEssays():
   conn = connectToEssayDB()
   essayList = Essay.query.filter(Essay.marker_id_fk==markerID).all()
   return jsonify(essayList=[i.serialize for i in essayList])
+
+@marker_api.route('/setMapMode')
+def mapEdit():
+  mode = request.args.get('mode')
+  print('setting map' + mode)
+  session['mapMode'] = mode
+  return jsonify(mode=mode)
+
+@marker_api.route('/getMapMode')
+def getMapMode():
+  return jsonify(mapMode=session.get('mapMode'))
