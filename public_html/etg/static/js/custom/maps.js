@@ -50,7 +50,7 @@ $(function () {
   );
   
   function checkBounds() {    
-    if(!allowedBounds.contains(map.getCenter())) {
+    if (!allowedBounds.contains(map.getCenter())) {
       var C = map.getCenter();
       var X = C.lng();
       var Y = C.lat();
@@ -95,7 +95,9 @@ $(function () {
     }).done(function(response) {
       console.log(response);
       newMarkerListener = google.maps.event.addListener(map, 'click', function(event) {
+        if (allowedBounds.contains(event.latLng)) {
          placeNewMarker(event.latLng);
+        }
       });
     });
   });
