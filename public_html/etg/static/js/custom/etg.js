@@ -65,6 +65,7 @@ $(document).ready(function() {
     $('#splash_modal').on('hide.bs.modal', function () {
         $('#accountActionSpan').show();
         $('#accountActionButton').html('Login');
+        $('#accountRegisterButton').show();
         $('#welcomeMessage').html('Welcome Guest');
     });
     
@@ -87,6 +88,7 @@ $(document).ready(function() {
     
     function loadUser (user) {
         $('#accountActionSpan').show();
+        $('#accountRegisterButton').hide();
         $('#accountActionButton').html('Logout');
         $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
         if (user['account_type_id_fk'] == 1) {

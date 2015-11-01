@@ -37,3 +37,11 @@ def mapEdit():
 @marker_api.route('/getMapMode')
 def getMapMode():
   return jsonify(mapMode=session.get('mapMode'))
+  
+@marker_api.route('/newMarker')
+def newMarker():
+  marker = request.args.get('marker')
+  conn = connectToEssayDB()
+  newMarker = Makrer(name=marker['name'], location=marker['location'], pending=True, lat=marker['lat'], long=marker['long'])
+  db_session.add(marker)
+  db_session.commit()

@@ -27,7 +27,7 @@ body, html {
   background-color: steelblue;
 }
 
-#accountActionButton {
+#accountActionButton, #accountRegisterButton {
   display: inline;
   float: right;
 }

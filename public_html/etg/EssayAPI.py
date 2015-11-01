@@ -27,3 +27,11 @@ def recentEssays():
   location = request.json['location'] 
   print (name)
   return render_template('recentEssay.html', name=name, location=location)
+  
+@essay_api.route('/newEssay')
+def newEssay():
+  essay = request.args.get('essay')
+  conn = connectToEssayDB()
+  newEssay = Essay(title=essay['title'], location=essay['location'], pending=True, marker_id_fk=marker['marker_id'], long=user_id_fk['user_id'])
+  db_session.add(essay)
+  db_session.commit()
