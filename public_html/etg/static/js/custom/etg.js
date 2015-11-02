@@ -74,7 +74,7 @@ $(document).ready(function() {
         $(this).closest('li').toggleClass('selectedMode'); 
     });
     
-    $('#accountActionButton').click(function() {
+    $('#accountActionButton').on('click', function() {
         var buttonText = $(this).html();
         if (buttonText == 'Login') {
             $('#popup').modal('show').find('.modal-title').html(buttonText);   
@@ -84,6 +84,13 @@ $(document).ready(function() {
                 window.location.reload();
             });
         }
+    });
+    
+    $('body').on('click', '.submitEssay', function() {
+     console.log('starting drive post');
+     $.getJSON('/initExchange').done(function (response) {
+       console.log(response);
+     });
     });
     
     function loadUser (user) {

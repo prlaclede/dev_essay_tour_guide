@@ -12,7 +12,7 @@ def connectToEssayDB():
   try:
     return engine.connect()
   except:
-    print("Can't connect to database alien")
+    print("Can't connect to database")
 
 @user_api.route('/login', methods=['POST'])
 def login():

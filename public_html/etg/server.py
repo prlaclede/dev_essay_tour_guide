@@ -5,6 +5,7 @@ url_for, jsonify, json)
 from UserAPI import user_api
 from EssayAPI import essay_api
 from MarkerAPI import marker_api
+from DriveAccessAPI import driveAccess_api
 from modules import *
 
 init_db()
@@ -26,6 +27,7 @@ app = Flask(__name__)
 app.register_blueprint(user_api)
 app.register_blueprint(essay_api)
 app.register_blueprint(marker_api)
+app.register_blueprint(driveAccess_api)
 
 app.config['SECRET_KEY'] = 'theSecretestKey'
 app.secret_key = os.urandom(24).encode('hex')

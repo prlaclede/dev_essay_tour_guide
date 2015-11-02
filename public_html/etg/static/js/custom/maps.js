@@ -149,8 +149,8 @@ $(function () {
   function generateUploadForm() {
     var uploadForm = "<div class='essayUploadLink'> \
                         <h6 class='essayLinkTitle'>Upload Essay</h6> \
-                        <span><input type='file' name='file'> \
-                        <a href='#essaySubmit' type='button' class='btn btn-sm btn-info'>Submit</a></span> \
+                        <input type='file' name='file' accept='.doc'> \
+                        <button type='button' class='submitEssay btn btn-sm btn-info'>Submit</button> \
                       </div>";
     return uploadForm;
   }
