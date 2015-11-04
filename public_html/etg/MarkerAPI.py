@@ -42,6 +42,6 @@ def getMapMode():
 def newMarker():
   marker = request.args.get('marker')
   conn = connectToEssayDB()
-  newMarker = Makrer(name=marker['name'], location=marker['location'], pending=True, lat=marker['lat'], long=marker['long'])
+  newMarker = Marker(name=marker['name'], location=marker['location'], pending=True, lat=marker['lat'], long=marker['long'])
   db_session.add(marker)
   db_session.commit()

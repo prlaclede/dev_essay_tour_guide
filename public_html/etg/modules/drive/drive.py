@@ -19,8 +19,11 @@ class Drive():
 
     def init_exchange(self):
         self.FLOW.redirect_uri = oauth2client.client.OOB_CALLBACK_URN
+        return(self.FLOW.client_id, self.FLOW.client_secret)
+        return self.FLOW.step1_get_authorize_url()
         auth_uri = self.FLOW.step1_get_authorize_url()
         webbrowser.open_new(auth_uri)
+        
         print(":D")
         return ":D"
     
