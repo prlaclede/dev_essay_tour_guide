@@ -93,8 +93,15 @@ $(document).ready(function() {
     
     $('body').on('click', '.submitEssay', function() {
      console.log('starting drive post');
-     $.getJSON('/initExchange').done(function (response) {
-       console.log(response);
+     var fileForm = new FormData();
+     fileForm.append('file', $('#newFile')[0].files[0]);
+     console.log(fileForm);
+     $.ajax({
+         url: '/fileUpload',
+         type: 'POST',
+         data: fileForm,
+         processData: false,
+         contentType: false,
      });
     });
     
@@ -104,9 +111,10 @@ $(document).ready(function() {
         $('#accountActionButton').html('Logout');
         $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
         if (user['account_type_id_fk'] == 1) {
-                $('#welcomeMessage').after(generateSVG('adminAccount', 'accIcon'));
+            $('#accountActionSpan').find('div.im').remove();
+            $('#welcomeMessage').after(generateSVG('adminAccount', 'accIcon'));
         } else {
-                $('#welcomeMessage').after(generateSVG('basicAccount', 'accIcon'));;
+            $('#welcomeMessage').after(generateSVG('basicAccount', 'accIcon'));;
         }
     }
     

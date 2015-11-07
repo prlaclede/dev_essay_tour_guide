@@ -1,15 +1,21 @@
 from oauth2client.client import GoogleCredentials
 from oauth2client import GOOGLE_TOKEN_URI
+from apiclient.discovery import build
+from httplib2 import Http
+import json 
 
 class Drive():
+  
+  with open('client_secret.json') as secret_file:
+    secret = json.load(secret_file)
   
   access_token = None
   token_expiry = None
   token_uri = GOOGLE_TOKEN_URI
-  user_agent = 'Python client library'
+  user_agent = 'Essay Tour Guide Application'
   revoke_uri = None
-  client_id = '392210443659-l9pit5okd8sst1f75q6foc07l09dk1oe.apps.googleusercontent.com'
-  client_secret = 'S_zvMtFEeLVrgSO8Me0XH-7E'
+  client_id = secret['web']['client_id']
+  client_secret = secret['web']['client_secret']
   refresh_token = '1/LPNqNdrqlOO_Zcjv7eSt5CRVv61E4BpDbaFKrpqIcoE'
     
   def getCreds(self):
@@ -25,4 +31,12 @@ class Drive():
     )
     
     return gCreds
+    
+  def buildService(self, creds):
+    http_auth = creds.authorize(Http())
+    driveService = build('drive', 'v2', http=http_auth)
+    
+    return driveService
+  
+  
 

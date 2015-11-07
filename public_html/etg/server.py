@@ -24,7 +24,6 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-
 app.register_blueprint(user_api)
 app.register_blueprint(essay_api)
 app.register_blueprint(marker_api)

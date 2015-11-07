@@ -149,8 +149,10 @@ $(function () {
   function generateUploadForm() {
     var uploadForm = "<div class='essayUploadLink'> \
                         <h6 class='essayLinkTitle'>Upload Essay</h6> \
-                        <input type='file' name='file' accept='.doc'> \
-                        <button type='button' class='submitEssay btn btn-sm btn-info'>Submit</button> \
+                        <form name='newFileForm' method='post' enctype='multipart/form-data'> \
+                          <input id='newFile' type='file' name='file' accept='.doc'> \
+                          <button type='button' class='submitEssay btn btn-sm btn-info'>Submit</button> \
+                        </form>\
                       </div>";
     return uploadForm;
   }
