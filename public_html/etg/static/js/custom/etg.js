@@ -75,6 +75,7 @@ $(document).ready(function() {
     });
     
     $('#accountActionButton').on('click', function() {
+        console.log('account action pressed');
         var buttonText = $(this).html();
         if (buttonText == 'Login') {
             $('#popup').modal('show').find('.modal-title').html(buttonText);   
@@ -84,6 +85,10 @@ $(document).ready(function() {
                 window.location.reload();
             });
         }
+    });
+    
+    $('#accountRegisterButton').on('click', function () {
+       console.log('register clicked'); 
     });
     
     $('body').on('click', '.submitEssay', function() {

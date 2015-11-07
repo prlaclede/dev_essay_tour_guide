@@ -1,82 +1,28 @@
-import os, httplib2, oauth2client, webbrowser
-from apiclient import errors
-from apiclient.discovery import build
-from apiclient.http import MediaFileUpload
-from oauth2client import client, tools
+from oauth2client.client import GoogleCredentials
+from oauth2client import GOOGLE_TOKEN_URI
 
 class Drive():
+  
+  access_token = None
+  token_expiry = None
+  token_uri = GOOGLE_TOKEN_URI
+  user_agent = 'Python client library'
+  revoke_uri = None
+  client_id = '392210443659-l9pit5okd8sst1f75q6foc07l09dk1oe.apps.googleusercontent.com'
+  client_secret = 'S_zvMtFEeLVrgSO8Me0XH-7E'
+  refresh_token = '1/LPNqNdrqlOO_Zcjv7eSt5CRVv61E4BpDbaFKrpqIcoE'
     
-    try:
-        import argparse
-        flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-    except ImportError:
-        flags = None
+  def getCreds(self):
+    gCreds = GoogleCredentials ( 
+      self.access_token, 
+      self.client_id,
+      self.client_secret, 
+      self.refresh_token, 
+      self.token_expiry,
+      self.token_uri, 
+      self.user_agent,
+      self.revoke_uri
+    )
     
-    SCOPES = 'https://www.googleapis.com/auth/drive.file'
-    CLIENT_SECRET_FILE = 'client_secret_py.json'
-    APPLICATION_NAME = 'FredEssayTours'
-    FLOW = oauth2client.client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+    return gCreds
 
-    def init_exchange(self):
-        self.FLOW.redirect_uri = oauth2client.client.OOB_CALLBACK_URN
-        return(self.FLOW.client_id, self.FLOW.client_secret)
-        return self.FLOW.step1_get_authorize_url()
-        auth_uri = self.FLOW.step1_get_authorize_url()
-        webbrowser.open_new(auth_uri)
-        
-        print(":D")
-        return ":D"
-    
-    def get_credentials(self, code):
-        credentials = self.FLOW.step2_exchange(code)
-        return self.build_service(credentials)
-    
-    def build_service(self, credentials):
-        """Build a Drive service object.
-        
-        Args:
-        credentials: OAuth 2.0 credentials.
-        
-        Returns:
-        Drive service object.
-        """
-        http = httplib2.Http()
-        http = credentials.authorize(http)
-        return build('drive', 'v2', http=http)
-      
-    
-    '''def insert_file(service, title, description, parent_id, mime_type, filename):
-      """Insert new file.
-    
-      Args:
-        service: Drive API service instance.
-        title: Title of the file to insert, including the extension.
-        description: Description of the file to insert.
-        parent_id: Parent folder's ID.
-        mime_type: MIME type of the file to insert.
-        filename: Filename of the file to insert.
-      Returns:
-        Inserted file metadata if successful, None otherwise.
-      """
-      media_body = MediaFileUpload(filename, mimetype=mime_type, resumable=True)
-      body = {
-        'title': title,
-        'description': description,
-        'mimeType': mime_type
-      }
-      # Set the parent folder.
-      if parent_id:
-        body['parents'] = [{'id': parent_id}]
-    
-      try:
-        file = service.files().insert(
-            body=body,
-            media_body=media_body).execute()
-    
-        # Uncomment the following line to print the File ID
-        # print 'File ID: %s' % file['id']
-    
-        return file
-      except errors.HttpError, error:
-        print ('An error occured: %s' % error)
-        return None'''
