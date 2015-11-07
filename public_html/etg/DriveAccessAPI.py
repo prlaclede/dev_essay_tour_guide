@@ -1,4 +1,4 @@
-import os, logging, md5, httplib2
+import os, logging, md5, httplib2, magic
 from flask import (Blueprint, Flask, session, render_template, request, 
 redirect, url_for, jsonify, json, send_from_directory)
 from apiclient.http import MediaFileUpload
@@ -20,18 +20,16 @@ def connectToEssayDB():
     
 @driveAccess_api.route('/fileUpload', methods=['POST'])
 def fileUpload():
-  file = request.files.get('file');
+  file = request.files['file']
   filename = secure_filename(file.filename)
   file.save(os.path.join('docs/', filename))
   path = 'docs/' + filename
-  
-  print(buf)
   
   drive = Drive()
   creds = drive.getCreds()
   driveService = drive.buildService(creds)
   
-  media_body = MediaFileUpload('docs/' + filename, mimetype='/doc/', resumable=True)
+  media_body = MediaFileUpload(path, mimetype='/doc/', resumable=True)
   
   body = {
     'title': filename,

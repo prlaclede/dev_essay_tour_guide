@@ -93,9 +93,11 @@ $(document).ready(function() {
     
     $('body').on('click', '.submitEssay', function() {
      console.log('starting drive post');
-     var fileForm = new FormData();
-     fileForm.append('file', $('#newFile')[0].files[0]);
+     var file = $('#newFile')[0].files;
+     var fileForm = new FormData($('#newFileForm')[0]);
      console.log(fileForm);
+     //file = convertToBuf(file);
+     //console.log(file);
      $.ajax({
          url: '/fileUpload',
          type: 'POST',
@@ -136,4 +138,34 @@ $(document).ready(function() {
                 ' + message + '</div>'
         return alert;
     }
+    
+    function convertToBuf(file) {
+        const boundary = '-------314159265358979323846';
+        const delimiter = "\r\n--" + boundary + "\r\n";
+        const close_delim = "\r\n--" + boundary + "--";
+      
+        var reader = new FileReader();
+        reader.readAsBinaryString(file);
+        console.log(reader);
+        reader.onload = function(e) {
+        var contentType = file.type || 'application/octet-stream';
+        var metadata = {
+          'title': file.fileName,
+          'mimeType': contentType
+        };
+    
+        var base64Data = btoa(reader.result);
+        var multipartRequestBody =
+            delimiter +
+            'Content-Type: application/json\r\n\r\n' +
+            JSON.stringify(metadata) +
+            delimiter +
+            'Content-Type: ' + contentType + '\r\n' +
+            'Content-Transfer-Encoding: base64\r\n' +
+            '\r\n' +
+            base64Data +
+            close_delim;
+            return multipartRequestBody;
+        }
+    }     
 });
