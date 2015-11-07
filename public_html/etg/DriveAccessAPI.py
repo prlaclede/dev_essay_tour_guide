@@ -22,8 +22,8 @@ def connectToEssayDB():
 def fileUpload():
   file = request.files['file']
   filename = secure_filename(file.filename)
-  file.save(os.path.join('docs/', filename))
-  path = 'docs/' + filename
+  file.save(os.path.join('userDocs/', filename))
+  path = 'userDocs/' + filename
   
   drive = Drive()
   creds = drive.getCreds()
@@ -41,8 +41,8 @@ def fileUpload():
     file = driveService.files().insert(
       body=body,
       media_body=media_body).execute()
+    os.remove(path)
     return "ok";
-    
   except errors.HttpError, error:
     print 'An error occured: %s' % error
     return None
