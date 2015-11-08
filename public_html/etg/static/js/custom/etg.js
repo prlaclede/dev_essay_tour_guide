@@ -12,7 +12,6 @@ $(document).ready(function() {
     $.getJSON('/loadRecentEssays', function(response) {
        var essayList = response['essayList'];
        $.each(essayList, function() {
-            console.log(this);
            $.ajax({
                 url: "/recentEssay",
                 data: JSON.stringify(this),
@@ -37,7 +36,6 @@ $(document).ready(function() {
     });
     
     $('.splashLoginButton').on("click", function() {
-        console.log('submitting form');
         $.ajax({
             url: '/login',
             data: $(this).closest('#loginForm').serialize(),
@@ -46,7 +44,6 @@ $(document).ready(function() {
                 if (response != undefined) {
                     var user = response['user'][0];
                     if (user != undefined) {
-                        console.log('valid user');
                         $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
                         $('#splash_modal').modal('hide');
                         $('#accountActionPopup').modal('hide');
@@ -79,13 +76,11 @@ $(document).ready(function() {
     });
     
     $('#accountActionButton').on('click', function() {
-        console.log('account action pressed');
         var buttonText = $(this).html();
         if (buttonText == 'Login') {
             $('#accountActionPopup').modal('show').find('.modal-title').html(buttonText);   
         } else if (buttonText == 'Logout') {
             $.getJSON('/logout').done(function (response) {
-                console.log(response);
                 window.location.reload();
             });
         }
@@ -98,7 +93,8 @@ $(document).ready(function() {
     $('#pendingUsers').on('click', function() {
         $.getJSON('/pendingUsers').done(function (response) { 
            var users = response['users'];
-           $('.pendingTableBody').html(''); //clear previous table data
+           $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
+           $('.pendingTableHead').append(generateTableHeader('users'));
            $.each(users, function() {
                $('.pendingTableBody').append(generatePendingUser(this));
            });
@@ -109,7 +105,8 @@ $(document).ready(function() {
     $('#pendingEssays').on('click', function() {
        $.getJSON('/pendingEssays').done(function (response) {
           var essays = response['essays'];
-          $('pendingTableBody').html(''); //clear previous table data
+          $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
+          $('.pendingTableHead').append(generateTableHeader('essays'));
           $.each(essays, function() {
               $('.pendingTableBody').append(generatePendingEssay(this));
           });
@@ -120,7 +117,6 @@ $(document).ready(function() {
     $('body').on('click', '.submitEssay', function() {
      console.log('starting drive post');
      var fileForm = new FormData($('#newFileForm')[0]);
-     console.log(fileForm);
      $.ajax({
          url: '/fileUpload',
          type: 'POST',
@@ -174,7 +170,6 @@ $(document).ready(function() {
     }
     
     function generatePendingEssay(essay) {
-        console.log(essay);
         var entry = '<tr> \
                         <td>' + essay['title'] + '</td> \
                         <td>' + essay['marker'][0]['address'] + '</td> \
@@ -183,6 +178,18 @@ $(document).ready(function() {
                         <td><button type="button" class="btn btn-sm">' + generateSVG('close', 'pendingDenyIcon') + '</button></td>\
                     </tr>';
         return entry;
+    }
+    
+    function generateTableHeader(type) {
+        var header = '<tr> \
+                        <th>' + ((type === 'users') ? 'Firstname' : 'Title') + '</th> \
+                        <th>' + ((type === 'users') ? 'Lastname' : 'Marker Address') + '</th> \
+                        <th>' + ((type === 'users') ? 'Email' : 'User Email') + '</th> \
+                        <th>Approve</th> \
+                        <th>Deny</th> \
+                     </tr>'
+        console.log(header);
+        return header;
     }
     
 });
