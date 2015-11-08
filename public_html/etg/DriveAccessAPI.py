@@ -31,17 +31,24 @@ def fileUpload():
   
   media_body = MediaFileUpload(path, mimetype='/doc/', resumable=True)
   
+  files = driveService.files().list().execute()
+  test = files.get('title=SampleEssay.doc')
+  print(test)
+  
   body = {
     'title': filename,
+    #'parents': [{
+    #    'kind': 'drive#fileLink',
+    #    'id': '',
+    #  }],
     'description': 'a test file', 
     'mimeType': '/doc/'
   }
-  
+  os.remove(path)
   try:
     file = driveService.files().insert(
       body=body,
       media_body=media_body).execute()
-    os.remove(path)
     return "ok";
   except errors.HttpError, error:
     print 'An error occured: %s' % error

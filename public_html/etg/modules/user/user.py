@@ -1,5 +1,6 @@
 from modules.database.database import Base
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils.types.password import PasswordType
 
 class User(Base):

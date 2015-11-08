@@ -37,11 +37,17 @@ def logout():
 @user_api.route('/checkUser')
 def checkUser():
     return jsonify(user=session.get('user'))
+    
+@user_api.route('/pendingUsers')
+def getPendingUsers():
+    logger.info('getting pending users')
+    users = User.query.filter(User.pending==1).all()
+    users = [user.serialize for user in users]
+    return jsonify(users=users)
   
 def userLogin(email, password):
     dk = md5.new(password).hexdigest()
     logger.info('checking DB for user')
-    conn = connectToEssayDB()
     user = User.query.filter(and_(User.email==email, User.password==dk, User.pending!=1)).all()
     user = [i.serialize for i in user]
     

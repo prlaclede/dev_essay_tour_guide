@@ -49,7 +49,7 @@ $(document).ready(function() {
                         console.log('valid user');
                         $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
                         $('#splash_modal').modal('hide');
-                        $('#popup').modal('hide');
+                        $('#accountActionPopup').modal('hide');
                         loadUser(user);
                     } else {
                         $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
@@ -60,6 +60,10 @@ $(document).ready(function() {
                 console.log("error" + error);
             }
         });
+    });
+    
+    $('body').on('hidden.bs.modal', '.modal', function () {
+
     });
     
     $('#splash_modal').on('hide.bs.modal', function () {
@@ -78,7 +82,7 @@ $(document).ready(function() {
         console.log('account action pressed');
         var buttonText = $(this).html();
         if (buttonText == 'Login') {
-            $('#popup').modal('show').find('.modal-title').html(buttonText);   
+            $('#accountActionPopup').modal('show').find('.modal-title').html(buttonText);   
         } else if (buttonText == 'Logout') {
             $.getJSON('/logout').done(function (response) {
                 console.log(response);
@@ -91,13 +95,21 @@ $(document).ready(function() {
        console.log('register clicked'); 
     });
     
+    $('#pendingUsers').on('click', function() {
+        $.getJSON('/pendingUsers').done(function (response) { 
+           var users = response['users'];
+           $('.pendingTableBody').html('');
+           $.each(users, function() {
+               $('.pendingTableBody').append(generatePendingUser(this));
+           });
+        });
+        $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
+    });
+    
     $('body').on('click', '.submitEssay', function() {
      console.log('starting drive post');
-     var file = $('#newFile')[0].files;
      var fileForm = new FormData($('#newFileForm')[0]);
      console.log(fileForm);
-     //file = convertToBuf(file);
-     //console.log(file);
      $.ajax({
          url: '/fileUpload',
          type: 'POST',
@@ -139,33 +151,19 @@ $(document).ready(function() {
         return alert;
     }
     
-    function convertToBuf(file) {
-        const boundary = '-------314159265358979323846';
-        const delimiter = "\r\n--" + boundary + "\r\n";
-        const close_delim = "\r\n--" + boundary + "--";
-      
-        var reader = new FileReader();
-        reader.readAsBinaryString(file);
-        console.log(reader);
-        reader.onload = function(e) {
-        var contentType = file.type || 'application/octet-stream';
-        var metadata = {
-          'title': file.fileName,
-          'mimeType': contentType
-        };
+    function generatePendingUser(user) {
+        var entry = '<tr> \
+                        <td>' + user['first_name'] + '</td> \
+                        <td>' + user['last_name'] + '</td> \
+                        <td>' + user['email'] + '</td> \
+                        <td><button type="button" class="btn btn-sm">' + generateSVG('check', 'pendingApproveIcon') + '</button></td>\
+                        <td><button type="button" class="btn btn-sm">' + generateSVG('close', 'pendingDenyIcon') + '</button></td>\
+                    </tr>';
+        return entry;
+    }
     
-        var base64Data = btoa(reader.result);
-        var multipartRequestBody =
-            delimiter +
-            'Content-Type: application/json\r\n\r\n' +
-            JSON.stringify(metadata) +
-            delimiter +
-            'Content-Type: ' + contentType + '\r\n' +
-            'Content-Transfer-Encoding: base64\r\n' +
-            '\r\n' +
-            base64Data +
-            close_delim;
-            return multipartRequestBody;
-        }
-    }     
+    function generatePendingEssay(essay) {
+        var entry = '<a href="#" class="list-group-item">' + + '</a>';
+    }
+    
 });
