@@ -28,6 +28,21 @@ def recentEssays():
   print (name)
   return render_template('recentEssay.html', name=name, location=location)
   
+@essay_api.route('/pendingEssays')
+def getPendingUsers():
+    logger.info('getting pending essays')
+    essays = Essay.query.filter(Essay.pending==1)
+    essays = [essay.serialize for essay in essays]
+    for essay in essays:
+      associatedMarker = Marker.query.filter(Marker.id==essay['marker_id_fk'])
+      associatedMarker = [i.serialize for i in associatedMarker]
+      associatedUser = User.query.filter(User.id==essay['user_id_fk'])
+      associatedUser = [i.serialize for i in associatedUser]
+      essay['marker'] = associatedMarker
+      essay['user'] = associatedUser
+    print (essays)
+    return jsonify(essays=essays)
+  
 @essay_api.route('/newEssay')
 def newEssay():
   essay = request.args.get('essay')

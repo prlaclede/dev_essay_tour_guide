@@ -98,12 +98,23 @@ $(document).ready(function() {
     $('#pendingUsers').on('click', function() {
         $.getJSON('/pendingUsers').done(function (response) { 
            var users = response['users'];
-           $('.pendingTableBody').html('');
+           $('.pendingTableBody').html(''); //clear previous table data
            $.each(users, function() {
                $('.pendingTableBody').append(generatePendingUser(this));
            });
         });
         $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
+    });
+    
+    $('#pendingEssays').on('click', function() {
+       $.getJSON('/pendingEssays').done(function (response) {
+          var essays = response['essays'];
+          $('pendingTableBody').html(''); //clear previous table data
+          $.each(essays, function() {
+              $('.pendingTableBody').append(generatePendingEssay(this));
+          });
+       });
+       $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
     });
     
     $('body').on('click', '.submitEssay', function() {
@@ -163,7 +174,15 @@ $(document).ready(function() {
     }
     
     function generatePendingEssay(essay) {
-        var entry = '<a href="#" class="list-group-item">' + + '</a>';
+        console.log(essay);
+        var entry = '<tr> \
+                        <td>' + essay['title'] + '</td> \
+                        <td>' + essay['marker'][0]['address'] + '</td> \
+                        <td>' + essay['user'][0]['email'] + '</td> \
+                        <td><button type="button" class="btn btn-sm">' + generateSVG('check', 'pendingApproveIcon') + '</button></td>\
+                        <td><button type="button" class="btn btn-sm">' + generateSVG('close', 'pendingDenyIcon') + '</button></td>\
+                    </tr>';
+        return entry;
     }
     
 });
