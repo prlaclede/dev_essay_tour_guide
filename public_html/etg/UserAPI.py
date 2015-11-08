@@ -1,6 +1,7 @@
 import logging, md5
 from flask import (Blueprint, Flask, session, render_template, request, 
 redirect, url_for, jsonify, json)
+from itsdangerous import URLSafeTimedSerializer
 from modules import *
 
 user_api = Blueprint('user_api', __name__)
@@ -44,6 +45,23 @@ def getPendingUsers():
     users = User.query.filter(User.pending==1).all()
     users = [user.serialize for user in users]
     return jsonify(users=users)
+    
+def generate_confirmation_token(email):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
+
+
+def confirm_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    try:
+        email = serializer.loads(
+            token,
+            salt=app.config['SECURITY_PASSWORD_SALT'],
+            max_age=expiration
+        )
+    except:
+        return False
+    return email
   
 def userLogin(email, password):
     dk = md5.new(password).hexdigest()
