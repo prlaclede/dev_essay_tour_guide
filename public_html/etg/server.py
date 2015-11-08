@@ -6,7 +6,6 @@ from UserAPI import user_api
 from EssayAPI import essay_api
 from MarkerAPI import marker_api
 from DriveAccessAPI import driveAccess_api
-from flask.ext.mail import Message
 from modules import *
 
 init_db()
@@ -43,14 +42,14 @@ def mainIndex():
     print(session.get('user'))
     return render_template('index.html', loggedIn = True)
   
-def send_email(to, subject, template):
-  msg = Message(
-    subject,
-    recipients=[to],
-    html=template,
-    sender=app.config['MAIL_DEFAULT_SENDER']
-  )
-  mail.send(msg)
+@app.route('/getRegisterForm', methods=['POST'])
+def returnRegistrationForm():
+  return render_template('register.html')
+  
+@app.route('/getLoginForm', methods=['POST'])
+def returnLoginForm():
+  return render_template('login.html')
+  
 
 if __name__ == '__main__':
   app.debug=True

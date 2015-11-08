@@ -35,47 +35,49 @@ $(document).ready(function() {
         }
     });
     
-    $('.splashLoginButton').on("click", function() {
-        $.ajax({
-            url: '/login',
-            data: $(this).closest('#loginForm').serialize(),
-            type: 'POST',
-            success: function (response) {
-                if (response != undefined) {
-                    var user = response['user'][0];
-                    if (user != undefined) {
-                        $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
-                        $('#splash_modal').modal('hide');
-                        $('#accountActionPopup').modal('hide');
-                        loadUser(user);
-                    } else {
-                        $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+    $('body')
+    
+        .on('click', '.loginButton', function() {
+            $.ajax({
+                url: '/login',
+                data: $(this).closest('#loginForm').serialize(),
+                type: 'POST',
+                success: function (response) {
+                    if (response != undefined) {
+                        var user = response['user'][0];
+                        if (user != undefined) {
+                            $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
+                            $('#splash_modal').modal('hide');
+                            $('#accountActionPopup').modal('hide');
+                            loadUser(user);
+                        } else {
+                            $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+                        }
                     }
+                },
+                error: function (error) {
+                    console.log("error" + error);
                 }
-            },
-            error: function (error) {
-                console.log("error" + error);
-            }
-        });
-    });
+            });
+        })
     
-    $('body').on('hidden.bs.modal', '.modal', function () {
-
-    });
+        .on('click', '.registerButton', function() {
+            console.log('attempting register');
+        })
     
-    $('#splash_modal').on('hide.bs.modal', function () {
-        $('#accountActionSpan').show();
-        $('#accountActionButton').html('Login');
-        $('#accountRegisterButton').show();
-        $('#welcomeMessage').html('Welcome Guest');
-    });
+        .on('hide.bs.modal', '#splash_modal', function () {
+            $('#accountActionSpan').show();
+            $('#accountActionButton').html('Login');
+            $('#accountRegisterButton').show();
+            $('#welcomeMessage').html('Welcome Guest');
+        })
     
-    $('.mapMode').on('click', function() {
-        $('.mapMode').closest('li').removeClass('selectedMode');
-        $(this).closest('li').toggleClass('selectedMode'); 
-    });
+        .on('click', '.mapMode', function() {
+            $('.mapMode').closest('li').removeClass('selectedMode');
+            $(this).closest('li').toggleClass('selectedMode'); 
+        })
     
-    $('#accountActionButton').on('click', function() {
+    /*$('#accountActionButton').on('click', function() {
         var buttonText = $(this).html();
         if (buttonText == 'Login') {
             $('#accountActionPopup').modal('show').find('.modal-title').html(buttonText);   
@@ -84,47 +86,85 @@ $(document).ready(function() {
                 window.location.reload();
             });
         }
-    });
+    });*/
+        
+        .on('click', '#accountActionButton', function() {
+           var buttonText = $(this).html();
+            if (buttonText == 'Login') {
+                $.ajax({
+                    url: '/getLoginForm',
+                    type: "POST",
+                    contentType: 'application/json',
+                    dataType: "html",
+                    success: function(response) {
+                        //clear old form, append newly ajax'd form
+                        $('#accountActionPopup').find('.modal-body').html('').append(response);
+                        $('#accountActionPopup').modal('show').find('.modal-title').html('Login');  
+                    },
+                    error: function (error) {
+                        return("error" + JSON.stringify(error));
+                    }
+                });
+            } else if (buttonText == 'Logout') {
+                $.getJSON('/logout').done(function (response) {
+                    window.location.reload();
+                });
+            } 
+        })
+        
+        .on('click', '#accountRegisterButton', function () {
+           console.log('register clicked');
+            $.ajax({
+                url: '/getRegisterForm',
+                type: "POST",
+                contentType: 'application/json',
+                dataType: "html",
+                success: function(response) {
+                    //clear old form, append newly ajax'd form
+                    $('#accountActionPopup').find('.modal-body').html('').append(response);
+                    $('#accountActionPopup').modal('show').find('.modal-title').html('Register');
+                },
+                error: function (error) {
+                    return("error" + JSON.stringify(error));
+                }
+            });
+        })
     
-    $('#accountRegisterButton').on('click', function () {
-       console.log('register clicked'); 
-    });
+        .on('click', '#pendingUsers', function() {
+            $.getJSON('/pendingUsers').done(function (response) { 
+               var users = response['users'];
+               $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
+               $('.pendingTableHead').append(generateTableHeader('users'));
+               $.each(users, function() {
+                   $('.pendingTableBody').append(generatePendingUser(this));
+               });
+            });
+            $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
+        })
     
-    $('#pendingUsers').on('click', function() {
-        $.getJSON('/pendingUsers').done(function (response) { 
-           var users = response['users'];
-           $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
-           $('.pendingTableHead').append(generateTableHeader('users'));
-           $.each(users, function() {
-               $('.pendingTableBody').append(generatePendingUser(this));
+        .on('click', '#pendingEssays', function() {
+           $.getJSON('/pendingEssays').done(function (response) {
+              var essays = response['essays'];
+              $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
+              $('.pendingTableHead').append(generateTableHeader('essays'));
+              $.each(essays, function() {
+                  $('.pendingTableBody').append(generatePendingEssay(this));
+              });
            });
+           $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
+        })
+    
+        .on('click', '.submitEssay', function() {
+            console.log('starting drive post');
+            var fileForm = new FormData($('#newFileForm')[0]);
+            $.ajax({
+                url: '/fileUpload',
+                type: 'POST',
+                data: fileForm,
+                processData: false,
+                contentType: false,
+            });
         });
-        $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
-    });
-    
-    $('#pendingEssays').on('click', function() {
-       $.getJSON('/pendingEssays').done(function (response) {
-          var essays = response['essays'];
-          $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
-          $('.pendingTableHead').append(generateTableHeader('essays'));
-          $.each(essays, function() {
-              $('.pendingTableBody').append(generatePendingEssay(this));
-          });
-       });
-       $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
-    });
-    
-    $('body').on('click', '.submitEssay', function() {
-     console.log('starting drive post');
-     var fileForm = new FormData($('#newFileForm')[0]);
-     $.ajax({
-         url: '/fileUpload',
-         type: 'POST',
-         data: fileForm,
-         processData: false,
-         contentType: false,
-     });
-    });
     
     function loadUser (user) {
         $('#accountActionSpan').show();
@@ -190,6 +230,14 @@ $(document).ready(function() {
                      </tr>'
         console.log(header);
         return header;
+    }
+    
+    function readyRegister() {
+        
+    }
+    
+    function readyLogin() {
+         
     }
     
 });

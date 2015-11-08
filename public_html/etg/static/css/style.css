@@ -9,7 +9,7 @@ body, html {
   text-align: center;
 }
 
-.splashLoginButton, #splashRegisterButton {
+.splashLoginButton, .splashRegisterButton {
   float: right;
 }
 

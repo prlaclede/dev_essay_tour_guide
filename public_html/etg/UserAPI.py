@@ -79,6 +79,7 @@ def userLogin(email, password):
         
 def userRegister(email, first, last):
     logger.info('adding user ' + email)
+    
     user = User(email=email, first_name=first, last_name=last, pending=True, account_type_id_fk=2, instr_id_fk=2)
     db_session.add(user)
     db_session.commit()
