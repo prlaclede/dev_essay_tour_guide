@@ -62,10 +62,29 @@ $(document).ready(function() {
         })
     
         .on('click', '.registerButton', function() {
-            console.log('attempting register');
+            console.log($(this).closest('#registerForm'));
+            $.ajax({
+                url: '/register',
+                data: $(this).closest('#registerForm').serialize(),
+                type: 'POST',
+                success: function (response) {
+                    if (response != undefined) {
+                        var user = response['user'][0];
+                        if (user != undefined) {
+                           $('.modal-header').after(generateAlert('success', 'You will recieve an email when your account has been approved.')); 
+                        } else {
+                            $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.log("error" + error);
+                }
+            });
         })
     
-        .on('hide.bs.modal', '#splash_modal', function () {
+        .on('hide.bs.modal', function () {
+            $('.alert').remove();
             $('#accountActionSpan').show();
             $('#accountActionButton').html('Login');
             $('#accountRegisterButton').show();
@@ -76,17 +95,6 @@ $(document).ready(function() {
             $('.mapMode').closest('li').removeClass('selectedMode');
             $(this).closest('li').toggleClass('selectedMode'); 
         })
-    
-    /*$('#accountActionButton').on('click', function() {
-        var buttonText = $(this).html();
-        if (buttonText == 'Login') {
-            $('#accountActionPopup').modal('show').find('.modal-title').html(buttonText);   
-        } else if (buttonText == 'Logout') {
-            $.getJSON('/logout').done(function (response) {
-                window.location.reload();
-            });
-        }
-    });*/
         
         .on('click', '#accountActionButton', function() {
            var buttonText = $(this).html();
@@ -191,7 +199,6 @@ $(document).ready(function() {
     }
     
     function generateAlert(type, message) {
-    $('.alert').remove();
     var alert = '<div class="alert alert-' + type + '"> \
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> \
                 ' + message + '</div>'
@@ -231,13 +238,4 @@ $(document).ready(function() {
         console.log(header);
         return header;
     }
-    
-    function readyRegister() {
-        
-    }
-    
-    function readyLogin() {
-         
-    }
-    
 });

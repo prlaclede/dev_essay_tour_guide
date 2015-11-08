@@ -17,8 +17,8 @@ def connectToEssayDB():
 
 @user_api.route('/login', methods=['POST'])
 def login():
-    userEmail = request.form['userLoginEmail']
-    userPass = request.form['userLoginPass']
+    userEmail = request.form['log_email']
+    userPass = request.form['log_pass']
     logger.info(userEmail)
     return (userLogin(userEmail, userPass))
     
@@ -28,7 +28,7 @@ def register():
     userFirst = request.form['reg_first']
     userLast = request.form['reg_last']
     logger.info(userEmail + " " + userFirst + " " + userLast)
-    return (newUser(userEmail, userFirst, userLast))
+    return (userRegister(userEmail, userFirst, userLast))
     
 @user_api.route('/logout')
 def logout():
