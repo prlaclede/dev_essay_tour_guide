@@ -38,49 +38,59 @@ $(document).ready(function() {
     $('body')
     
         .on('click', '.loginButton', function() {
-            $.ajax({
-                url: '/login',
-                data: $(this).closest('#loginForm').serialize(),
-                type: 'POST',
-                success: function (response) {
-                    if (response != undefined) {
-                        var user = response['user'][0];
-                        if (user != undefined) {
-                            $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
-                            $('#splash_modal').modal('hide');
-                            $('#accountActionPopup').modal('hide');
-                            loadUser(user);
-                        } else {
-                            $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+            var thisForm = $(this).closest('#loginForm');
+            if (!isValidEmailAddress(thisForm.find('.emailField').val())) {
+                $('.modal-header').after(generateAlert('warning', 'Invalid Email!'));
+            } else {
+                $.ajax({
+                    url: '/login',
+                    data: thisForm.serialize(),
+                    type: 'POST',
+                    success: function (response) {
+                        if (response != undefined) {
+                            var user = response['user'][0];
+                            if (user != undefined) {
+                                $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
+                                $('#splash_modal').modal('hide');
+                                $('#accountActionPopup').modal('hide');
+                                loadUser(user);
+                            } else {
+                                $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+                            }
                         }
+                    },
+                    error: function (error) {
+                        console.log("error" + error);
                     }
-                },
-                error: function (error) {
-                    console.log("error" + error);
-                }
-            });
+                });
+            }
         })
     
         .on('click', '.registerButton', function() {
-            console.log($(this).closest('#registerForm'));
-            $.ajax({
-                url: '/register',
-                data: $(this).closest('#registerForm').serialize(),
-                type: 'POST',
-                success: function (response) {
-                    if (response != undefined) {
-                        var user = response['user'][0];
-                        if (user != undefined) {
-                           $('.modal-header').after(generateAlert('success', 'You will recieve an email when your account has been approved.')); 
-                        } else {
-                            $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+            var thisForm = $(this).closest('#registerForm');
+            console.log(thisForm.find('.emailField').val());
+            if (!isValidEmailAddress(thisForm.find('.emailField').val())) {
+                $('.modal-header').after(generateAlert('warning', 'Invalid Email!'));
+            } else {
+                $.ajax({
+                    url: '/register',
+                    data: thisForm.serialize(),
+                    type: 'POST',
+                    success: function (response) {
+                        if (response != undefined) {
+                            var user = response['user'][0];
+                            if (user != undefined) {
+                               $('.modal-header').after(generateAlert('success', 'You will recieve an email when your account has been approved.')); 
+                            } else {
+                                $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+                            }
                         }
+                    },
+                    error: function (error) {
+                        console.log("error" + error);
                     }
-                },
-                error: function (error) {
-                    console.log("error" + error);
-                }
-            });
+                });
+            }
         })
     
         .on('hide.bs.modal', function () {
@@ -199,6 +209,7 @@ $(document).ready(function() {
     }
     
     function generateAlert(type, message) {
+    $('.alert').remove();
     var alert = '<div class="alert alert-' + type + '"> \
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> \
                 ' + message + '</div>'
@@ -238,4 +249,10 @@ $(document).ready(function() {
         console.log(header);
         return header;
     }
+    
+    function isValidEmailAddress(emailAddress) {
+        var pattern = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return pattern.test(emailAddress);
+    }
+    
 });

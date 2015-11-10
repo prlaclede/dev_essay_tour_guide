@@ -5,17 +5,12 @@ from apiclient.http import MediaFileUpload
 from werkzeug import secure_filename
 from apiclient import errors
 from modules import *
+from os import path
 
 driveAccess_api = Blueprint('driveAccess_api', __name__)
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-def connectToEssayDB():
-  try:
-    return engine.connect()
-  except:
-    print("Can't connect to database")
 
     
 @driveAccess_api.route('/fileUpload', methods=['POST'])
@@ -23,33 +18,32 @@ def fileUpload():
   file = request.files['file']
   filename = secure_filename(file.filename)
   file.save(os.path.join('userDocs/', filename))
-  path = 'userDocs/' + filename
+  filePath = './userDocs/' + filename
   
   drive = Drive()
   creds = drive.getCreds()
   driveService = drive.buildService(creds)
   
-  media_body = MediaFileUpload(path, mimetype='/doc/', resumable=True)
+  media_body = MediaFileUpload(filePath, mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document', resumable=True)
   
-  files = driveService.files().list().execute()
-  test = files.get('title=SampleEssay.doc')
-  print(test)
+  folders = driveService.files().list(q = "mimeType = 'application/vnd.google-apps.folder'").execute()
+  folderId = drive.getItem(folders, 'essays')
   
   body = {
     'title': filename,
-    #'parents': [{
-    #    'kind': 'drive#fileLink',
-    #    'id': '',
-    #  }],
-    'description': 'a test file', 
-    'mimeType': '/doc/'
+    'parents': [{
+        'kind': 'drive#fileLink',
+        'id': folderId,
+    }],
+    'description': '', 
+    'mimeType': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   }
-  os.remove(path)
+  os.remove(filePath)
   try:
     file = driveService.files().insert(
       body=body,
       media_body=media_body).execute()
-    return "ok";
+    return file
   except errors.HttpError, error:
     print 'An error occured: %s' % error
     return None

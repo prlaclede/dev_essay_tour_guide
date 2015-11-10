@@ -7,46 +7,47 @@ essay_api = Blueprint('essay_api', __name__)
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-def connectToEssayDB():
-  try:
-    return engine.connect()
-  except:
-    print("Can't connect to database")
     
 @essay_api.route('/loadRecentEssays')
 def getAll():
-  conn = connectToEssayDB()
-  essayList = Essay.query.limit(5).all()
-  essayList = [i.serialize for i in essayList]
+  try:
+    essayList = Essay.query.limit(5).all()
+    essayList = [i.serialize for i in essayList]
+  except:
+    logger.error('failed to load recent essays')
+    
   return jsonify(essayList=essayList)
 
 @essay_api.route('/recentEssay', methods=['POST'])
 def recentEssays():
   name = request.json['title']
   location = request.json['location'] 
-  print (name)
   return render_template('recentEssay.html', name=name, location=location)
   
 @essay_api.route('/pendingEssays')
 def getPendingUsers():
     logger.info('getting pending essays')
-    essays = Essay.query.filter(Essay.pending==1)
-    essays = [essay.serialize for essay in essays]
-    for essay in essays:
-      associatedMarker = Marker.query.filter(Marker.id==essay['marker_id_fk'])
-      associatedMarker = [i.serialize for i in associatedMarker]
-      associatedUser = User.query.filter(User.id==essay['user_id_fk'])
-      associatedUser = [i.serialize for i in associatedUser]
-      essay['marker'] = associatedMarker
-      essay['user'] = associatedUser
-    print (essays)
+    try:
+      essays = Essay.query.filter(Essay.pending==1)
+      essays = [essay.serialize for essay in essays]
+      for essay in essays:
+        associatedMarker = Marker.query.filter(Marker.id==essay['marker_id_fk'])
+        associatedMarker = [i.serialize for i in associatedMarker]
+        associatedUser = User.query.filter(User.id==essay['user_id_fk'])
+        associatedUser = [i.serialize for i in associatedUser]
+        essay['marker'] = associatedMarker
+        essay['user'] = associatedUser
+    except:
+      logger.error('error loading pending essays')
+
     return jsonify(essays=essays)
   
 @essay_api.route('/newEssay')
 def newEssay():
   essay = request.args.get('essay')
-  conn = connectToEssayDB()
-  newEssay = Essay(title=essay['title'], location=essay['location'], pending=True, marker_id_fk=marker['marker_id'], long=user_id_fk['user_id'])
-  db_session.add(essay)
-  db_session.commit()
+  try:
+    newEssay = Essay(title=essay['title'], location=essay['location'], pending=True, marker_id_fk=marker['marker_id'], long=user_id_fk['user_id'])
+    db_session.add(essay)
+    db_session.commit()
+  except:
+    logger.error('error storing new essay' + essay['title'])

@@ -150,7 +150,7 @@ $(function () {
     var uploadForm = "<div class='essayUploadLink'> \
                         <h6 class='essayLinkTitle'>Upload Essay</h6> \
                         <form id='newFileForm' name='newFileForm' method='post' enctype='multipart/form-data'> \
-                          <input id='newFile' type='file' name='file' accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword'> \
+                          <input id='newFile' type='file' name='file' accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'> \
                           <button type='button' class='submitEssay btn btn-sm btn-info'>Submit</button> \
                         </form>\
                       </div>";

@@ -38,5 +38,15 @@ class Drive():
     
     return driveService
   
+  def getItem(self, files, searchItem):
+    items = files.get('items')
+    returnId = ''
+    
+    for item in items:
+      if (item['title'] == searchItem):
+        returnId = item['id']
+  
+    return returnId 
+    
   
 

@@ -8,29 +8,30 @@ marker_api = Blueprint('marker_api', __name__)
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-def connectToEssayDB():
-  try:
-    return engine.connect()
-  except:
-    print("Can't connect to database")
 
 @marker_api.route('/loadMarkers')
 def loadMarkers():
-  conn = connectToEssayDB()
-  markerList = Marker.query.all()
+  try:
+    markerList = Marker.query.all()
+  except:
+    logger.error('error loading markers')
+    
   return jsonify(markerList=[i.serialize for i in markerList])
   
 @marker_api.route('/loadMarkerEssays')
 def loadMarkerEssays():
   markerID = request.args.get('markerID', 0, type=int)
-  conn = connectToEssayDB()
-  essayList = Essay.query.filter(Essay.marker_id_fk==markerID).all()
+  try:
+    essayList = Essay.query.filter(Essay.marker_id_fk==markerID).all()
+  except:
+    logger.error('error loading marker essays')
+    
   return jsonify(essayList=[i.serialize for i in essayList])
 
 @marker_api.route('/setMapMode')
 def mapEdit():
   mode = request.args.get('mode')
-  print('setting map' + mode)
+  logger.info('setting map mode' + mode)
   session['mapMode'] = mode
   return jsonify(mode=mode)
 
@@ -41,7 +42,9 @@ def getMapMode():
 @marker_api.route('/newMarker')
 def newMarker():
   marker = request.args.get('marker')
-  conn = connectToEssayDB()
-  newMarker = Marker(name=marker['name'], location=marker['location'], pending=True, lat=marker['lat'], long=marker['long'])
-  db_session.add(marker)
-  db_session.commit()
+  try:
+    newMarker = Marker(name=marker['name'], location=marker['location'], pending=True, lat=marker['lat'], long=marker['long'])
+    db_session.add(marker)
+    db_session.commit()
+  except:
+    logger.error('error storing new marker')
