@@ -21,8 +21,7 @@ def getAll():
 @essay_api.route('/recentEssay', methods=['POST'])
 def recentEssays():
   name = request.json['title']
-  location = request.json['location'] 
-  return render_template('recentEssay.html', name=name, location=location)
+  return render_template('recentEssay.html', name=name)
   
 @essay_api.route('/pendingEssays')
 def getPendingUsers():
@@ -46,9 +45,11 @@ def getPendingUsers():
 def newEssay():
   essayTitle = request.values.get('essayTitle')
   userId = request.values.get('userId')
+  driveId = request.values.get('driveId')
+  markerId = request.values.get('markerId')
   print essayTitle
   try:
-    newEssay = Essay(title=essayTitle, location=essay['location'], pending=True, marker_id_fk=marker['marker_id'], user_id_fk=userId)
+    newEssay = Essay(title=essayTitle, driveId=driveId, pending=True, marker_id_fk=markerId, user_id_fk=userId)
     db_session.add(essay)
     db_session.commit()
   except:

@@ -1,4 +1,4 @@
-import os, logging, md5, httplib2, magic
+import os, logging, md5, httplib2
 from flask import (Blueprint, Flask, session, render_template, request, 
 redirect, url_for, jsonify, json, send_from_directory)
 from apiclient.http import MediaFileUpload

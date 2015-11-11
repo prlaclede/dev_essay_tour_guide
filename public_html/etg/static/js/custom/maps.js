@@ -12,7 +12,8 @@ function loadScript(src,callback){
   document.body.appendChild(script);
 }
 */
-var map
+var map;
+var markAddr;
 
 $(function (mapsLogic, $, undefined) {
   
@@ -92,17 +93,15 @@ $(function (mapsLogic, $, undefined) {
     $.getJSON('/setMapMode', {
       mode: 'edit'
     }).done(function(response) {
-      console.log(response);
       newMarkerListener = google.maps.event.addListener(map, 'click', function(event) {
         if (allowedBounds.contains(event.latLng)) {
-         placeNewMarker(event.latLng);
+         mapsLogic.placeNewMarker(event.latLng);
         }
       });
     });
   });
   
   $('#mapViewToggle').on('click', function() {
-    console.log('view map');
     $.getJSON('/setMapMode', {
       mode: 'view'
     }).done(function(response) {
@@ -146,8 +145,7 @@ $(function (mapsLogic, $, undefined) {
   }
   
   function generateUploadForm(location) {
-    console.log(location);
-    var uploadForm = "<div class='essayUploadLink' lat=" + location['G'] + " long=" + location['K'] + "> \
+    var uploadForm = "<div class='essayUploadLink' lat=" + location['G'] + " long=" + location['K'] + " addr=" + mapsLogic.geocodeLatLng(location['G'], location['K']) + "> \
                         <h6 class='essayLinkTitle'>Upload Essay</h6> \
                         <form id='newFileForm' name='newFileForm' method='post' enctype='multipart/form-data'> \
                           <input id='newFile' type='file' name='file' accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'> \
@@ -173,17 +171,23 @@ $(function (mapsLogic, $, undefined) {
   }
   
   mapsLogic.geocodeLatLng = function (lat, lng) {
-    var geocoder= new google.maps.Geocoder();
+    var geocoder = new google.maps.Geocoder();
     gLatLng = {'lat': parseInt(lat), 'lng': parseInt(lng)};
     geocoder.geocode({'location': gLatLng}, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
         if (results[1]) {
-          console.log(results[1].formatted_address);
+          markAddr = (results[1].formatted_address);
         } else {
-          window.alert('No results found');
+          markAddr = ('error, no address found');
         }
+      } else {
+          console.log("Geocoder failed due to: " + status);
       }
     });
+  }
+  
+  mapsLogic.returnMarkAddr = function () {
+    return markAddr;
   }
   
 }( window.mapsLogic = window.mapsLogic || {}, jQuery ));

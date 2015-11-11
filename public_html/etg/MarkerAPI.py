@@ -41,12 +41,15 @@ def getMapMode():
   
 @marker_api.route('/newMarker', methods=['POST'])
 def newMarker():
+  newSession = db_session()
   latitude = request.values.get('lat')
   longitude = request.values.get('long')
+  address = request.values.get('addr')
+  print(address)
   print (latitude + " " + longitude)
   try:
-    newMarker = Marker(name=marker['name'], location=marker['location'], pending=True, lat=latitude, long=longitude)
-    db_session.add(marker)
-    db_session.commit()
+    newMarker = Marker(location=address, pending=True, latitude=latitude, longitude=longitude)
+    newSession.add(newMarker)
+    newSession.commit()
   except:
     logger.error('error storing new marker')

@@ -188,11 +188,14 @@ $(document).ready(function() {
                 console.log(response['meta']);
                 var meta = response['meta'];
                 mapsLogic.geocodeLatLng(meta['lat'], meta['long']);
+                var markAddr = mapsLogic.returnMarkAddr();
+                response['meta']['addr'] = markAddr
                 $.ajax({
                     url: '/newMarker', 
                     type: 'POST', 
                     data: response['meta']
                 }).done(function (response) {
+                    console.log(response);
                     $.ajax({
                         url: '/newEssay',
                         type: 'POST', 
