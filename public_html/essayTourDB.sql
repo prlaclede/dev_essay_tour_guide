@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS instructions;
 CREATE TABLE instructions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20) NOT NULL, 
-    drive_id INT NOT NULL
+    drive_id VARCHAR(140) NOT NULL
 );
 
 DROP TABLE IF EXISTS markers;
@@ -43,7 +43,7 @@ CREATE TABLE essays (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pending boolean NOT NULL DEFAULT true,
     title VARCHAR(140) NOT NULL,
-    drive_id INT NOT NULL,
+    drive_id VARCHAR(140) NOT NULL,
     marker_id_fk INT NOT NULL REFERENCES markers(id),
     user_id_fk INT NOT NULL REFERENCES users(id)
 );
@@ -55,9 +55,9 @@ INSERT INTO accounts (account_name) VALUES ('admin');
 INSERT INTO accounts (account_name) VALUES ('user');
 INSERT INTO accounts (account_name) VALUES ('guest');
 
-INSERT INTO instructions (name, drive_id) VALUES ('Admin Instructions', 'www.admin.placeholder.com');
-INSERT INTO instructions (name, drive_id) VALUES ('User Instructions', 'www.user.placeholder.com');
-INSERT INTO instructions (name, drive_id) VALUES ('Guest Instructions', 'www.guest.placeholder.com');
+INSERT INTO instructions (name, drive_id) VALUES ('Admin Instructions', '...');
+INSERT INTO instructions (name, drive_id) VALUES ('User Instructions', '...');
+INSERT INTO instructions (name, drive_id) VALUES ('Guest Instructions', '...');
 
 INSERT INTO markers (address, latitude, longitude) VALUES ('Fredericksburg, VA 22401', 38.306095, -77.469753);
 INSERT INTO markers (address, latitude, longitude) VALUES ('...', 38.301511, -77.474094);
@@ -76,10 +76,10 @@ INSERT INTO users (email, password, first_name, last_name, pending, account_type
 INSERT INTO users (email, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
     VALUES ('test@test.com', 'test', "tester", true,  2, 2);
 
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', 'www.essay.placeholder.com', 1, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('UMW essay', 'www.essay.placeholder.com', 2, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Confederate Essay', 'www.essay.placeholder.com', 3, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Mary Wash Monument Essay', 'www.essay.placeholder.com', 4, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Mary Wash House Essay', 'www.essay.placeholder.com', 5, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ("Great eats in F'Burg", 'www.essay.placeholder.com', 6, 1);
+INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', '...', 1, 1);
+INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('UMW essay', '...', 2, 1);
+INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Confederate Essay', '...', 3, 1);
+INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Mary Wash Monument Essay', '...', 4, 1);
+INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Mary Wash House Essay', '...', 5, 1);
+INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ("Great eats in F'Burg", '...', 6, 1);
 

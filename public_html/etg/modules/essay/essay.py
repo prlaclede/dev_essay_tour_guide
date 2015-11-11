@@ -6,7 +6,7 @@ class Essay(Base):
     id = Column(Integer, primary_key=True)
     pending = Column(Integer, nullable=False, default=1)
     title = Column(String(140), nullable=False)
-    drive_id = Column(Integer, nullable=False)
+    drive_id = Column(String(140), nullable=False)
     marker_id_fk = Column(Integer, nullable=False)
     user_id_fk = Column(Integer, nullable=False)
     
@@ -19,8 +19,7 @@ class Essay(Base):
         
     def __repr__(self):
         returnList = "['id': '%s', 'pending': '%s', 'title': '%s', 'drive_id': '%s', 'marker_id_fk': '%s', 'user_id_fk': '%s']" % (
-            self.id, self.title, self.drive_id, self.pending, self.marker_id_fk, self.user_id_fk)
-        #return '<Essay %r>' % (self.title)
+            self.id, self.pending, self.title, self.drive_id, self.marker_id_fk, self.user_id_fk)
         return returnList 
       
     @property
