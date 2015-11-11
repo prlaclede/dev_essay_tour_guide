@@ -43,14 +43,15 @@ def getPendingUsers():
   
 @essay_api.route('/newEssay', methods=['POST'])
 def newEssay():
-  essayTitle = request.values.get('essayTitle')
+  latitude = request.values.get('lat')
+  longitude = request.values.get('lng')
   userId = request.values.get('userId')
-  driveId = request.values.get('driveId')
-  markerId = request.values.get('markerId')
+  driveId = request.values.get('markerId')
+  essayTitle = request.values.get('essayTitle')
   print essayTitle
   try:
-    newEssay = Essay(title=essayTitle, driveId=driveId, pending=True, marker_id_fk=markerId, user_id_fk=userId)
+    newEssay = Essay(pending=True, title=essayTitle, driveId=driveId, marker_id_fk=markerId, user_id_fk=userId)
     db_session.add(essay)
     db_session.commit()
   except:
-    logger.error('error storing new essay' + essay['title'])
+    logger.error('error storing new essay' + essayTitle)

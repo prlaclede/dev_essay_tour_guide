@@ -44,14 +44,16 @@ def newMarker():
   latitude = request.values.get('lat')
   longitude = request.values.get('long')
   address = request.values.get('addr')
+  user = request.values.get('userId')
+  essayTitle = request.values.get('essayTitle')
+  thisId = None
   print(address)
   print (latitude + " " + longitude)
   try:
-    #user = User(email='sample@sample.com', first_name='Sam', last_name="Pler", pending=True, account_type_id_fk=2, instr_id_fk=2)
-    #db_session.add(user)
-    #db_session.commit()
     newMarker = Marker(pending=True, address=address, latitude=latitude, longitude=longitude)
     db_session.add(newMarker)
     db_session.commit()
+    thisId = db_session.query(func.max(Marker.id)).first()
   except:
     logger.error('error storing new marker')
+  return jsonify(meta={'lat': latitude, 'lng': longitude, 'userId': user, 'markerId': thisId[0], 'essayTitle': essayTitle})

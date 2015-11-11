@@ -195,11 +195,12 @@ $(document).ready(function() {
                     type: 'POST', 
                     data: response['meta']
                 }).done(function (response) {
-                    console.log(response);
+                    var meta = response['meta']
+                    console.log(meta);
                     $.ajax({
                         url: '/newEssay',
                         type: 'POST', 
-                        data: response
+                        data: meta
                     })
                 });
             });
