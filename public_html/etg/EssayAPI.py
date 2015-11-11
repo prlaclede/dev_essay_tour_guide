@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 @essay_api.route('/loadRecentEssays')
 def getAll():
   try:
-    essayList = Essay.query.limit(5).all()
+    essayList = db_session.query(Essay).limit(5).all()
     essayList = [i.serialize for i in essayList]
   except:
     logger.error('failed to load recent essays')
@@ -27,12 +27,12 @@ def recentEssays():
 def getPendingUsers():
     logger.info('getting pending essays')
     try:
-      essays = Essay.query.filter(Essay.pending==1)
+      essays = db_session.query(Essay).filter(Essay.pending==1)
       essays = [essay.serialize for essay in essays]
       for essay in essays:
-        associatedMarker = Marker.query.filter(Marker.id==essay['marker_id_fk'])
+        associatedMarker = db_session.query(Marker).filter(Marker.id==essay['marker_id_fk'])
         associatedMarker = [i.serialize for i in associatedMarker]
-        associatedUser = User.query.filter(User.id==essay['user_id_fk'])
+        associatedUser = db_session.query(User).filter(User.id==essay['user_id_fk'])
         associatedUser = [i.serialize for i in associatedUser]
         essay['marker'] = associatedMarker
         essay['user'] = associatedUser

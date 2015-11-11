@@ -40,7 +40,7 @@ def checkUser():
 def getPendingUsers():
     logger.info('getting pending users')
     try:
-        users = User.query.filter(User.pending==1).all()
+        users = db_session.query(User).filter(User.pending==1).all()
         users = [user.serialize for user in users]
     except:
         logger.error('retrieval of pending users failed')
@@ -69,7 +69,7 @@ def userLogin(email, password):
     logger.info('checking DB for user')
     
     try:
-        user = User.query.filter(and_(User.email==email, User.password==dk, User.pending!=1)).all()
+        user = db_session.query(User).filter(and_(User.email==email, User.password==dk, User.pending!=1)).all()
         user = [i.serialize for i in user]
         
         if (len(user) != 0):

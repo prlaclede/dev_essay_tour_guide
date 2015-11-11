@@ -20,7 +20,7 @@ CREATE TABLE instructions (
 DROP TABLE IF EXISTS markers;
 CREATE TABLE markers (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    pending boolean DEFAULT true,
+    pending boolean NOT NULL DEFAULT true,
     address VARCHAR(200) NOT NULL, 
     latitude DOUBLE(8,6) NOT NULL, 
     longitude DOUBLE(8,6) NOT NULL
@@ -29,11 +29,11 @@ CREATE TABLE markers (
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    pending boolean DEFAULT true,
     email VARCHAR(40) NOT NULL UNIQUE, 
     password VARCHAR(300),
     first_name VARCHAR(20), 
     last_name VARCHAR(20),
-    pending boolean DEFAULT true,
     account_type_id_fk INT NOT NULL REFERENCES accounts(id), 
     instr_id_fk INT NOT NULL REFERENCES instructions(id)
 );
@@ -41,9 +41,9 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS essays;
 CREATE TABLE essays (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    pending boolean NOT NULL DEFAULT true,
     title VARCHAR(140) NOT NULL,
     drive_id INT NOT NULL,
-    pending boolean DEFAULT true,
     marker_id_fk INT NOT NULL REFERENCES markers(id),
     user_id_fk INT NOT NULL REFERENCES users(id)
 );
@@ -73,6 +73,8 @@ INSERT INTO users (email, password, first_name, last_name, pending, account_type
     VALUES ('basic@email.com', MD5('basicpass'), 'Mac', "N'Cheese", false,  2, 2);
 INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
     VALUES ('jack@email.com', MD5('jackpass'), 'Jack', "O'lantran", false,  2, 2);
+INSERT INTO users (email, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
+    VALUES ('test@test.com', 'test', "tester", true,  2, 2);
 
 INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', 'www.essay.placeholder.com', 1, 1);
 INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('UMW essay', 'www.essay.placeholder.com', 2, 1);
