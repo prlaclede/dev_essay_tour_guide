@@ -12,10 +12,9 @@ function loadScript(src,callback){
   document.body.appendChild(script);
 }
 */
-
 var map
 
-$(function () {
+$(function (mapsLogic, $, undefined) {
   
   console.log('maps-API has been loaded, ready to use');
   
@@ -146,8 +145,9 @@ $(function () {
     return essayLink;
   }
   
-  function generateUploadForm() {
-    var uploadForm = "<div class='essayUploadLink'> \
+  function generateUploadForm(location) {
+    console.log(location);
+    var uploadForm = "<div class='essayUploadLink' lat=" + location['G'] + " long=" + location['K'] + "> \
                         <h6 class='essayLinkTitle'>Upload Essay</h6> \
                         <form id='newFileForm' name='newFileForm' method='post' enctype='multipart/form-data'> \
                           <input id='newFile' type='file' name='file' accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'> \
@@ -157,13 +157,13 @@ $(function () {
     return uploadForm;
   }
   
-  function placeNewMarker(location) {
+  mapsLogic.placeNewMarker = function(location) {
     var marker = new google.maps.Marker({
       position: location, 
       map: map
     });
     var infoWindow = new google.maps.InfoWindow ({
-      content: generateUploadForm()
+      content: generateUploadForm(location)
     });
     infoWindow.open(map, marker);
     newMarkerListener.remove();
@@ -171,4 +171,19 @@ $(function () {
     $('#mapAddToggle').closest('li').removeClass('selectedMode');
     $('#mapViewToggle').closest('li').addClass('selectedMode');
   }
-});
+  
+  mapsLogic.geocodeLatLng = function (lat, lng) {
+    var geocoder= new google.maps.Geocoder();
+    gLatLng = {'lat': parseInt(lat), 'lng': parseInt(lng)};
+    geocoder.geocode({'location': gLatLng}, function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        if (results[1]) {
+          console.log(results[1].formatted_address);
+        } else {
+          window.alert('No results found');
+        }
+      }
+    });
+  }
+  
+}( window.mapsLogic = window.mapsLogic || {}, jQuery ));

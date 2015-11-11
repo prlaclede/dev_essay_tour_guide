@@ -42,11 +42,13 @@ def getPendingUsers():
 
     return jsonify(essays=essays)
   
-@essay_api.route('/newEssay')
+@essay_api.route('/newEssay', methods=['POST'])
 def newEssay():
-  essay = request.args.get('essay')
+  essayTitle = request.values.get('essayTitle')
+  userId = request.values.get('userId')
+  print essayTitle
   try:
-    newEssay = Essay(title=essay['title'], location=essay['location'], pending=True, marker_id_fk=marker['marker_id'], long=user_id_fk['user_id'])
+    newEssay = Essay(title=essayTitle, location=essay['location'], pending=True, marker_id_fk=marker['marker_id'], user_id_fk=userId)
     db_session.add(essay)
     db_session.commit()
   except:

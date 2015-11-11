@@ -174,13 +174,31 @@ $(document).ready(function() {
     
         .on('click', '.submitEssay', function() {
             console.log('starting drive post');
+            var marker = $(this).closest('.essayUploadLink');
             var fileForm = new FormData($('#newFileForm')[0]);
+            fileForm.append('lat', marker.attr('lat'));
+            fileForm.append('long', marker.attr('long'));
             $.ajax({
                 url: '/fileUpload',
                 type: 'POST',
                 data: fileForm,
                 processData: false,
                 contentType: false,
+            }).done(function(response) {
+                console.log(response['meta']);
+                var meta = response['meta'];
+                mapsLogic.geocodeLatLng(meta['lat'], meta['long']);
+                $.ajax({
+                    url: '/newMarker', 
+                    type: 'POST', 
+                    data: response['meta']
+                }).done(function (response) {
+                    $.ajax({
+                        url: '/newEssay',
+                        type: 'POST', 
+                        data: response
+                    })
+                });
             });
         });
     

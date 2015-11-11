@@ -39,11 +39,13 @@ def mapEdit():
 def getMapMode():
   return jsonify(mapMode=session.get('mapMode'))
   
-@marker_api.route('/newMarker')
+@marker_api.route('/newMarker', methods=['POST'])
 def newMarker():
-  marker = request.args.get('marker')
+  latitude = request.values.get('lat')
+  longitude = request.values.get('long')
+  print (latitude + " " + longitude)
   try:
-    newMarker = Marker(name=marker['name'], location=marker['location'], pending=True, lat=marker['lat'], long=marker['long'])
+    newMarker = Marker(name=marker['name'], location=marker['location'], pending=True, lat=latitude, long=longitude)
     db_session.add(marker)
     db_session.commit()
   except:

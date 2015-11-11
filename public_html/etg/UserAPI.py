@@ -74,7 +74,7 @@ def userLogin(email, password):
         
         if (len(user) != 0):
             logger.info('user found')
-            session['user'] = (user[0])
+            session['user'] = user[0]
         else:
             logger.info('user not found')
     except:
