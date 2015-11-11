@@ -44,6 +44,7 @@ CREATE TABLE essays (
     pending boolean NOT NULL DEFAULT true,
     title VARCHAR(140) NOT NULL,
     drive_id VARCHAR(140) NOT NULL,
+    doc_link VARCHAR(300) NOT NULL, 
     marker_id_fk INT NOT NULL REFERENCES markers(id),
     user_id_fk INT NOT NULL REFERENCES users(id)
 );
@@ -76,10 +77,10 @@ INSERT INTO users (email, password, first_name, last_name, pending, account_type
 INSERT INTO users (email, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
     VALUES ('test@test.com', 'test', "tester", true,  2, 2);
 
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', '...', 1, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('UMW essay', '...', 2, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Confederate Essay', '...', 3, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Mary Wash Monument Essay', '...', 4, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ('Mary Wash House Essay', '...', 5, 1);
-INSERT INTO essays (title, drive_id, marker_id_fk, user_id_fk) VALUES ("Great eats in F'Burg", '...', 6, 1);
+INSERT INTO essays (title, drive_id, doc_link, marker_id_fk, user_id_fk) VALUES ('Kenmore Park Essay', '...', '...', 1, 1);
+INSERT INTO essays (title, drive_id, doc_link, marker_id_fk, user_id_fk) VALUES ('UMW essay', '...', '...', 2, 1);
+INSERT INTO essays (title, drive_id, doc_link, marker_id_fk, user_id_fk) VALUES ('Confederate Essay', '...', '...', 3, 1);
+INSERT INTO essays (title, drive_id, doc_link, marker_id_fk, user_id_fk) VALUES ('Mary Wash Monument Essay', '...', '...', 4, 1);
+INSERT INTO essays (title, drive_id, doc_link, marker_id_fk, user_id_fk) VALUES ('Mary Wash House Essay', '...', '...', 5, 1);
+INSERT INTO essays (title, drive_id, doc_link, marker_id_fk, user_id_fk) VALUES ("Great eats in F'Burg", '...', '...', 6, 1);
 

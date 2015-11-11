@@ -139,7 +139,7 @@ $(function (mapsLogic, $, undefined) {
   function getEssays(essayJSON) {
     var essayLink = "<div class='mapEssayLink'> \
                         <h6 class='essayLinkTitle'>" + essayJSON['title'] + "</h6> \
-                        <a href='" + essayJSON['location'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
+                        <a href='" + essayJSON['doc_link'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
                       </div>";
     return essayLink;
   }

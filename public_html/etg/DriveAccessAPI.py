@@ -51,7 +51,9 @@ def fileUpload():
     file = driveService.files().insert(
       body=body,
       media_body=media_body).execute()
+    print(file)
     toReturn['driveId'] = file['id']
+    toReturn['docLink'] = file['alternateLink']
     return jsonify(meta=toReturn)
   except errors.HttpError, error:
     print 'An error occured: %s' % error

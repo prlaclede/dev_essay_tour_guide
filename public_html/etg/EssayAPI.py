@@ -47,11 +47,12 @@ def newEssay():
   markerId = request.values.get('markerId')
   driveId = request.values.get('driveId')
   essayTitle = request.values.get('essayTitle')
-  print essayTitle
+  docLink = request.values.get('docLink')
   try:
-    newEssay = Essay(pending=True, title=essayTitle, drive_id=driveId, marker_id_fk=markerId, user_id_fk=userId)
-    print(newEssay)
+    newEssay = Essay(pending=True, title=essayTitle, drive_id=driveId, doc_link=docLink, marker_id_fk=markerId, user_id_fk=userId)
+    print newEssay
     db_session.add(newEssay)
     db_session.commit()
   except:
     logger.error('error storing new essay ' + essayTitle)
+  return jsonify(meta={'essayTitle': essayTitle, 'driveId': driveId, 'docLink': docLink})

@@ -7,19 +7,21 @@ class Essay(Base):
     pending = Column(Integer, nullable=False, default=1)
     title = Column(String(140), nullable=False)
     drive_id = Column(String(140), nullable=False)
+    doc_link = Column(String(300), nullable=False)
     marker_id_fk = Column(Integer, nullable=False)
     user_id_fk = Column(Integer, nullable=False)
     
-    def __init__(self, pending=None, title=None, drive_id=None, marker_id_fk=None, user_id_fk=None):
+    def __init__(self, pending=None, title=None, drive_id=None, doc_link=None, marker_id_fk=None, user_id_fk=None):
         self.title = title
         self.drive_id = drive_id
+        self.doc_link = doc_link
         self.pending = pending
         self.marker_id_fk = marker_id_fk
         self.user_id_fk = user_id_fk
         
     def __repr__(self):
-        returnList = "['id': '%s', 'pending': '%s', 'title': '%s', 'drive_id': '%s', 'marker_id_fk': '%s', 'user_id_fk': '%s']" % (
-            self.id, self.pending, self.title, self.drive_id, self.marker_id_fk, self.user_id_fk)
+        returnList = "['id': '%s', 'pending': '%s', 'title': '%s', 'drive_id': '%s', 'doc_link': '%s', 'marker_id_fk': '%s', 'user_id_fk': '%s']" % (
+            self.id, self.pending, self.title, self.drive_id, self.doc_link, self.marker_id_fk, self.user_id_fk)
         return returnList 
       
     @property
@@ -29,6 +31,7 @@ class Essay(Base):
            'pending': self.pending,
            'title': self.title,
            'drive_id': self.drive_id,
+           'doc_link': self.doc_link,
            'marker_id_fk': self.marker_id_fk,
            'user_id_fk': self.user_id_fk
         }

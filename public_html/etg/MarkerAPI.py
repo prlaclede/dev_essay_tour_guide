@@ -47,6 +47,7 @@ def newMarker():
   user = request.values.get('userId')
   essayTitle = request.values.get('essayTitle')
   driveId = request.values.get('driveId')
+  docLink = request.values.get('docLink')
   thisId = None
   print(address)
   print (latitude + " " + longitude)
@@ -58,4 +59,4 @@ def newMarker():
     thisId = db_session.query(func.max(Marker.id)).first()
   except:
     logger.error('error storing new marker')
-  return jsonify(meta={'userId': user, 'markerId': thisId[0], 'essayTitle': essayTitle, 'driveId': driveId})
+  return jsonify(meta={'userId': user, 'markerId': thisId[0], 'essayTitle': essayTitle, 'driveId': driveId, 'docLink': docLink})

@@ -173,6 +173,7 @@ $(document).ready(function() {
         })
     
         .on('click', '.submitEssay', function() {
+            var thisPopup = $(this).closest('.essayUploadLink');
             console.log('starting drive post');
             var marker = $(this).closest('.essayUploadLink');
             var fileForm = new FormData($('#newFileForm')[0]);
@@ -201,7 +202,11 @@ $(document).ready(function() {
                         url: '/newEssay',
                         type: 'POST', 
                         data: meta
-                    })
+                    }).done(function(response) {
+                        var meta = response['meta'];
+                        console.log(meta);
+                        swapUploadToPopup(thisPopup, meta);
+                    });
                 });
             });
         });
@@ -275,6 +280,13 @@ $(document).ready(function() {
     function isValidEmailAddress(emailAddress) {
         var pattern = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
         return pattern.test(emailAddress);
+    }
+    
+    function swapUploadToPopup(element, content) {
+        element.html("<div class='mapEssayLink'> \
+            <h6 class='essayLinkTitle'>" + content['essayTitle'] + "</h6> \
+            <a href='" + content['docLink'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
+        </div>");
     }
     
 });
