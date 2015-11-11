@@ -12,7 +12,6 @@ class Account(Base):
     def __repr__(self):
       returnList = "['id': '%s', 'account_name': '%s']" % (
           self.id, self.account_name)
-      #return '<Account %r>' % (self.account_name)
       return returnList
       
     @property

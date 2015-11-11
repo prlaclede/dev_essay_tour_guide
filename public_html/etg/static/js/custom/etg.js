@@ -19,7 +19,7 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 dataType: "html",
                 success: function(response) {
-                    $('.recentEssays').find('ul').append(response);
+                    $('.recentEssays_list').append(response);
                 },
                 error: function (error) {
                     console.log("error" + JSON.stringify(error));

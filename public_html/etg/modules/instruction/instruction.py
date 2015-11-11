@@ -14,7 +14,6 @@ class Instruction(Base):
     def __repr__(self):
       returnList = "['id': '%s', 'name': '%s', 'drive_id': '%s']" % (
           self.id, self.name, self.drive_id)
-      #return '<Instruction %r>' % (self.name)
       return returnList
       
     @property

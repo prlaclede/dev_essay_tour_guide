@@ -26,7 +26,6 @@ class User(Base):
     def __repr__(self):
       returnList = "['id': '%s', 'email': '%s', 'password': '%s', 'first_name': '%s', 'last_name': '%s', 'pending': '%s', 'account_type_id_fk': '%s', 'instr_id_fk': '%s']" % (
           self.id, self.email, self.password, self.first_name, self.last_name, self.pending, self.account_type_id_fk, self.instr_id_fk)
-      #return '<User %r>' % (self.email)
       return returnList
         
     @property
