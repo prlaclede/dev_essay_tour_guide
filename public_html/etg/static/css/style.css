@@ -83,3 +83,18 @@ body, html {
 .pendingTableBody {
   text-align: left;
 }
+
+.closeTab {
+  float: right;
+  padding: 5px 0px 0px 5px;
+}
+
+.closeTab > div.im {
+  fill: black;
+  height: 20px;
+  width: 20px;
+}
+
+.closeTab:hover > div.im {
+  fill: red;
+}

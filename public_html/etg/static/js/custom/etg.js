@@ -1,4 +1,5 @@
-$(document).ready(function() {
+//$(document).ready(function() {
+$(function (etgLogic, $, undefined) {
     //TODO: incapsulate into INIT function for extendability purposes
     $('[data-toggle="popover"]').popover();
     $('#splash_modal').modal('show');
@@ -209,6 +210,17 @@ $(document).ready(function() {
                     });
                 });
             });
+        })
+        
+        .on('click', '.closeTab', function () {
+            var $this = $(this);
+            var previousTab = $this.closest('li').prev();
+            var prevContent = previousTab.find('a').attr('href');
+            previousTab.addClass('active');
+            $(prevContent).addClass('active in');
+            var tabId = $this.closest('a').attr('href');
+            $(tabId).remove();
+            $this.closest('li').remove();
         });
     
     function loadUser (user) {
@@ -218,13 +230,13 @@ $(document).ready(function() {
         $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
         if (user['account_type_id_fk'] == 1) {
             $('#accountActionSpan').find('div.im').remove();
-            $('#welcomeMessage').after(generateSVG('adminAccount', 'accIcon'));
+            $('#welcomeMessage').after(etgLogic.generateSVG('adminAccount', 'accIcon'));
         } else {
-            $('#welcomeMessage').after(generateSVG('basicAccount', 'accIcon'));;
+            $('#welcomeMessage').after(etgLogic.generateSVG('basicAccount', 'accIcon'));;
         }
     }
     
-    function generateSVG(icon, addClass) {
+    etgLogic.generateSVG = function(icon, addClass) {
       var image = "<div class='im " + addClass + "'> \
                     <svg viewBox='0 0 34 34'> \
                       <g> \
@@ -248,8 +260,8 @@ $(document).ready(function() {
                         <td>' + user['first_name'] + '</td> \
                         <td>' + user['last_name'] + '</td> \
                         <td>' + user['email'] + '</td> \
-                        <td><button type="button" class="btn btn-sm">' + generateSVG('check', 'pendingApproveIcon') + '</button></td>\
-                        <td><button type="button" class="btn btn-sm">' + generateSVG('close', 'pendingDenyIcon') + '</button></td>\
+                        <td><button type="button" class="btn btn-sm">' + etgLogic.generateSVG('check', 'pendingApproveIcon') + '</button></td>\
+                        <td><button type="button" class="btn btn-sm">' + etgLogic.generateSVG('close', 'pendingDenyIcon') + '</button></td>\
                     </tr>';
         return entry;
     }
@@ -259,8 +271,8 @@ $(document).ready(function() {
                         <td>' + essay['title'] + '</td> \
                         <td>' + essay['marker'][0]['address'] + '</td> \
                         <td>' + essay['user'][0]['email'] + '</td> \
-                        <td><button type="button" class="btn btn-sm">' + generateSVG('check', 'pendingApproveIcon') + '</button></td>\
-                        <td><button type="button" class="btn btn-sm">' + generateSVG('close', 'pendingDenyIcon') + '</button></td>\
+                        <td><button type="button" class="btn btn-sm">' + etgLogic.generateSVG('check', 'pendingApproveIcon') + '</button></td>\
+                        <td><button type="button" class="btn btn-sm">' + etgLogic.generateSVG('close', 'pendingDenyIcon') + '</button></td>\
                     </tr>';
         return entry;
     }
@@ -289,4 +301,4 @@ $(document).ready(function() {
         </div>");
     }
     
-});
+}( window.etgLogic = window.etgLogic || {}, jQuery ));

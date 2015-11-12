@@ -128,6 +128,7 @@ $(function (mapsLogic, $, undefined) {
           newMarker.setAnimation(google.maps.Animation.BOUNCE);
         }
         infoWindow.open(map, newMarker);
+        essayInfoTab(essayJSON);
       });
       google.maps.event.addListener(infoWindow, 'closeclick', function() {
          currentMarker.setAnimation(null);
@@ -142,6 +143,21 @@ $(function (mapsLogic, $, undefined) {
                         <a href='" + essayJSON['doc_link'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
                       </div>";
     return essayLink;
+  }
+  
+  function essayInfoTab(essayJSON) {
+    var essayTitle = essayJSON['title'].replace(/(.*)\.(.*?)$/, "$1");
+    $('.essayTabs').find('li.active').removeClass('active');
+    $('.essayTabContent').find('div.active.in').removeClass('active in');
+    $('.essayTabs').append("<li class='active'> \
+                              <a data-toggle='tab' href='#" + essayJSON['id'] + "'>" + essayJSON['title'] + " \
+                                <span class='closeTab'>" + etgLogic.generateSVG('close') + "</span> \
+                              </a> \
+                            </li>");
+    $('.essayTabContent').append("<div id='" + essayJSON['id'] + "' class='tab-pane fade in active'> \
+                                    <h3>" + essayJSON['title'] + "</h3> \
+                                    <a href='" + essayJSON['doc_link'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
+                                  </div>");
   }
   
   function generateUploadForm(location) {
