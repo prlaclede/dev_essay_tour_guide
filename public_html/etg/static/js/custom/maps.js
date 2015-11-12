@@ -110,15 +110,16 @@ $(function (mapsLogic, $, undefined) {
     });
   });
   
-  function placeMarkers(markersJSON, essayJSON) {
+  function placeMarkers(markerJSON, essayJSON) {
     var currentMarker;
     var newMarker = new google.maps.Marker ({
-      position: new google.maps.LatLng(markersJSON['latitude'], markersJSON['longitude']),
+      position: new google.maps.LatLng(markerJSON['latitude'], markerJSON['longitude']),
       animation: google.maps.Animation.DROP,
     });
     if (essayJSON != undefined) {
+      console.log(markerJSON);
       var infoWindow = new google.maps.InfoWindow ({
-        content: getEssays(essayJSON)
+        content: getEssays(markerJSON)
       });
       google.maps.event.addListener(newMarker, 'click', function() {
         currentMarker = this;
@@ -137,10 +138,10 @@ $(function (mapsLogic, $, undefined) {
     newMarker.setMap(map);
   }
   
-  function getEssays(essayJSON) {
+  function getEssays(markerJSON) {
     var essayLink = "<div class='mapEssayLink'> \
-                        <h6 class='essayLinkTitle'>" + essayJSON['title'] + "</h6> \
-                        <a href='" + essayJSON['doc_link'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
+                        <h6 class='essayLinkTitle'>" + markerJSON['address'] + "</h6> \
+                        <p>" + markerJSON['address'] + ", " + markerJSON['longitude'] + " \
                       </div>";
     return essayLink;
   }
