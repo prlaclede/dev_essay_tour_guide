@@ -1,10 +1,9 @@
 import logging, md5
 from flask import (Blueprint, Flask, session, render_template, request, 
-redirect, url_for, jsonify, json)
-from itsdangerous import URLSafeTimedSerializer
+redirect, url_for, jsonify, json, current_app)
+from flask.ext.mail import Mail
 from modules import *
-
-init_db()
+from etg import *
 
 user_api = Blueprint('user_api', __name__)
 
@@ -23,7 +22,6 @@ def register():
     userEmail = request.form['reg_email']
     userFirst = request.form['reg_first']
     userLast = request.form['reg_last']
-    print(userEmail)
     logger.info('register of ' + userEmail + " " + userFirst + " " + userLast)
     return (userRegister(userEmail, userFirst, userLast))
     
@@ -47,23 +45,6 @@ def getPendingUsers():
         
     return jsonify(users=users)
     
-def generate_confirmation_token(email):
-    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-    return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
-
-
-def confirm_token(token, expiration=3600):
-    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-    try:
-        email = serializer.loads(
-            token,
-            salt=app.config['SECURITY_PASSWORD_SALT'],
-            max_age=expiration
-        )
-    except:
-        return False
-    return email
-  
 def userLogin(email, password):
     dk = md5.new(password).hexdigest()
     logger.info('checking DB for user')
@@ -81,15 +62,15 @@ def userLogin(email, password):
         logger.error('user login check failed')
         
     return jsonify(user=user)
-        
+ 
 def userRegister(email, first, last):
     user = User(email=email, first_name=first, last_name=last, pending=True, account_type_id_fk=2, instr_id_fk=2)
     
     try:
         db_session.add(user)
         db_session.commit()
-        logger.info('added user' + email)
+        logger.info('added user ' + email)
     except:
         logger.error('new user insert failed for ' + email)
     
-    return jsonify(message='success')
+    return jsonify(emailParams={'email': email, 'first': first, 'last': last})

@@ -1,4 +1,4 @@
-from modules.database.database import Base
+from etg.modules.database.database import Base
 from sqlalchemy import Column, Integer, String, Text
 
 class Instruction(Base):

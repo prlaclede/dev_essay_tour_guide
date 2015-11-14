@@ -61,7 +61,7 @@ $(function (etgLogic, $, undefined) {
                         }
                     },
                     error: function (error) {
-                        console.log("error" + error);
+                        console.log("error" + JSON.stringify(error));
                     }
                 });
             }
@@ -79,16 +79,23 @@ $(function (etgLogic, $, undefined) {
                     type: 'POST',
                     success: function (response) {
                         if (response != undefined) {
-                            var user = response['user'][0];
-                            if (user != undefined) {
-                               $('.modal-header').after(generateAlert('success', 'You will recieve an email when your account has been approved.')); 
-                            } else {
-                                $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
-                            }
+                            var emailParams = response['emailParams'];
+                            console.log(emailParams);
+                            $.ajax({
+                               url: '/sendMail',
+                               data: emailParams,
+                               type: 'POST',
+                               success: function (response) {
+                                   $('.modal-header').after(generateAlert('success', 'You will recieve an email when your account has been approved.')); 
+                               },
+                               error: function (error) {
+                                   console.log("error" + JSON.stringify(error));
+                               }
+                            });
                         }
                     },
                     error: function (error) {
-                        console.log("error" + error);
+                        console.log("error" + JSON.stringify(error));
                     }
                 });
             }

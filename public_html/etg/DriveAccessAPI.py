@@ -20,8 +20,8 @@ def fileUpload():
   latitude = request.values.get('lat')
   longitude = request.values.get('long')
   filename = secure_filename(file.filename)
-  file.save(os.path.join('userDocs/', filename))
-  filePath = './userDocs/' + filename
+  file.save(os.path.join('etg/userDocs/', filename))
+  filePath = 'etg/userDocs/' + filename
   toReturn = {}
   toReturn['userId'] = session.get('user')['id']
   toReturn['essayTitle'] = filename

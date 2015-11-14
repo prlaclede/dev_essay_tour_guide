@@ -1,33 +1,56 @@
-from flask.ext.mail import Message
+from flask.ext.mail import Message, Mail
+from itsdangerous import URLSafeTimedSerializer
+import datetime
 
 class Email():
     
-    SECRET_KEY = 'my_precious'
-    SECURITY_PASSWORD_SALT = 'my_precious_two'
-    DEBUG = False
-    BCRYPT_LOG_ROUNDS = 13
-    WTF_CSRF_ENABLED = True
-    DEBUG_TB_ENABLED = False
-    DEBUG_TB_INTERCEPT_REDIRECTS = False
-
-    # mail settings
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = 465
-    MAIL_USE_TLS = False
-    MAIL_USE_SSL = True
-
-    # gmail authentication
-    MAIL_USERNAME = 'fredessaytours@gmail.com'
+    configProperties = {
+      'SECRET_KEY': 'wow_so_secret',
+      'SECURITY_PASSWORD_SALT': 'much_protect',
+      'MAIL_SERVER': 'smtp.googlemail.com',
+      'MAIL_PORT': 465,
+      'MAIL_USE_SSL': True,
+      'MAIL_USE_TLS': False,
+      'MAIL_USERNAME': 'fredessaytours@gmail.com',
+      'MAIL_PASSWORD': 'fredessaytour'
+    }
+    
+    SECRET_KEY = 'wow_so_secret',
+    SECURITY_PASSWORD_SALT = 'much_protect',
+    MAIL_SERVER = 'smtp.googlemail.com',
+    MAIL_PORT = 465,
+    MAIL_USE_SSL = True,
+    MAIL_USE_TLS = False,
+    MAIL_USERNAME = 'fredessaytours@gmail.com',
     MAIL_PASSWORD = 'fredessaytour'
 
     # mail accounts
     MAIL_DEFAULT_SENDER = 'noreploy@tourfredericksburgva.com'
     
-    def send_email(self, to, subject, template):
+    def get_email(self, to, template):
+      mailer = Mail()
       msg = Message(
-        subject,
+        'Please confirm your account on ETG!',
         recipients=[to],
         html=template,
-        sender='MAIL_DEFAULT_SENDER'
+        sender=self.configProperties['MAIL_USERNAME']
       )
-      mail.send(msg)
+      return msg
+      
+      
+    def generate_confirmation_token(self, email):
+      serializer = URLSafeTimedSerializer(self.configProperties['SECRET_KEY'])
+      return serializer.dumps(email, salt=self.configProperties['SECURITY_PASSWORD_SALT'])
+
+
+    def confirm_token(self, token, expiration=3600):
+      serializer = URLSafeTimedSerializer(self.configProperties['SECRET_KEY'])
+      try:
+          email = serializer.loads(
+              token,
+              salt=self.configProperties['SECURITY_PASSWORD_SALT'],
+              max_age=expiration
+          )
+      except:
+          return 'Invalid token supplied'
+      return email

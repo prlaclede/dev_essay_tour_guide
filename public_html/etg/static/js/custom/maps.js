@@ -117,7 +117,6 @@ $(function (mapsLogic, $, undefined) {
       animation: google.maps.Animation.DROP,
     });
     if (essayJSON != undefined) {
-      console.log(markerJSON);
       var infoWindow = new google.maps.InfoWindow ({
         content: getEssays(markerJSON)
       });
@@ -141,7 +140,7 @@ $(function (mapsLogic, $, undefined) {
   function getEssays(markerJSON) {
     var essayLink = "<div class='mapEssayLink'> \
                         <h6 class='essayLinkTitle'>" + markerJSON['address'] + "</h6> \
-                        <p>" + markerJSON['address'] + ", " + markerJSON['longitude'] + " \
+                        <p>" + markerJSON['latitude'] + ", " + markerJSON['longitude'] + " \
                       </div>";
     return essayLink;
   }
