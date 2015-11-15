@@ -2,11 +2,15 @@
 
 {% block content %}
 <div class='map-container'>
-    {% if not loggedIn %}
-        {% include "splashPage.html" %}
+    {% if not setPassword %}
+        {% if not loggedIn %}
+            {% include "splashPage.html" %}
+        {% endif %}
+    {% elif setPassword %}
+        {% include "setPassword.html" %}
     {% endif %}
     {% include "popup.html" %}
-    {% include "pending.html" %}
+    {% include "pending.html" %} 
     <div id="googleMap"></div>
 </div>
 <div class="side-container panel panel-default">

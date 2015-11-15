@@ -62,6 +62,14 @@ def userLogin(email, password):
         logger.error('user login check failed')
         
     return jsonify(user=user)
+    
+@user_api.route('/setPassword', methods=['POST'])
+def setPassword():
+    userPass = request.form['password']
+    userId = request.form['userId']
+    password = md5.new(userPass).hexdigest()
+    db_session.query(User).filter(User.id==userId).update({'password': password}, synchronize_session='fetch')
+    db_session.commit()
  
 def userRegister(email, first, last):
     user = User(email=email, first_name=first, last_name=last, pending=True, account_type_id_fk=2, instr_id_fk=2)

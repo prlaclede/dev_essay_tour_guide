@@ -8,6 +8,12 @@ def mainIndex():
   else: 
     print(session.get('user'))
     return render_template('index.html', loggedIn = True)
+
+@app.route('/completePending/<userId>')
+def completePending(userId):
+  user = db_session.query(User).filter(User.id==userId).all()
+  user = [i.serialize for i in user]
+  return render_template('index.html', setPassword = True, firstName = user[0]['first_name'], lastName = user[0]['last_name'], userId = user[0]['id'])
   
 @app.route('/getRegisterForm', methods=['POST'])
 def returnRegistrationForm():
@@ -31,6 +37,8 @@ def sendMail():
   try:
     mail.send(msg)
     logger.info('email sent for ' + userEmail + " has been sent")
+    db_session.query(User).filter(User.email==userEmail).update({'token': token}, synchronize_session='fetch')
+    db_session.commit()
   except SMTPException as error:
     logger.error('email for ' + userEmail + ' failed to send')
     logger.error(error)
@@ -39,14 +47,13 @@ def sendMail():
 @app.route('/confirmEmail/<token>')
 def confirmEmail(token):
   emailer = Email()
-  print(token)
+  user = db_session.query(User).filter(User.token==token).all()
+  user = [i.serialize for i in user]
   try:
       email = emailer.confirm_token(token)
-      redirect(url_for('index.html'))
+      return redirect(url_for('completePending', userId=user[0]['id']))
   except:
       return "that email token is invalid or has expired!"
-  
-  print('user confirmed email, do database things now ....')
   
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080) 

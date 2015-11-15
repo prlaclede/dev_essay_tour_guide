@@ -30,6 +30,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pending boolean DEFAULT true,
+    token VARCHAR(300),
     email VARCHAR(40) NOT NULL UNIQUE, 
     password VARCHAR(300),
     first_name VARCHAR(20), 

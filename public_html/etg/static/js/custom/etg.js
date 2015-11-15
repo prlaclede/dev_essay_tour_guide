@@ -138,7 +138,7 @@ $(function (etgLogic, $, undefined) {
             } 
         })
         
-        .on('click', '#accountRegisterButton', function () {
+        .on('click', '#accountRegisterButton', function() {
            console.log('register clicked');
             $.ajax({
                 url: '/getRegisterForm',
@@ -153,6 +153,16 @@ $(function (etgLogic, $, undefined) {
                 error: function (error) {
                     return("error" + JSON.stringify(error));
                 }
+            });
+        })
+        
+        .on('click', '.setPasswordButton', function() {
+            console.log('setting user password');
+            var thisForm = $(this).closest('#setPasswordForm');
+            $.ajax({
+                url: '/setPassword',
+                type: 'POST',
+                data: thisForm.serialize()
             });
         })
     
