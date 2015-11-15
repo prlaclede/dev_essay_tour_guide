@@ -245,8 +245,34 @@ $(function (etgLogic, $, undefined) {
         $('#accountRegisterButton').hide();
         $('#accountActionButton').html('Logout');
         $('#welcomeMessage').html("Welcome " + user['first_name'] + " " + user['last_name'])
+        $('#accountActionSpan').find('div.im').remove();
+        $.ajax({
+            url: '/getUserTools',
+            type: "POST",
+            contentType: 'application/json',
+            dataType: "html",
+            success: function(response) {
+                //add admin dropdown options
+                $('.featuresNav').append(response);
+            },
+            error: function (error) {
+                return("error" + JSON.stringify(error));
+            }
+        });
         if (user['account_type_id_fk'] == 1) {
-            $('#accountActionSpan').find('div.im').remove();
+            $.ajax({
+                url: '/getAdminTools',
+                type: "POST",
+                contentType: 'application/json',
+                dataType: "html",
+                success: function(response) {
+                    //add admin dropdown options
+                    $('.featuresNav').append(response);
+                },
+                error: function (error) {
+                    return("error" + JSON.stringify(error));
+                }
+            });
             $('#welcomeMessage').after(etgLogic.generateSVG('adminAccount', 'accIcon'));
         } else {
             $('#welcomeMessage').after(etgLogic.generateSVG('basicAccount', 'accIcon'));;

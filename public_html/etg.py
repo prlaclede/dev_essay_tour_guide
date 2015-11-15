@@ -23,6 +23,14 @@ def returnRegistrationForm():
 def returnLoginForm():
   return render_template('login.html')
   
+@app.route('/getAdminTools', methods=['POST'])
+def getAdminTools():
+  return render_template('adminTools.html')
+  
+@app.route('/getUserTools', methods=['POST'])
+def getUserTools():
+  return render_template('mapEditTools.html')
+  
 @app.route('/sendMail', methods=['POST'])
 def sendMail():
   emailer = Email()
