@@ -6,13 +6,17 @@
   fill: white;
 }
 
-.pendingApproveIcon {
+.approveButton > div.im, .denyButton > div.im {
+  margin: 0px 0px 0px 5px;
+}
+
+.approveButton > div.im {
     height: 18px;
     width: 25px;
     fill: green;
 }
 
-.pendingDenyIcon {
+.denyButton > div.im {
     height: 18px;
     width: 25px;
     fill: red;

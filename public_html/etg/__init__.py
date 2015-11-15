@@ -44,7 +44,8 @@ app.config.update(
     MAIL_USE_TLS = False,
     MAIL_USERNAME = 'fredessaytours@gmail.com',
     MAIL_PASSWORD = 'fredessaytour',
-    MAIL_DEFAULT_SENDER = 'noreploy@tourfredericksburgva.com'
+    MAIL_DEFAULT_SENDER = 'noreploy@tourfredericksburgva.com',
+    PREFERRED_URL_SCHEME = 'https'
     )
     
 mail = Mail(app)

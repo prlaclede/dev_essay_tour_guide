@@ -69,7 +69,6 @@ $(function (etgLogic, $, undefined) {
     
         .on('click', '.registerButton', function() {
             var thisForm = $(this).closest('#registerForm');
-            console.log(thisForm.find('.emailField').val());
             if (!isValidEmailAddress(thisForm.find('.emailField').val())) {
                 $('.modal-header').after(generateAlert('warning', 'Invalid Email!'));
             } else {
@@ -80,8 +79,8 @@ $(function (etgLogic, $, undefined) {
                     success: function (response) {
                         if (response != undefined) {
                             var emailParams = response['emailParams'];
-                            console.log(emailParams);
-                            $.ajax({
+                            $('.modal-header').after(generateAlert('success', 'You will recieve an email when your account has been approved.'));
+                            /*$.ajax({
                                url: '/sendMail',
                                data: emailParams,
                                type: 'POST',
@@ -91,7 +90,7 @@ $(function (etgLogic, $, undefined) {
                                error: function (error) {
                                    console.log("error" + JSON.stringify(error));
                                }
-                            });
+                            });*/
                         }
                     },
                     error: function (error) {
@@ -139,7 +138,6 @@ $(function (etgLogic, $, undefined) {
         })
         
         .on('click', '#accountRegisterButton', function() {
-           console.log('register clicked');
             $.ajax({
                 url: '/getRegisterForm',
                 type: "POST",
@@ -157,7 +155,6 @@ $(function (etgLogic, $, undefined) {
         })
         
         .on('click', '.setPasswordButton', function() {
-            console.log('setting user password');
             var thisForm = $(this).closest('#setPasswordForm');
             $.ajax({
                 url: '/setPassword',
@@ -189,7 +186,44 @@ $(function (etgLogic, $, undefined) {
            });
            $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
         })
+        
+        .on('click', '.approveButton', function() {
+            var row = $(this).closest('tr');
+            var tableType = row.attr('class');
+            console.log(tableType);
+            if (tableType === 'pendingUser') {
+                var emailForm = new FormData();
+                emailForm.append('email', row.find('.email').html());
+                emailForm.append('first', row.find('.first').html());
+                emailForm.append('last', row.find('.last').html());
+                $.ajax({
+                    url: '/sendMail',
+                    data: emailForm,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false
+                });
+            } else if (tableType === 'pendingEssay') {
+                $.getJSON('/approveEssay').done(function (response) {
+
+                });
+            }
+        })
     
+        .on('click', '.denyButton', function() {
+            var tableType = $(this).closest('tr').attr('class');
+            console.log(tableType);
+            if (tableType === 'pendingUser') {
+                $.getJSON('/denyUser').done(function (response) {
+
+                });
+            } else if (tableType === 'pendingEssay') {
+                $.getJSON('/denyEssay').done(function (response) {
+
+                });
+            }
+        })
+        
         .on('click', '.submitEssay', function() {
             var thisPopup = $(this).closest('.essayUploadLink');
             console.log('starting drive post');
@@ -204,7 +238,6 @@ $(function (etgLogic, $, undefined) {
                 processData: false,
                 contentType: false,
             }).done(function(response) {
-                console.log(response['meta']);
                 var meta = response['meta'];
                 mapsLogic.geocodeLatLng(meta['lat'], meta['long']);
                 var markAddr = mapsLogic.returnMarkAddr();
@@ -215,14 +248,12 @@ $(function (etgLogic, $, undefined) {
                     data: response['meta']
                 }).done(function (response) {
                     var meta = response['meta']
-                    console.log(meta);
                     $.ajax({
                         url: '/newEssay',
                         type: 'POST', 
                         data: meta
                     }).done(function(response) {
                         var meta = response['meta'];
-                        console.log(meta);
                         swapUploadToPopup(thisPopup, meta);
                     });
                 });
@@ -252,7 +283,7 @@ $(function (etgLogic, $, undefined) {
             contentType: 'application/json',
             dataType: "html",
             success: function(response) {
-                //add admin dropdown options
+                //add map edit tools
                 $('.featuresNav').append(response);
             },
             error: function (error) {
@@ -266,7 +297,7 @@ $(function (etgLogic, $, undefined) {
                 contentType: 'application/json',
                 dataType: "html",
                 success: function(response) {
-                    //add admin dropdown options
+                    //add admin dropdown tools
                     $('.featuresNav').append(response);
                 },
                 error: function (error) {
@@ -299,23 +330,23 @@ $(function (etgLogic, $, undefined) {
     }
     
     function generatePendingUser(user) {
-        var entry = '<tr> \
-                        <td>' + user['first_name'] + '</td> \
-                        <td>' + user['last_name'] + '</td> \
-                        <td>' + user['email'] + '</td> \
-                        <td><button type="button" class="btn btn-sm">' + etgLogic.generateSVG('check', 'pendingApproveIcon') + '</button></td>\
-                        <td><button type="button" class="btn btn-sm">' + etgLogic.generateSVG('close', 'pendingDenyIcon') + '</button></td>\
+        var entry = '<tr class="pendingUser"> \
+                        <td class="first">' + user['first_name'] + '</td> \
+                        <td class="last">' + user['last_name'] + '</td> \
+                        <td class="email">' + user['email'] + '</td> \
+                        <td><button type="button" class="btn btn-sm approveButton">' + etgLogic.generateSVG('check') + '</button></td>\
+                        <td><button type="button" class="btn btn-sm denyButton">' + etgLogic.generateSVG('close') + '</button></td>\
                     </tr>';
         return entry;
     }
     
     function generatePendingEssay(essay) {
-        var entry = '<tr> \
-                        <td>' + essay['title'] + '</td> \
-                        <td>' + essay['marker'][0]['address'] + '</td> \
-                        <td>' + essay['user'][0]['email'] + '</td> \
-                        <td><button type="button" class="btn btn-sm">' + etgLogic.generateSVG('check', 'pendingApproveIcon') + '</button></td>\
-                        <td><button type="button" class="btn btn-sm">' + etgLogic.generateSVG('close', 'pendingDenyIcon') + '</button></td>\
+        var entry = '<tr class="pendingEssay"> \
+                        <td class="title">' + essay['title'] + '</td> \
+                        <td class="address">' + essay['marker'][0]['address'] + '</td> \
+                        <td class="email">' + essay['user'][0]['email'] + '</td> \
+                        <td><button type="button" class="btn btn-sm approveButton">' + etgLogic.generateSVG('check') + '</button></td>\
+                        <td><button type="button" class="btn btn-sm denyButton">' + etgLogic.generateSVG('close') + '</button></td>\
                     </tr>';
         return entry;
     }
@@ -328,7 +359,6 @@ $(function (etgLogic, $, undefined) {
                         <th>Approve</th> \
                         <th>Deny</th> \
                      </tr>'
-        console.log(header);
         return header;
     }
     

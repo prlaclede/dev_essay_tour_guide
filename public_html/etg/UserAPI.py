@@ -45,6 +45,26 @@ def getPendingUsers():
         
     return jsonify(users=users)
     
+@user_api.route('/setPassword', methods=['POST'])
+def setPassword():
+    userPass = request.form['password']
+    userId = request.form['userId']
+    password = md5.new(userPass).hexdigest()
+    db_session.query(User).filter(User.id==userId).update({'password': password}, synchronize_session='fetch')
+    db_session.commit()
+    
+@user_api.route('/approveUser', methods=['POST'])
+def approveUser():
+    userEmail = request.values.get('email')
+    userFirst = request.values.get('first')
+    userLast = request.values.get('last')
+    print(userEmail + " "  + userFirst + " " + userLast)
+    return redirect(url_for('sendMail', userEmail=userEmail, userFirst=userFirst, userLast=userLast, _external=True, _scheme='https'))
+    
+@user_api.route('/denyUser')
+def denyUser():
+    return ''
+
 def userLogin(email, password):
     dk = md5.new(password).hexdigest()
     logger.info('checking DB for user')
@@ -62,14 +82,6 @@ def userLogin(email, password):
         logger.error('user login check failed')
         
     return jsonify(user=user)
-    
-@user_api.route('/setPassword', methods=['POST'])
-def setPassword():
-    userPass = request.form['password']
-    userId = request.form['userId']
-    password = md5.new(userPass).hexdigest()
-    db_session.query(User).filter(User.id==userId).update({'password': password}, synchronize_session='fetch')
-    db_session.commit()
  
 def userRegister(email, first, last):
     user = User(email=email, first_name=first, last_name=last, pending=True, account_type_id_fk=2, instr_id_fk=2)
