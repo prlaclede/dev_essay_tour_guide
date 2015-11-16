@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 @essay_api.route('/loadRecentEssays')
 def getAll():
   try:
-    essayList = db_session.query(Essay).limit(5).all()
+    essayList = db_session.query(Essay).filter(Essay.pending!=1).limit(5).all()
     essayList = [i.serialize for i in essayList]
   except:
     logger.error('failed to load recent essays')
@@ -56,3 +56,32 @@ def newEssay():
   except:
     logger.error('error storing new essay ' + essayTitle)
   return jsonify(meta={'essayTitle': essayTitle, 'driveId': driveId, 'docLink': docLink})
+  
+@essay_api.route('/approveEssay', methods=['POST'])
+def approveEssay():
+  essayId = request.values.get('essayId')
+  markerId = request.values.get('markerId')
+  try:
+    db_session.query(Essay).filter(Essay.id==essayId).update({'pending': False}, synchronize_session='fetch')
+    db_session.query(Marker).filter(Marker.id==markerId).update({'pending': False}, synchronize_session='fetch')
+    db_session.commit()
+    logger.info('essay/marker pair updated successfully')
+  except:
+    logger.error('the essay/marker pair could not be updated')
+  return jsonify(message='success')
+  
+@essay_api.route('/denyEssay', methods=['POST'])
+def denyEssay():
+  essayId = request.values.get('essayId')
+  markerId = request.values.get('markerId')
+  print(essayId + " " + markerId)
+  try:
+    essay = db_session.query(Essay).filter(Essay.id==essayId).first()
+    marker = db_session.query(Marker).filter(Marker.id==markerId).first()
+    db_session.delete(essay)
+    db_session.delete(marker)
+    db_session.commit()
+    logger.info('essay/marker pair ' + essayId + '/' + markerId + ' has been removed')
+  except:
+    logger.error('removing essay/marker pair ' + essayId + '/' + markerId + ' failed')
+  return jsonify(message='success')

@@ -80,17 +80,6 @@ $(function (etgLogic, $, undefined) {
                         if (response != undefined) {
                             var emailParams = response['emailParams'];
                             $('.modal-header').after(generateAlert('success', 'You will recieve an email when your account has been approved.'));
-                            /*$.ajax({
-                               url: '/sendMail',
-                               data: emailParams,
-                               type: 'POST',
-                               success: function (response) {
-                                   $('.modal-header').after(generateAlert('success', 'You will recieve an email when your account has been approved.')); 
-                               },
-                               error: function (error) {
-                                   console.log("error" + JSON.stringify(error));
-                               }
-                            });*/
                         }
                     },
                     error: function (error) {
@@ -198,36 +187,83 @@ $(function (etgLogic, $, undefined) {
         .on('click', '.approveButton', function() {
             var row = $(this).closest('tr');
             var tableType = row.attr('class');
-            console.log(tableType);
             if (tableType === 'pendingUser') {
-                var emailForm = new FormData();
-                emailForm.append('email', row.find('.email').html());
-                emailForm.append('first', row.find('.first').html());
-                emailForm.append('last', row.find('.last').html());
+                var userForm = new FormData();
+                userForm.append('userId', row.find('#userId').val());
+                userForm.append('email', row.find('.email').html());
+                userForm.append('first', row.find('.first').html());
+                userForm.append('last', row.find('.last').html());
                 $.ajax({
                     url: '/sendMail',
-                    data: emailForm,
+                    data: userForm,
                     type: 'POST',
                     processData: false,
-                    contentType: false
+                    contentType: false,
+                    success: function(response) {
+                        row.remove()
+                    },
+                    error: function (error) {
+                        return("error" + JSON.stringify(error));
+                    }
                 });
             } else if (tableType === 'pendingEssay') {
-                $.getJSON('/approveEssay').done(function (response) {
-
+                var essayForm = new FormData();
+                essayForm.append('essayId', row.find("input[name='essayId']").val());
+                essayForm.append('markerId', row.find("input[name='markerId']").val());
+                $.ajax({
+                    url: '/approveEssay',
+                    data: essayForm,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        row.remove()
+                    },
+                    error: function (error) {
+                        return("error" + JSON.stringify(error));
+                    }
                 });
             }
         })
     
         .on('click', '.denyButton', function() {
-            var tableType = $(this).closest('tr').attr('class');
-            console.log(tableType);
+            var row = $(this).closest('tr');
+            var tableType = row.attr('class');
             if (tableType === 'pendingUser') {
-                $.getJSON('/denyUser').done(function (response) {
-
+                var userForm = new FormData();
+                userForm.append('userId', row.find("input[name='userId']").val());
+                userForm.append('email', row.find('.email').html());
+                userForm.append('first', row.find('.first').html());
+                userForm.append('last', row.find('.last').html());
+                $.ajax({
+                    url: '/denyUser',
+                    data: userForm, 
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        row.remove()
+                    },
+                    error: function (error) {
+                        return("error" + JSON.stringify(error));
+                    }
                 });
             } else if (tableType === 'pendingEssay') {
-                $.getJSON('/denyEssay').done(function (response) {
-
+            var essayForm = new FormData();
+                essayForm.append('essayId', row.find("input[name='essayId']").val());
+                essayForm.append('markerId', row.find("input[name='markerId']").val());
+                $.ajax({
+                    url: '/denyEssay',
+                    data: essayForm,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        row.remove()
+                    },
+                    error: function (error) {
+                        return("error" + JSON.stringify(error));
+                    }
                 });
             }
         })
@@ -339,6 +375,7 @@ $(function (etgLogic, $, undefined) {
     
     function generatePendingUser(user) {
         var entry = '<tr class="pendingUser"> \
+                        <input type="hidden" name="userId" value="' + user['id'] + '"> \
                         <td class="first">' + user['first_name'] + '</td> \
                         <td class="last">' + user['last_name'] + '</td> \
                         <td class="email">' + user['email'] + '</td> \
@@ -350,6 +387,8 @@ $(function (etgLogic, $, undefined) {
     
     function generatePendingEssay(essay) {
         var entry = '<tr class="pendingEssay"> \
+                        <input type="hidden" name="markerId" value="' + essay['marker'][0]['id'] + '"> \
+                        <input type="hidden" name="essayId" value="' + essay['id'] + '"> \
                         <td class="title">' + essay['title'] + '</td> \
                         <td class="address">' + essay['marker'][0]['address'] + '</td> \
                         <td class="email">' + essay['user'][0]['email'] + '</td> \

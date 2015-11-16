@@ -60,9 +60,19 @@ def setPassword():
         logger.error('the user could not be updated')
     return url_for('mainIndex', _external=True)
     
-@user_api.route('/denyUser')
+@user_api.route('/denyUser', methods=['POST'])
 def denyUser():
-    return ''
+    userEmail = request.values.get('email')
+    userId = request.values.get('userId')
+    print(userId)
+    try:
+        user = db_session.query(User).filter(User.id==userId).first()
+        db_session.delete(user)
+        db_session.commit()
+        logger.info('user ' + userEmail + ' has been removed')
+    except:
+        logger.error('error removing user')
+    return jsonify(message='success')
 
 def userLogin(email, password):
     dk = md5.new(password).hexdigest()

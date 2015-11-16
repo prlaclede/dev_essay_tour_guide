@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 @marker_api.route('/loadMarkers')
 def loadMarkers():
   try:
-    markerList = db_session.query(Marker).all()
+    markerList = db_session.query(Marker).filter(Marker.pending!=1).all()
   except:
     logger.error('error loading markers')
     
