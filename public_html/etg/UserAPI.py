@@ -32,6 +32,7 @@ def logout():
   
 @user_api.route('/checkUser')
 def checkUser():
+    print(session.get('user'))
     return jsonify(user=session.get('user'))
     
 @user_api.route('/pendingUsers')
@@ -49,17 +50,15 @@ def getPendingUsers():
 def setPassword():
     userPass = request.form['password']
     userId = request.form['userId']
+    print(userPass + " " + userId)
     password = md5.new(userPass).hexdigest()
-    db_session.query(User).filter(User.id==userId).update({'password': password}, synchronize_session='fetch')
-    db_session.commit()
-    
-@user_api.route('/approveUser', methods=['POST'])
-def approveUser():
-    userEmail = request.values.get('email')
-    userFirst = request.values.get('first')
-    userLast = request.values.get('last')
-    print(userEmail + " "  + userFirst + " " + userLast)
-    return redirect(url_for('sendMail', userEmail=userEmail, userFirst=userFirst, userLast=userLast, _external=True, _scheme='https'))
+    try:
+        db_session.query(User).filter(User.id==userId).update({'password': password}, synchronize_session='fetch')
+        db_session.commit()
+        logger.info('user updated successfully')
+    except:
+        logger.error('the user could not be updated')
+    return url_for('mainIndex', _external=True)
     
 @user_api.route('/denyUser')
 def denyUser():

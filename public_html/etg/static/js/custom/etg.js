@@ -3,7 +3,7 @@ $(function (etgLogic, $, undefined) {
     //TODO: incapsulate into INIT function for extendability purposes
     $('[data-toggle="popover"]').popover();
     $('#splash_modal').modal('show');
-    $("#svg-icons").load("static/img/icons.svg");
+    $("#svg-icons").load("/static/img/icons.svg");
     $(document).keypress(function(e){
         if (e.which == 13){
             $(".splashLoginButton").click();
@@ -100,7 +100,7 @@ $(function (etgLogic, $, undefined) {
             }
         })
     
-        .on('hide.bs.modal', function () {
+        .on('hide.bs.modal', '#splash_modal', function () {
             $('.alert').remove();
             $('#accountActionSpan').show();
             $('#accountActionButton').html('Login');
@@ -114,7 +114,8 @@ $(function (etgLogic, $, undefined) {
         })
         
         .on('click', '#accountActionButton', function() {
-           var buttonText = $(this).html();
+            console.log('checking this');
+            var buttonText = $(this).html();
             if (buttonText == 'Login') {
                 $.ajax({
                     url: '/getLoginForm',
@@ -159,7 +160,14 @@ $(function (etgLogic, $, undefined) {
             $.ajax({
                 url: '/setPassword',
                 type: 'POST',
-                data: thisForm.serialize()
+                data: thisForm.serialize(),
+                dataType: "html",
+                success: function(response) {
+                    window.location = response; 
+                },
+                error: function (error) {
+                    return("error" + JSON.stringify(error));
+                }
             });
         })
     

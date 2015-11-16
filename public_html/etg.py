@@ -4,17 +4,11 @@ from etg import *
 def mainIndex():
   if (session.get('user') == None):
     print('no user')
-    return render_template('index.html', loggedIn = False)
+    return render_template('index.html', context = 'loggedOut')
   else: 
     print(session.get('user'))
-    return render_template('index.html', loggedIn = True)
-
-@app.route('/completePending/<userId>')
-def completePending(userId):
-  user = db_session.query(User).filter(User.id==userId).all()
-  user = [i.serialize for i in user]
-  return render_template('index.html', setPassword = True, firstName = user[0]['first_name'], lastName = user[0]['last_name'], userId = user[0]['id'])
-  
+    return render_template('index.html', context = 'loggedIn')
+    
 @app.route('/getRegisterForm', methods=['POST'])
 def returnRegistrationForm():
   return render_template('register.html')
@@ -30,6 +24,12 @@ def getAdminTools():
 @app.route('/getUserTools', methods=['POST'])
 def getUserTools():
   return render_template('mapEditTools.html')
+
+@app.route('/completePending/<userId>')
+def completePending(userId):
+  user = db_session.query(User).filter(User.id==userId).all()
+  user = [i.serialize for i in user]
+  return render_template('index.html', context = 'setPassword', firstName = user[0]['first_name'], lastName = user[0]['last_name'], userId = user[0]['id'])
   
 @app.route('/sendMail', methods=['POST'])
 def sendMail():
@@ -45,7 +45,7 @@ def sendMail():
   try:
     mail.send(msg)
     logger.info('email sent for ' + userEmail + " has been sent")
-    db_session.query(User).filter(User.email==userEmail).update({'token': token}, synchronize_session='fetch')
+    db_session.query(User).filter(User.email==userEmail).update({'token': token, 'pending': False}, synchronize_session='fetch')
     db_session.commit()
   except SMTPException as error:
     logger.error('email for ' + userEmail + ' failed to send')

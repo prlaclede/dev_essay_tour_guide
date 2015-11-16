@@ -2,11 +2,9 @@
 
 {% block content %}
 <div class='map-container'>
-    {% if not setPassword %}
-        {% if not loggedIn %}
-            {% include "splashPage.html" %}
-        {% endif %}
-    {% elif setPassword %}
+    {% if context == 'loggedOut' %}
+        {% include "splashPage.html" %}
+    {% elif context == 'setPassword' %}
         {% include "setPassword.html" %}
     {% endif %}
     {% include "popup.html" %}
