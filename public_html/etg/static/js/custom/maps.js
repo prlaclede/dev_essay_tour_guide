@@ -88,27 +88,29 @@ $(function (mapsLogic, $, undefined) {
   
   var newMarkerListener;
   
-  $('#mapAddToggle').on('click', function() {
-    console.log('add marker');
-    $.getJSON('/setMapMode', {
-      mode: 'edit'
-    }).done(function(response) {
-      newMarkerListener = google.maps.event.addListener(map, 'click', function(event) {
-        if (allowedBounds.contains(event.latLng)) {
-         mapsLogic.placeNewMarker(event.latLng);
-        }
-      });
-    });
-  });
+  $('body')
   
-  $('#mapViewToggle').on('click', function() {
-    $.getJSON('/setMapMode', {
-      mode: 'view'
-    }).done(function(response) {
-      console.log(response);
-      newMarkerListener.remove();
-    });
-  });
+          .on('click', '#mapAddToggle', function() {
+            console.log('add marker');
+            $.getJSON('/setMapMode', {
+              mode: 'edit'
+            }).done(function(response) {
+              newMarkerListener = google.maps.event.addListener(map, 'click', function(event) {
+                if (allowedBounds.contains(event.latLng)) {
+                 mapsLogic.placeNewMarker(event.latLng);
+                }
+              });
+            });
+          })
+  
+          .on('click', '#mapViewToggle', function() {
+            $.getJSON('/setMapMode', {
+              mode: 'view'
+            }).done(function(response) {
+              console.log(response);
+              newMarkerListener.remove();
+            });
+          });
   
   function placeMarkers(markerJSON, essayJSON) {
     var currentMarker;
@@ -146,18 +148,20 @@ $(function (mapsLogic, $, undefined) {
   }
   
   function essayInfoTab(essayJSON) {
-    var essayTitle = essayJSON['title'].replace(/(.*)\.(.*?)$/, "$1");
-    $('.essayTabs').find('li.active').removeClass('active');
-    $('.essayTabContent').find('div.active.in').removeClass('active in');
-    $('.essayTabs').append("<li class='active'> \
-                              <a data-toggle='tab' href='#" + essayJSON['id'] + "'>" + essayJSON['title'] + " \
-                                <span class='closeTab'>" + etgLogic.generateSVG('close') + "</span> \
-                              </a> \
-                            </li>");
-    $('.essayTabContent').append("<div id='" + essayJSON['id'] + "' class='tab-pane fade in active'> \
-                                    <h3>" + essayJSON['title'] + "</h3> \
-                                    <a href='" + essayJSON['doc_link'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
-                                  </div>");
+    //var essayTitle = essayJSON['title'].replace(/(.*)\.(.*?)$/, "$1");
+    if (!$('.essayTabs').find('#' + essayJSON['id']).length) {
+      $('.essayTabs').find('li.active').removeClass('active');
+      $('.essayTabContent').find('div.active.in').removeClass('active in');
+      $('.essayTabs').append("<li class='active' id='" + essayJSON['id'] + "'> \
+                                <a data-toggle='tab' href='#" + essayJSON['id'] + "'>" + essayJSON['title'] + " \
+                                  <span class='closeTab'>" + etgLogic.generateSVG('close') + "</span> \
+                                </a> \
+                              </li>");
+      $('.essayTabContent').append("<div id='" + essayJSON['id'] + "' class='tab-pane fade in active'> \
+                                      <h3>" + essayJSON['title'] + "</h3> \
+                                      <a href='" + essayJSON['doc_link'] + "' type='button' class='eassayLinkButton btn btn-sm btn-info' target='_blank'>View</a> \
+                                    </div>");
+    }
   }
   
   function generateUploadForm(location) {
