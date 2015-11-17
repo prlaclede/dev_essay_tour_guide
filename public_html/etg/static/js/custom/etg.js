@@ -146,18 +146,24 @@ $(function (etgLogic, $, undefined) {
         
         .on('click', '.setPasswordButton', function() {
             var thisForm = $(this).closest('#setPasswordForm');
-            $.ajax({
-                url: '/setPassword',
-                type: 'POST',
-                data: thisForm.serialize(),
-                dataType: "html",
-                success: function(response) {
-                    window.location = response; 
-                },
-                error: function (error) {
-                    return("error" + JSON.stringify(error));
-                }
-            });
+            var pass1Val = thisForm.find('#password').val();
+            var pass2Val = thisForm.find('#passwordVerify').val();
+            if (pass1Val == pass2Val) {
+                $.ajax({
+                    url: '/setPassword',
+                    type: 'POST',
+                    data: thisForm.serialize(),
+                    dataType: "html",
+                    success: function(response) {
+                        window.location = response; 
+                    },
+                    error: function (error) {
+                        return("error" + JSON.stringify(error));
+                    }
+                });
+            } else {
+                thisForm.closest('.modal-body').before(generateAlert("warning", "The passwords don't match!"));
+            }
         })
     
         .on('click', '#pendingUsers', function() {
