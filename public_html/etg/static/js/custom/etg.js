@@ -41,7 +41,7 @@ $(function (etgLogic, $, undefined) {
         .on('click', '.loginButton', function() {
             var thisForm = $(this).closest('#loginForm');
             if (!isValidEmailAddress(thisForm.find('.emailField').val())) {
-                $('.modal-header').after(generateAlert('warning', 'Invalid Email!'));
+                thisForm.closest('.modal-body').before(generateAlert('warning', 'Invalid Email!'));
             } else {
                 $.ajax({
                     url: '/login',
@@ -51,12 +51,12 @@ $(function (etgLogic, $, undefined) {
                         if (response != undefined) {
                             var user = response['user'][0];
                             if (user != undefined) {
-                                $('.modal-header').after(generateAlert('success', 'Sucessful login!'));
+                                thisForm.closest('.modal-body').before(generateAlert('success', 'Sucessful login!'));
                                 $('#splash_modal').modal('hide');
                                 $('#accountActionPopup').modal('hide');
                                 loadUser(user);
                             } else {
-                                $('.modal-header').after(generateAlert('warning', 'Email and/or Password information is incorrect!'));
+                                thisForm.closest('.modal-body').before(generateAlert('warning', 'Email and/or Password information is incorrect!'));
                             }
                         }
                     },
@@ -70,16 +70,19 @@ $(function (etgLogic, $, undefined) {
         .on('click', '.registerButton', function() {
             var thisForm = $(this).closest('#registerForm');
             if (!isValidEmailAddress(thisForm.find('.emailField').val())) {
-                $('.modal-header').after(generateAlert('warning', 'Invalid Email!'));
+                thisForm.closest('.modal-body').before(generateAlert('warning', 'Invalid Email!'));
             } else {
                 $.ajax({
                     url: '/register',
                     data: thisForm.serialize(),
                     type: 'POST',
                     success: function (response) {
-                        if (response != undefined) {
+                        if (response['error']) {
                             var emailParams = response['emailParams'];
-                            $('.modal-header').after(generateAlert('success', 'You will recieve an email when your account has been approved.'));
+                            thisForm.closest('.modal-body').before(generateAlert('warning', 'That email has already been registered!'));
+                        } else {
+                            var emailParams = response['emailParams'];
+                            thisForm.closest('.modal-body').before(generateAlert('success', 'You will recieve an email when your account has been approved.'));
                         }
                     },
                     error: function (error) {

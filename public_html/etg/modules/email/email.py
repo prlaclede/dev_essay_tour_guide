@@ -12,7 +12,8 @@ class Email():
       'MAIL_USE_SSL': True,
       'MAIL_USE_TLS': False,
       'MAIL_USERNAME': 'fredessaytours@gmail.com',
-      'MAIL_PASSWORD': 'fredessaytour'
+      'MAIL_PASSWORD': 'fredessaytour',
+      'MAIL_DEFAULT_SENDER': 'noreploy@tourfredericksburgva.com'
     }
     
     SECRET_KEY = 'wow_so_secret',
@@ -33,7 +34,7 @@ class Email():
         'Please confirm your account on ETG!',
         recipients=[to],
         html=template,
-        sender=self.configProperties['MAIL_USERNAME']
+        sender=self.configProperties['MAIL_DEFAULT_SENDER']
       )
       return msg
       

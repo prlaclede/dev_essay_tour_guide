@@ -93,13 +93,20 @@ def userLogin(email, password):
     return jsonify(user=user)
  
 def userRegister(email, first, last):
-    user = User(email=email, first_name=first, last_name=last, pending=True, account_type_id_fk=2, instr_id_fk=2)
     
-    try:
-        db_session.add(user)
-        db_session.commit()
-        logger.info('added user ' + email)
-    except:
-        logger.error('new user insert failed for ' + email)
+    checkUser = db_session.query(User).filter(User.email==email).first()
     
-    return jsonify(emailParams={'email': email, 'first': first, 'last': last})
+    if (not checkUser):
+        newUser = User(email=email, first_name=first, last_name=last, pending=True, account_type_id_fk=2, instr_id_fk=2)
+        
+        try:
+            db_session.add(newUser)
+            db_session.commit()
+            logger.info('added user ' + email)
+        except:
+            logger.error('new user insert failed for ' + email)
+    
+        return jsonify(emailParams={'email': email, 'first': first, 'last': last})
+    else:
+        logger.error('user already exists')
+        return jsonify(error='duplicate')
