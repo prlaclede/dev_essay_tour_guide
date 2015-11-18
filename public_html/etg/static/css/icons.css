@@ -38,3 +38,14 @@
 #brandLink > .brandIcon {
   fill: #b2dbfb;
 }
+
+.pendingLocation {
+  height: 18px;
+  width: 40px;
+  margin: 0px 0px 0px 30px;
+  fill: #757575;
+}
+
+.pendingLocation:hover {
+  fill: green;
+}

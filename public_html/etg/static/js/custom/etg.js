@@ -322,6 +322,12 @@ $(function (etgLogic, $, undefined) {
             var tabId = $this.closest('a').attr('href');
             $(tabId).remove();
             $this.closest('li').remove();
+        })
+        
+        .on('mouseover', '.pendingLocation', function() {
+           $(this).addClass('animated flipInX').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+               $(this).removeClass('animated flipInX');
+           });
         });
     
     function loadUser (user) {
@@ -395,6 +401,7 @@ $(function (etgLogic, $, undefined) {
     }
     
     function generatePendingEssay(essay) {
+        var popoverMeta = 'data-content="Popover with data-trigger" rel="popover" data-placement="bottom" data-original-title="Title" data-trigger="hover"'
         var entry = '<tr class="pendingEssay"> \
                         <input type="hidden" name="markerId" value="' + essay['marker'][0]['id'] + '"> \
                         <input type="hidden" name="essayId" value="' + essay['id'] + '"> \
@@ -403,7 +410,9 @@ $(function (etgLogic, $, undefined) {
                         <td class="email">' + essay['user'][0]['email'] + '</td> \
                         <td><button type="button" class="btn btn-sm approveButton">' + etgLogic.generateSVG('check') + '</button></td>\
                         <td><button type="button" class="btn btn-sm denyButton">' + etgLogic.generateSVG('close') + '</button></td>\
+                        <td class="markerLocation' + popoverMeta + '>' + etgLogic.generateSVG('map', 'pendingLocation') + '</td> \
                     </tr>';
+        $('.markerLocation').popover();
         return entry;
     }
     
@@ -414,6 +423,7 @@ $(function (etgLogic, $, undefined) {
                         <th>' + ((type === 'users') ? 'Email' : 'User Email') + '</th> \
                         <th>Approve</th> \
                         <th>Deny</th> \
+                        ' + ((type === 'essays') ? '<th>View Location</th>' : '') + '\
                      </tr>'
         return header;
     }
