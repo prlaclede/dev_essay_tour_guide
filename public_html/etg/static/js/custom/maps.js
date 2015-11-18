@@ -192,11 +192,11 @@ $(function (mapsLogic, $, undefined) {
   
   mapsLogic.geocodeLatLng = function (lat, lng) {
     var geocoder = new google.maps.Geocoder();
-    gLatLng = {'lat': parseInt(lat), 'lng': parseInt(lng)};
+    gLatLng = {'lat': parseFloat(lat), 'lng': parseFloat(lng)};
     geocoder.geocode({'location': gLatLng}, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
         if (results[1]) {
-          markAddr = (results[1].formatted_address);
+          markAddr = (results[1].address_components);
         } else {
           markAddr = ('error, no address found');
         }
