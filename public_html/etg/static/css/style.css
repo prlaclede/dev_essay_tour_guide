@@ -98,3 +98,8 @@ body, html {
 .closeTab:hover > div.im {
   fill: red;
 }
+
+.popoverMap {
+  height: 275px;
+  width: 275px;
+}

@@ -324,10 +324,27 @@ $(function (etgLogic, $, undefined) {
             $this.closest('li').remove();
         })
         
-        .on('mouseover', '.pendingLocation', function() {
+        .on('click', '.pendingLocation', function() {
+            var row = $(this).closest('.pendingEssay');
+            var thisLat = row.find("input[name='markerLat']").val();
+            var thisLng = row.find("input[name='markerLng']").val()
            $(this).addClass('animated flipInX').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                $(this).removeClass('animated flipInX');
            });
+           var mapProp = {
+            center: new google.maps.LatLng(thisLat, thisLng),
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+           $('.markerLocation').popover('show');
+           var popoverId = $('.markerLocation').attr('aria-describedby');
+           var popoverContent = $('#' + popoverId).find('.popover-content').addClass('popoverMap');
+           var popoverMap = new google.maps.Map(popoverContent[0], mapProp);
+           new google.maps.Marker ({
+              position: new google.maps.LatLng(thisLat, thisLng),
+              animation: google.maps.Animation.DROP,
+            }).setMap(popoverMap);
+            $(this).popover('show');
         });
     
     function loadUser (user) {
@@ -401,18 +418,20 @@ $(function (etgLogic, $, undefined) {
     }
     
     function generatePendingEssay(essay) {
-        var popoverMeta = 'data-content="Popover with data-trigger" rel="popover" data-placement="bottom" data-original-title="Title" data-trigger="hover"'
+        var popoverMeta = 'data-toggle="popover" data-container="body" data-placement="right" title="Popover title" data-content="blah blah blah"';
+        var marker = essay['marker'][0];
         var entry = '<tr class="pendingEssay"> \
-                        <input type="hidden" name="markerId" value="' + essay['marker'][0]['id'] + '"> \
+                        <input type="hidden" name="markerId" value="' + marker['id'] + '"> \
                         <input type="hidden" name="essayId" value="' + essay['id'] + '"> \
+                        <input type="hidden" name="markerLat" value="' + marker['latitude'] + '"> \
+                        <input type="hidden" name="markerLng" value="' + marker['longitude'] + '"> \
                         <td class="title">' + essay['title'] + '</td> \
                         <td class="address">' + essay['marker'][0]['address'] + '</td> \
                         <td class="email">' + essay['user'][0]['email'] + '</td> \
                         <td><button type="button" class="btn btn-sm approveButton">' + etgLogic.generateSVG('check') + '</button></td>\
                         <td><button type="button" class="btn btn-sm denyButton">' + etgLogic.generateSVG('close') + '</button></td>\
-                        <td class="markerLocation' + popoverMeta + '>' + etgLogic.generateSVG('map', 'pendingLocation') + '</td> \
+                        <td class="markerLocation ' + popoverMeta + '>' + etgLogic.generateSVG('map', 'pendingLocation') + '</td> \
                     </tr>';
-        $('.markerLocation').popover();
         return entry;
     }
     
