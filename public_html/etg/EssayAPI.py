@@ -27,12 +27,13 @@ def recentEssays():
 def getPendingUsers():
     logger.info('getting pending essays')
     try:
-      essays = db_session.query(Essay).filter(Essay.pending==1)
+      essays = db_session.query(Essay).filter(Essay.pending==1).all()
       essays = [essay.serialize for essay in essays]
+      
       for essay in essays:
-        associatedMarker = db_session.query(Marker).filter(Marker.id==essay['marker_id_fk'])
+        associatedMarker = db_session.query(Marker).filter(Marker.id==essay['marker_id_fk']).all()
         associatedMarker = [i.serialize for i in associatedMarker]
-        associatedUser = db_session.query(User).filter(User.id==essay['user_id_fk'])
+        associatedUser = db_session.query(User).filter(User.id==essay['user_id_fk']).all()
         associatedUser = [i.serialize for i in associatedUser]
         essay['marker'] = associatedMarker
         essay['user'] = associatedUser

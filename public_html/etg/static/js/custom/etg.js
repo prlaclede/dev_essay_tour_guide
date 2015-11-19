@@ -280,10 +280,10 @@ $(function (etgLogic, $, undefined) {
         .on('click', '.submitEssay', function() {
             var thisPopup = $(this).closest('.essayUploadLink');
             console.log('starting drive post');
-            var marker = $(this).closest('.essayUploadLink');
             var fileForm = new FormData($('#newFileForm')[0]);
-            fileForm.append('lat', marker.attr('lat'));
-            fileForm.append('long', marker.attr('long'));
+            console.log(thisPopup.attr('lat'));
+            fileForm.append('lat', thisPopup.attr('lat'));
+            fileForm.append('lng', thisPopup.attr('lng'));
             $.ajax({
                 url: '/fileUpload',
                 type: 'POST',
@@ -292,7 +292,7 @@ $(function (etgLogic, $, undefined) {
                 contentType: false,
             }).done(function(response) {
                 var meta = response['meta'];
-                mapsLogic.geocodeLatLng(meta['lat'], meta['long']);
+                mapsLogic.geocodeLatLng(meta['lat'], meta['lng']);
                 var markAddr = mapsLogic.returnMarkAddr();
                 response['meta']['addr'] = markAddr
                 $.ajax({
@@ -328,23 +328,22 @@ $(function (etgLogic, $, undefined) {
             var row = $(this).closest('.pendingEssay');
             var thisLat = row.find("input[name='markerLat']").val();
             var thisLng = row.find("input[name='markerLng']").val()
-           $(this).addClass('animated flipInX').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-               $(this).removeClass('animated flipInX');
-           });
-           var mapProp = {
-            center: new google.maps.LatLng(thisLat, thisLng),
-            zoom: 15,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          };
-           $('.markerLocation').popover('show');
-           var popoverId = $('.markerLocation').attr('aria-describedby');
-           var popoverContent = $('#' + popoverId).find('.popover-content').addClass('popoverMap');
-           var popoverMap = new google.maps.Map(popoverContent[0], mapProp);
-           new google.maps.Marker ({
+            $(this).addClass('animated flipInX').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+                $(this).removeClass('animated flipInX');
+            });
+            var mapProp = {
+                center: new google.maps.LatLng(thisLat, thisLng),
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            $('.markerLocation').popover('show');
+            var popoverId = $('.markerLocation').attr('aria-describedby');
+            var popoverContent = $('#' + popoverId).find('.popover-content').addClass('popoverMap');
+            var popoverMap = new google.maps.Map(popoverContent[0], mapProp);
+            new google.maps.Marker ({
               position: new google.maps.LatLng(thisLat, thisLng),
               animation: google.maps.Animation.DROP,
             }).setMap(popoverMap);
-            $(this).popover('show');
         });
     
     function loadUser (user) {
@@ -418,8 +417,8 @@ $(function (etgLogic, $, undefined) {
     }
     
     function generatePendingEssay(essay) {
-        var popoverMeta = 'data-toggle="popover" data-container="body" data-placement="right" title="Popover title" data-content="blah blah blah"';
-        var marker = essay['marker'][0];
+        var popoverMeta = 'data-toggle="popover" data-container="body" data-placement="right" title="Marker Preview" data-content=""';
+        var marker = essay['marker'];
         var entry = '<tr class="pendingEssay"> \
                         <input type="hidden" name="markerId" value="' + marker['id'] + '"> \
                         <input type="hidden" name="essayId" value="' + essay['id'] + '"> \

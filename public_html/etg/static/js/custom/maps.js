@@ -148,7 +148,6 @@ $(function (mapsLogic, $, undefined) {
   }
   
   function essayInfoTab(essayJSON) {
-    //var essayTitle = essayJSON['title'].replace(/(.*)\.(.*?)$/, "$1");
     if (!$('.essayTabs').find('#' + essayJSON['id']).length) {
       $('.essayTabs').find('li.active').removeClass('active');
       $('.essayTabContent').find('div.active.in').removeClass('active in');
@@ -165,7 +164,8 @@ $(function (mapsLogic, $, undefined) {
   }
   
   function generateUploadForm(location) {
-    var uploadForm = "<div class='essayUploadLink' lat=" + location['G'] + " long=" + location['K'] + " addr=" + mapsLogic.geocodeLatLng(location['G'], location['K']) + "> \
+    mapsLogic.geocodeLatLng(location.lat(), location.lng())
+    var uploadForm = "<div class='essayUploadLink' lat=" + location.lat() + " lng=" + location.lng() + "> \
                         <h6 class='essayLinkTitle'>Upload Essay</h6> \
                         <form id='newFileForm' name='newFileForm' method='post' enctype='multipart/form-data'> \
                           <input id='newFile' type='file' name='file' accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'> \
@@ -192,11 +192,12 @@ $(function (mapsLogic, $, undefined) {
   
   mapsLogic.geocodeLatLng = function (lat, lng) {
     var geocoder = new google.maps.Geocoder();
-    gLatLng = {'lat': parseFloat(lat), 'lng': parseFloat(lng)};
+    gLatLng = {'lat': lat, 'lng': lng};
     geocoder.geocode({'location': gLatLng}, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
         if (results[1]) {
-          markAddr = (results[1].address_components);
+          markAddr = (results[1].formatted_address);
+          console.log(markAddr);
         } else {
           markAddr = ('error, no address found');
         }

@@ -8,25 +8,26 @@ marker_api = Blueprint('marker_api', __name__)
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-
 @marker_api.route('/loadMarkers')
 def loadMarkers():
   try:
     markerList = db_session.query(Marker).filter(Marker.pending!=1).all()
+    markerList = [i.serialize for i in markerList]
   except:
     logger.error('error loading markers')
     
-  return jsonify(markerList=[i.serialize for i in markerList])
+  return jsonify(markerList=markerList)
   
 @marker_api.route('/loadMarkerEssays')
 def loadMarkerEssays():
   markerID = request.args.get('markerID', 0, type=int)
   try:
     essayList = db_session.query(Essay).filter(Essay.marker_id_fk==markerID).all()
+    essayList = [i.serialize for i in essayList]
   except:
     logger.error('error loading marker essays')
     
-  return jsonify(essayList=[i.serialize for i in essayList])
+  return jsonify(essayList=essayList)
 
 @marker_api.route('/setMapMode')
 def mapEdit():
@@ -42,7 +43,7 @@ def getMapMode():
 @marker_api.route('/newMarker', methods=['POST'])
 def newMarker():
   latitude = request.values.get('lat')
-  longitude = request.values.get('long')
+  longitude = request.values.get('lng')
   address = request.values.get('addr')
   user = request.values.get('userId')
   essayTitle = request.values.get('essayTitle')
@@ -53,7 +54,6 @@ def newMarker():
   print (latitude + " " + longitude)
   try:
     newMarker = Marker(pending=True, address=address, latitude=latitude, longitude=longitude)
-    print(newMarker)
     db_session.add(newMarker)
     db_session.commit()
     thisId = db_session.query(func.max(Marker.id)).first()

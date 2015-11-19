@@ -12,21 +12,18 @@ driveAccess_api = Blueprint('driveAccess_api', __name__)
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
     
 @driveAccess_api.route('/fileUpload', methods=['POST'])
 def fileUpload():
   file = request.files['file']
-  latitude = request.values.get('lat')
-  longitude = request.values.get('long')
   filename = secure_filename(file.filename)
   file.save(os.path.join('etg/userDocs/', filename))
   filePath = 'etg/userDocs/' + filename
   toReturn = {}
   toReturn['userId'] = session.get('user')['id']
   toReturn['essayTitle'] = filename
-  toReturn['lat'] = latitude
-  toReturn['long'] = longitude
+  toReturn['lat'] = request.values.get('lat')
+  toReturn['lng'] = request.values.get('lng')
   
   drive = Drive()
   creds = drive.getCreds()
@@ -56,7 +53,7 @@ def fileUpload():
     toReturn['docLink'] = file['alternateLink']
     return jsonify(meta=toReturn)
   except errors.HttpError, error:
-    print 'An error occured: %s' % error
+    logger.error('An error occured: %s' % error)
     return None
 
 @driveAccess_api.route('/getFile', methods=['POST'])
