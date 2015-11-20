@@ -7,10 +7,9 @@
         <meta name="keywords" content="Essay Tours, Fredericksburg Tours" />
         <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
         <meta name="google-site-verification" content="6EDbGNPpG2JpKImJ8pEguAVu5SIqAXfZ0Z9TdEQoix8" />
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/animate.css') }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icons.css') }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+        {% assets "all_CSS" %}
+            <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+        {% endassets %}
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/ico"/>
     </head>
     <body>
@@ -44,11 +43,9 @@
         <div class="siteContent">
           {% block content %}
           {% endblock %}
-        </div>  
-        <script src="{{ url_for('static', filename = 'js/jquery-1.11.3.min.js') }}"></script>
-        <script src="{{ url_for('static', filename = 'js/bootstrap/bootstrap.min.js') }}"></script>
-        <script src="{{ url_for('static', filename = 'js/custom/etg.js') }}"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDeovcMJI1fqgbiZeyKwNDiBI3N8ghcmEc&dummy=.js"></script>
-        <script src="{{ url_for('static', filename = 'js/custom/maps.js') }}"></script>
+        </div>
+        {% assets "all_JS" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
     </body>
 </html>
