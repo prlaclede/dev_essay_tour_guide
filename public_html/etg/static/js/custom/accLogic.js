@@ -1,5 +1,5 @@
 $(function (accLogic, $, undefined) {
-    //TODO: incapsulate into INIT function for extendability purposes
+
     $(document).keypress(function(e){
         if (e.which == 13){
             $(".splashLoginButton").click();
@@ -12,6 +12,8 @@ $(function (accLogic, $, undefined) {
             accLogic.loadUser(user);
         }
     });
+    
+/* jQuery listeners */
     
     $('body')
     
@@ -139,7 +141,9 @@ $(function (accLogic, $, undefined) {
             } else {
                 thisForm.closest('.modal-body').before(etgLogic.generateAlert("warning", "The passwords don't match!"));
             }
-        })
+        });
+        
+/* end jQuery listeners */  
     
     accLogic.loadUser = function (user) {
         $('#accountActionSpan').show();
