@@ -19,7 +19,7 @@ $(function (accLogic, $, undefined) {
     
         .on('click', '.loginButton', function() {
             var thisForm = $(this).closest('#loginForm');
-            if (!isValidEmailAddress(thisForm.find('.emailField').val())) {
+            if (!accLogic.isValidEmailAddress(thisForm.find('.emailField').val())) {
                 thisForm.closest('.modal-body').before(etgLogic.generateAlert('warning', 'Invalid Email!'));
             } else {
                 $.ajax({
@@ -48,7 +48,7 @@ $(function (accLogic, $, undefined) {
     
         .on('click', '.registerButton', function() {
             var thisForm = $(this).closest('#registerForm');
-            if (!isValidEmailAddress(thisForm.find('.emailField').val())) {
+            if (!accLogic.isValidEmailAddress(thisForm.find('.emailField').val())) {
                 thisForm.closest('.modal-body').before(etgLogic.generateAlert('warning', 'Invalid Email!'));
             } else {
                 $.ajax({

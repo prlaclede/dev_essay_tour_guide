@@ -46,6 +46,14 @@ def getPendingUsers():
         
     return jsonify(users=users)
     
+@user_api.route('/generatePendingUser', methods=['POST'])
+def generatePendingUser():
+    userId = request.values.get('id')
+    firstName = request.values.get('first_name')
+    lastName = request.values.get('last_name')
+    email = request.values.get('email')
+    return render_template('pendingUser.html', userId=userId, firstName=firstName, lastName=lastName, email=email)
+    
 @user_api.route('/setPassword', methods=['POST'])
 def setPassword():
     userPass = request.form['password']

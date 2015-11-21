@@ -49,7 +49,6 @@ all_CSS = Bundle(
 
 assets.register('all_CSS', all_CSS)    
 assets.register('all_JS', all_JS)
-#assets.register('js_plugin', pluginJS)
 
 for key, value in emailConfigs.iteritems():
     app.config.update(key = value)

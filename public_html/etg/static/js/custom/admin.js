@@ -10,7 +10,7 @@ $(function (adminLogic, $, undefined) {
                $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
                $('.pendingTableHead').append(adminLogic.generateTableHeader('users'));
                $.each(users, function() {
-                   $('.pendingTableBody').append(adminLogic.generatePendingUser(this));
+                   adminLogic.generatePendingUser(this, $('.pendingTableBody'))
                });
             });
             $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
@@ -22,7 +22,7 @@ $(function (adminLogic, $, undefined) {
               $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
               $('.pendingTableHead').append(adminLogic.generateTableHeader('essays'));
               $.each(essays, function() {
-                  $('.pendingTableBody').append(adminLogic.generatePendingEssay(this));
+                  var essayHTML = adminLogic.generatePendingEssay(this, $('.pendingTableBody'));
               });
            });
            $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
@@ -124,7 +124,7 @@ $(function (adminLogic, $, undefined) {
                 zoom: 15,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            $('.markerLocation').popover('show');
+            $(this).closest('.markerLocation').popover('show');
             var popoverId = $('.markerLocation').attr('aria-describedby');
             var popoverContent = $('#' + popoverId).find('.popover-content').addClass('popoverMap');
             var popoverMap = new google.maps.Map(popoverContent[0], mapProp);
@@ -136,34 +136,35 @@ $(function (adminLogic, $, undefined) {
         
 /* end jQuery listeners */
     
-    adminLogic.generatePendingUser = function (user) {
-        var entry = '<tr class="pendingUser"> \
-                        <input type="hidden" name="userId" value="' + user['id'] + '"> \
-                        <td class="first">' + user['first_name'] + '</td> \
-                        <td class="last">' + user['last_name'] + '</td> \
-                        <td class="email">' + user['email'] + '</td> \
-                        <td><button type="button" class="btn btn-sm approveButton">' + etgLogic.generateSVG('check') + '</button></td>\
-                        <td><button type="button" class="btn btn-sm denyButton">' + etgLogic.generateSVG('close') + '</button></td>\
-                    </tr>';
-        return entry;
+    adminLogic.generatePendingUser = function (user, element) {
+        console.log(user);
+        $.ajax({
+            url: '/generatePendingUser',
+            data: user,
+            type: "POST",
+            dataType: "html",
+            success: function(response) {
+                element.append(response);
+            },
+            error: function (error) {
+                return("error" + JSON.stringify(error));
+            }
+        });
     }
     
-    adminLogic.generatePendingEssay = function (essay) {
-        var popoverMeta = 'data-toggle="popover" data-container="body" data-placement="right" title="Marker Preview" data-content=""';
-        var marker = essay['marker'];
-        var entry = '<tr class="pendingEssay"> \
-                        <input type="hidden" name="markerId" value="' + marker['id'] + '"> \
-                        <input type="hidden" name="essayId" value="' + essay['id'] + '"> \
-                        <input type="hidden" name="markerLat" value="' + marker['latitude'] + '"> \
-                        <input type="hidden" name="markerLng" value="' + marker['longitude'] + '"> \
-                        <td class="title">' + essay['title'] + '</td> \
-                        <td class="address">' + essay['marker'][0]['address'] + '</td> \
-                        <td class="email">' + essay['user'][0]['email'] + '</td> \
-                        <td><button type="button" class="btn btn-sm approveButton">' + etgLogic.generateSVG('check') + '</button></td>\
-                        <td><button type="button" class="btn btn-sm denyButton">' + etgLogic.generateSVG('close') + '</button></td>\
-                        <td class="markerLocation ' + popoverMeta + '>' + etgLogic.generateSVG('map', 'pendingLocation') + '</td> \
-                    </tr>';
-        return entry;
+    adminLogic.generatePendingEssay = function (essay, element) {
+        $.ajax({
+            url: '/generatePendingEssay',
+            data: essay,
+            type: "POST",
+            dataType: "html",
+            success: function(response) {
+                element.append(response);
+            },
+            error: function (error) {
+                return("error" + JSON.stringify(error));
+            }
+        });
     }
     
     adminLogic.generateTableHeader = function (type) {

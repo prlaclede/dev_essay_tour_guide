@@ -24,7 +24,7 @@ def recentEssays():
   return render_template('recentEssay.html', name=name)
   
 @essay_api.route('/pendingEssays')
-def getPendingUsers():
+def getPendingEssays():
     logger.info('getting pending essays')
     try:
       essays = db_session.query(Essay).filter(Essay.pending==1).all()
@@ -41,6 +41,18 @@ def getPendingUsers():
       logger.error('error loading pending essays')
 
     return jsonify(essays=essays)
+  
+@essay_api.route('/generatePendingEssay', methods=['POST'])
+def generatePendingEssay():
+  markerId = request.values.get('marker[0][id]')
+  essayId = request.values.get('id')
+  lat = request.values.get('marker[0][latitude]')
+  lng = request.values.get('marker[0][longitude]')
+  title = request.values.get('title')
+  address = request.values.get('marker[0][address]')
+  email = request.values.get('user[0][email]')
+  return render_template('pendingEssay.html', markerId=markerId, essayId=essayId, 
+  lat=lat, lng=lng, title=title, address=address, email=email)
   
 @essay_api.route('/newEssay', methods=['POST'])
 def newEssay():

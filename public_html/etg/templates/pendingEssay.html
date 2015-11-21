@@ -1,0 +1,14 @@
+{% from "icon.html" import icon with context %}
+<tr class="pendingEssay"> 
+    <input type="hidden" name="markerId" value="{{markerId}}"> 
+    <input type="hidden" name="essayId" value="{{essayId}}"> 
+    <input type="hidden" name="markerLat" value="{{lat}}"> 
+    <input type="hidden" name="markerLng" value="{{lng}}"> 
+    <td class="title">{{title}}</td>
+    <td class="address">{{address}}</td> 
+    <td class="email">{{email}}</td> 
+    <td><button type="button" class="btn btn-sm approveButton">{{ icon([''], 'check') }}</button></td>
+    <td><button type="button" class="btn btn-sm denyButton">{{ icon([''], 'close') }}</button></td>
+    <td class="markerLocation" data-toggle="popover" data-container="body" data-placement="right" title="Marker Preview" data-content="">
+        {{ icon(['pendingLocation'], 'map') }}</td>
+</tr>
