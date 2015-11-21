@@ -1,6 +1,6 @@
 $(function (adminLogic, $, undefined) {
     
-/* jQuery listeners */
+/* ---------- jQuery listeners ---------- */
 
     $('body')
     
@@ -119,25 +119,25 @@ $(function (adminLogic, $, undefined) {
             $(this).addClass('animated flipInX').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                 $(this).removeClass('animated flipInX');
             });
+            $(this).closest('.markerLocation').popover('show');
             var mapProp = {
                 center: new google.maps.LatLng(thisLat, thisLng),
                 zoom: 15,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            $(this).closest('.markerLocation').popover('show');
-            var popoverId = $('.markerLocation').attr('aria-describedby');
+            var popoverId = $(this).closest('.markerLocation').attr('aria-describedby');
             var popoverContent = $('#' + popoverId).find('.popover-content').addClass('popoverMap');
             var popoverMap = new google.maps.Map(popoverContent[0], mapProp);
             new google.maps.Marker ({
               position: new google.maps.LatLng(thisLat, thisLng),
               animation: google.maps.Animation.DROP,
             }).setMap(popoverMap);
+            
         });
         
-/* end jQuery listeners */
+/* ---------- end jQuery listeners ---------- */
     
     adminLogic.generatePendingUser = function (user, element) {
-        console.log(user);
         $.ajax({
             url: '/generatePendingUser',
             data: user,

@@ -27,7 +27,7 @@ $(function (etgLogic, $, undefined) {
        });
     });
 
-/* jQuery listeners */
+/* ---------- jQuery listeners ---------- */
 
     $('body')
     
@@ -93,7 +93,7 @@ $(function (etgLogic, $, undefined) {
             $this.closest('li').remove();
         });
         
-/* end jQuery listeners */     
+/* ---------- end jQuery listeners ---------- */     
     
     etgLogic.generateSVG = function (icon, addClass) {
       var image = "<div class='im " + addClass + "'> \

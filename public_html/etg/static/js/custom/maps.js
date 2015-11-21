@@ -88,6 +88,8 @@ $(function (mapsLogic, $, undefined) {
   
   var newMarkerListener;
   
+/* ---------- jQuery listeners ---------- */
+  
   $('body')
   
           .on('click', '#mapAddToggle', function() {
@@ -105,12 +107,14 @@ $(function (mapsLogic, $, undefined) {
   
           .on('click', '#mapViewToggle', function() {
             $.getJSON('/setMapMode', {
-              mode: 'view'
+              mode: 'views'
             }).done(function(response) {
               console.log(response);
               newMarkerListener.remove();
             });
           });
+
+/* ---------- end jQuery listeners ---------- */
   
   function placeMarkers(markerJSON, essayJSON) {
     var currentMarker;

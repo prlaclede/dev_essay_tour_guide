@@ -13,7 +13,7 @@ $(function (accLogic, $, undefined) {
         }
     });
     
-/* jQuery listeners */
+/* ---------- jQuery listeners ---------- */
     
     $('body')
     
@@ -143,7 +143,7 @@ $(function (accLogic, $, undefined) {
             }
         });
         
-/* end jQuery listeners */  
+/* ---------- end jQuery listeners ---------- */  
     
     accLogic.loadUser = function (user) {
         $('#accountActionSpan').show();
