@@ -152,10 +152,10 @@ $(function (mapsLogic, $, undefined) {
   }
   
   function essayInfoTab(essayJSON) {
-    if (!$('.essayTabs').find('#' + essayJSON['id']).length) {
+    if (!$('.essayTabs').find('#marker' + essayJSON['id']).length) {
       $('.essayTabs').find('li.active').removeClass('active');
       $('.essayTabContent').find('div.active.in').removeClass('active in');
-      $('.essayTabs').append("<li class='active' id=> \
+      $('.essayTabs').append("<li class='active' id='marker" + essayJSON['id'] + "'> \
                                 <a data-toggle='tab' href='#" + essayJSON['id'] + "'>" + essayJSON['title'] + " \
                                   <span class='closeTab'>" + etgLogic.generateSVG('close') + "</span> \
                                 </a> \
