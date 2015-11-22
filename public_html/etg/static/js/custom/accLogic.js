@@ -165,25 +165,26 @@ $(function (accLogic, $, undefined) {
             error: function (error) {
                 return("error" + JSON.stringify(error));
             }
+        }).done(function() {
+            if (user['account_type_id_fk'] == 1) {
+                $.ajax({
+                    url: '/getAdminTools',
+                    type: "POST",
+                    contentType: 'application/json',
+                    dataType: "html",
+                    success: function(response) {
+                        //add admin dropdown tools
+                        $('.featuresNav').append(response);
+                    },
+                    error: function (error) {
+                        return("error" + JSON.stringify(error));
+                    }
+                });
+                $('#welcomeMessage').after(etgLogic.generateSVG('adminAccount', 'accIcon'));
+            } else {
+                $('#welcomeMessage').after(etgLogic.generateSVG('basicAccount', 'accIcon'));;
+            }
         });
-        if (user['account_type_id_fk'] == 1) {
-            $.ajax({
-                url: '/getAdminTools',
-                type: "POST",
-                contentType: 'application/json',
-                dataType: "html",
-                success: function(response) {
-                    //add admin dropdown tools
-                    $('.featuresNav').append(response);
-                },
-                error: function (error) {
-                    return("error" + JSON.stringify(error));
-                }
-            });
-            $('#welcomeMessage').after(etgLogic.generateSVG('adminAccount', 'accIcon'));
-        } else {
-            $('#welcomeMessage').after(etgLogic.generateSVG('basicAccount', 'accIcon'));;
-        }
     }
     
     accLogic.generateProgressBar = function (element) {
