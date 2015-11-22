@@ -54,6 +54,10 @@ def generatePendingUser():
     email = request.values.get('email')
     return render_template('pendingUser.html', userId=userId, firstName=firstName, lastName=lastName, email=email)
     
+@user_api.route('/generateProgressBar', methods=['POST'])
+def generateProgressBar():
+    return render_template('progressBar.html')
+    
 @user_api.route('/setPassword', methods=['POST'])
 def setPassword():
     userPass = request.form['password']

@@ -80,6 +80,10 @@ body, html {
   text-align: center;
 }
 
+.essayUploadProgress {
+  margin: 10px 0px 0px 0px;
+}
+
 .pendingTableBody {
   text-align: left;
 }

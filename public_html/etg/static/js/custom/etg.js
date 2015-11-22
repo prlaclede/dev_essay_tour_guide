@@ -38,6 +38,7 @@ $(function (etgLogic, $, undefined) {
         
         .on('click', '.submitEssay', function() {
             var thisPopup = $(this).closest('.essayUploadLink');
+            accLogic.generateProgressBar(thisPopup);
             console.log('starting drive post');
             var fileForm = new FormData($('#newFileForm')[0]);
             console.log(thisPopup.attr('lat'));
@@ -47,8 +48,22 @@ $(function (etgLogic, $, undefined) {
                 url: '/fileUpload',
                 type: 'POST',
                 data: fileForm,
+                xhrFields: {
+                    // add listener to XMLHTTPRequest object directly for progress (jquery doesn't have this yet)
+                    onprogress: function(progress) {
+                        console.log(progress);
+                        // calculate upload progress
+                        var percentage = (progress.loaded / progress.total) * 100;
+                        // log upload progress to console
+                        console.log('progress', percentage);
+                        if (percentage !== 100) {
+                            console.log('DONE!');
+                        }
+                    }
+                },
                 processData: false,
                 contentType: false,
+                
             }).done(function(response) {
                 var meta = response['meta'];
                 mapsLogic.geocodeLatLng(meta['lat'], meta['lng']);

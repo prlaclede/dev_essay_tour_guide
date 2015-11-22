@@ -123,11 +123,13 @@ $(function (adminLogic, $, undefined) {
             var mapProp = {
                 center: new google.maps.LatLng(thisLat, thisLng),
                 zoom: 15,
+                size: '275x275',
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var popoverId = $(this).closest('.markerLocation').attr('aria-describedby');
             var popoverContent = $('#' + popoverId).find('.popover-content').addClass('popoverMap');
             var popoverMap = new google.maps.Map(popoverContent[0], mapProp);
+            //$(this).closest('.markerLocation').popover('show');
             new google.maps.Marker ({
               position: new google.maps.LatLng(thisLat, thisLng),
               animation: google.maps.Animation.DROP,

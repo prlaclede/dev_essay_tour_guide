@@ -90,6 +90,7 @@ $(function (accLogic, $, undefined) {
                     dataType: "html",
                     success: function(response) {
                         //clear old form, append newly ajax'd form
+                        $('#accountActionPopup').find('.alert').remove();
                         $('#accountActionPopup').find('.modal-body').html('').append(response);
                         $('#accountActionPopup').modal('show').find('.modal-title').html('Login');  
                     },
@@ -112,6 +113,7 @@ $(function (accLogic, $, undefined) {
                 dataType: "html",
                 success: function(response) {
                     //clear old form, append newly ajax'd form
+                    $('#accountActionPopup').find('.alert').remove();
                     $('#accountActionPopup').find('.modal-body').html('').append(response);
                     $('#accountActionPopup').modal('show').find('.modal-title').html('Register');
                 },
@@ -182,6 +184,20 @@ $(function (accLogic, $, undefined) {
         } else {
             $('#welcomeMessage').after(etgLogic.generateSVG('basicAccount', 'accIcon'));;
         }
+    }
+    
+    accLogic.generateProgressBar = function (element) {
+        $.ajax({
+            url: '/generateProgressBar',
+            type: "POST",
+            dataType: "html",
+            success: function(response) {
+                element.append(response);
+            },
+            error: function (error) {
+                return("error" + JSON.stringify(error));
+            }
+        });
     }
     
     accLogic.isValidEmailAddress = function (emailAddress) {
