@@ -43,7 +43,16 @@ def getPendingUsers():
         users = [user.serialize for user in users]
     except:
         logger.error('retrieval of pending users failed')
-        
+    return jsonify(users=users)
+
+@user_api.route('/getAllUsers')
+def getAllUsers():
+    logger.info('getting all users')
+    try:
+        users = db_session.query(User).all()
+        users = [user.serialize for user in users]
+    except:
+        logger.error('failed to get all users')
     return jsonify(users=users)
     
 @user_api.route('/generatePendingUser', methods=['POST'])

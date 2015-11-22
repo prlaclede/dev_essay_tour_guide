@@ -39,7 +39,24 @@ def getPendingEssays():
         essay['user'] = associatedUser
     except:
       logger.error('error loading pending essays')
-
+    return jsonify(essays=essays)
+  
+@essay_api.route('/getAllEssays')
+def getAllEssays():
+    logger.info('getting pending essays')
+    try:
+      essays = db_session.query(Essay).all()
+      essays = [essay.serialize for essay in essays]
+      
+      for essay in essays:
+        associatedMarker = db_session.query(Marker).filter(Marker.id==essay['marker_id_fk']).all()
+        associatedMarker = [i.serialize for i in associatedMarker]
+        associatedUser = db_session.query(User).filter(User.id==essay['user_id_fk']).all()
+        associatedUser = [i.serialize for i in associatedUser]
+        essay['marker'] = associatedMarker
+        essay['user'] = associatedUser
+    except:
+      logger.error('error loading pending essays')
     return jsonify(essays=essays)
   
 @essay_api.route('/generatePendingEssay', methods=['POST'])

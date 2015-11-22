@@ -104,7 +104,6 @@ $(function (etgLogic, $, undefined) {
             previousTab.addClass('active');
             $(prevContent).addClass('active in');
             var tabId = $this.closest('a').attr('href');
-            console.log($(tabId));
             $(tabId).remove();
             $this.closest('li').remove(); 
         });

@@ -28,6 +28,30 @@ $(function (adminLogic, $, undefined) {
            $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
         })
         
+        .on('click', '#allEssays', function() {
+           $.getJSON('/getAllEssays').done(function (response) {
+              var essays = response['essays'];
+              $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
+              $('.pendingTableHead').append(adminLogic.generateTableHeader('essays'));
+              $.each(essays, function() {
+                  var essayHTML = adminLogic.generatePendingEssay(this, $('.pendingTableBody'));
+              });
+           });
+           $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
+        })
+        
+        .on('click', '#allUsers', function() {
+           $.getJSON('/getAllUsers').done(function (response) { 
+               var users = response['users'];
+               $('.pendingTableBody, .pendingTableHead').html(''); //clear previous table data
+               $('.pendingTableHead').append(adminLogic.generateTableHeader('users'));
+               $.each(users, function() {
+                   adminLogic.generatePendingUser(this, $('.pendingTableBody'))
+               });
+            });
+            $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());     
+        })
+        
         .on('click', '.approveButton', function() {
             var row = $(this).closest('tr');
             var tableType = row.attr('class');
