@@ -1,17 +1,3 @@
-/*loadScript('https://maps.googleapis.com/maps/api/js?v=3.key=AIzaSyDeovcMJI1fqgbiZeyKwNDiBI3N8ghcmEc',
-          function() { 
-            console.log('google-loader has been loaded, but not the maps-API ');
-          });
-          
-function loadScript(src,callback){
-
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  if(callback)script.onload=callback;
-  script.src = src;
-  document.body.appendChild(script);
-}
-*/
 var map;
 var markAddr;
 
@@ -196,12 +182,11 @@ $(function (mapsLogic, $, undefined) {
   
   mapsLogic.geocodeLatLng = function (lat, lng) {
     var geocoder = new google.maps.Geocoder();
-    gLatLng = {'lat': parseFloat(lat), 'lng': parseFloat(lng)};
+    var gLatLng = {'lat': parseFloat(lat), 'lng': parseFloat(lng)};
     geocoder.geocode({'location': gLatLng}, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
         if (results[1]) {
           markAddr = (results[1].formatted_address);
-          console.log(markAddr);
         } else {
           markAddr = ('error, no address found');
         }
