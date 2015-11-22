@@ -107,3 +107,9 @@ body, html {
   height: 275px;
   width: 275px;
 }
+
+.pendingContent {
+  max-height: 500px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}

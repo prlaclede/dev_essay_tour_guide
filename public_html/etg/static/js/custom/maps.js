@@ -155,7 +155,7 @@ $(function (mapsLogic, $, undefined) {
     if (!$('.essayTabs').find('#' + essayJSON['id']).length) {
       $('.essayTabs').find('li.active').removeClass('active');
       $('.essayTabContent').find('div.active.in').removeClass('active in');
-      $('.essayTabs').append("<li class='active' id='" + essayJSON['id'] + "'> \
+      $('.essayTabs').append("<li class='active' id=> \
                                 <a data-toggle='tab' href='#" + essayJSON['id'] + "'>" + essayJSON['title'] + " \
                                   <span class='closeTab'>" + etgLogic.generateSVG('close') + "</span> \
                                 </a> \
