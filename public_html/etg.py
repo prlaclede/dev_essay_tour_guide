@@ -2,12 +2,15 @@ from etg import *
 
 @app.route('/')
 def mainIndex():
+  with open ("about.txt", "r") as myfile:
+    about=myfile.read().decode("utf-8")
+    
   if (session.get('user') == None):
     print('no user')
-    return render_template('index.html', context = 'loggedOut')
+    return render_template('index.html', context = 'loggedOut', about=about)
   else: 
     print(session.get('user'))
-    return render_template('index.html', context = 'loggedIn')
+    return render_template('index.html', context = 'loggedIn', about=about)
     
 @app.route('/getRegisterForm', methods=['POST'])
 def returnRegistrationForm():
