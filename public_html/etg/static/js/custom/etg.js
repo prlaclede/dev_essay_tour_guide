@@ -80,7 +80,7 @@ $(function (etgLogic, $, undefined) {
                         data: meta
                     }).done(function(response) {
                         var meta = response['meta'];
-                        etgLogic.swapUploadToPopup(thisPopup, meta);
+                        thisPopup.html("Your essay has been submitted for admin approval!");
                     });
                 });
             });
@@ -122,8 +122,8 @@ $(function (etgLogic, $, undefined) {
     }
     
     etgLogic.generateAlert = function (type, message) {
-    $('.alert').remove();
-    var alert = '<div class="alert alert-' + type + '"> \
+        $('.alert').remove();
+        var alert = '<div class="alert alert-' + type + '"> \
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> \
                 ' + message + '</div>'
         return alert;
