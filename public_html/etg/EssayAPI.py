@@ -11,8 +11,9 @@ logger = logging.getLogger(__name__)
 @essay_api.route('/loadRecentEssays')
 def getAll():
   try:
-    essayList = db_session.query(Essay).filter(Essay.pending!=1).limit(5).all()
+    essayList = db_session.query(Essay).filter(Essay.pending!=1).limit(15).all()
     essayList = [i.serialize for i in essayList]
+    db_session.remove()
   except:
     logger.error('failed to load recent essays')
     
@@ -37,6 +38,7 @@ def getPendingEssays():
         associatedUser = [i.serialize for i in associatedUser]
         essay['marker'] = associatedMarker
         essay['user'] = associatedUser
+        db_session.remove()
     except:
       logger.error('error loading pending essays')
     return jsonify(essays=essays)
@@ -55,6 +57,7 @@ def getAllEssays():
         associatedUser = [i.serialize for i in associatedUser]
         essay['marker'] = associatedMarker
         essay['user'] = associatedUser
+        db_session.remove()
     except:
       logger.error('error loading pending essays')
     return jsonify(essays=essays)
@@ -83,6 +86,7 @@ def newEssay():
     print newEssay
     db_session.add(newEssay)
     db_session.commit()
+    db_session.remove()
   except:
     logger.error('error storing new essay ' + essayTitle)
   return jsonify(meta={'essayTitle': essayTitle, 'driveId': driveId, 'docLink': docLink})
@@ -95,6 +99,7 @@ def approveEssay():
     db_session.query(Essay).filter(Essay.id==essayId).update({'pending': False}, synchronize_session='fetch')
     db_session.query(Marker).filter(Marker.id==markerId).update({'pending': False}, synchronize_session='fetch')
     db_session.commit()
+    db_session.remove()
     logger.info('essay/marker pair updated successfully')
   except:
     logger.error('the essay/marker pair could not be updated')
@@ -111,6 +116,7 @@ def denyEssay():
     db_session.delete(essay)
     db_session.delete(marker)
     db_session.commit()
+    db_session.remove()
     logger.info('essay/marker pair ' + essayId + '/' + markerId + ' has been removed')
   except:
     logger.error('removing essay/marker pair ' + essayId + '/' + markerId + ' failed')

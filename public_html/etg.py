@@ -32,6 +32,7 @@ def getUserTools():
 def completePending(userId):
   user = db_session.query(User).filter(User.id==userId).all()
   user = [i.serialize for i in user]
+  db_session.remove()
   return render_template('index.html', context = 'setPassword', firstName = user[0]['first_name'], lastName = user[0]['last_name'], userId = user[0]['id'])
   
 @app.route('/sendMail', methods=['POST'])
@@ -50,6 +51,7 @@ def sendMail():
     logger.info('email sent for ' + userEmail + " has been sent")
     db_session.query(User).filter(User.email==userEmail).update({'token': token, 'pending': False}, synchronize_session='fetch')
     db_session.commit()
+    db_session.remove()
   except SMTPException as error:
     logger.error('email for ' + userEmail + ' failed to send')
     logger.error(error)
@@ -60,6 +62,7 @@ def confirmEmail(token):
   emailer = Email()
   user = db_session.query(User).filter(User.token==token).all()
   user = [i.serialize for i in user]
+  db_session.remove()
   try:
       email = emailer.confirm_token(token)
       return redirect(url_for('completePending', userId=user[0]['id']))

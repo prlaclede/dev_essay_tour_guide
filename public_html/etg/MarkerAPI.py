@@ -13,6 +13,7 @@ def loadMarkers():
   try:
     markerList = db_session.query(Marker).filter(Marker.pending!=1).all()
     markerList = [i.serialize for i in markerList]
+    db_session.remove()
   except:
     logger.error('error loading markers')
     
@@ -24,6 +25,7 @@ def loadMarkerEssays():
   try:
     essayList = db_session.query(Essay).filter(Essay.marker_id_fk==markerID).all()
     essayList = [i.serialize for i in essayList]
+    db_session.remove()
   except:
     logger.error('error loading marker essays')
     
@@ -57,6 +59,7 @@ def newMarker():
     db_session.add(newMarker)
     db_session.commit()
     thisId = db_session.query(func.max(Marker.id)).first()
+    db_session.remove()
   except:
     logger.error('error storing new marker')
   return jsonify(meta={'userId': user, 'markerId': thisId[0], 'essayTitle': essayTitle, 'driveId': driveId, 'docLink': docLink})

@@ -28,6 +28,8 @@ def register():
 @user_api.route('/logout')
 def logout():
     session.clear()
+    db_session.remove()
+    db_session.close()
     return jsonify(success='success')
   
 @user_api.route('/checkUser')
@@ -41,6 +43,7 @@ def getPendingUsers():
     try:
         users = db_session.query(User).filter(User.pending==1).all()
         users = [user.serialize for user in users]
+        db_session.remove()
     except:
         logger.error('retrieval of pending users failed')
     return jsonify(users=users)
@@ -51,6 +54,7 @@ def getAllUsers():
     try:
         users = db_session.query(User).all()
         users = [user.serialize for user in users]
+        db_session.remove()
     except:
         logger.error('failed to get all users')
     return jsonify(users=users)
@@ -76,6 +80,7 @@ def setPassword():
     try:
         db_session.query(User).filter(User.id==userId).update({'password': password}, synchronize_session='fetch')
         db_session.commit()
+        db_session.remove()
         logger.info('user updated successfully')
     except:
         logger.error('the user could not be updated')
@@ -90,6 +95,7 @@ def denyUser():
         user = db_session.query(User).filter(User.id==userId).first()
         db_session.delete(user)
         db_session.commit()
+        db_session.remove()
         logger.info('user ' + userEmail + ' has been removed')
     except:
         logger.error('error removing user')
@@ -102,6 +108,7 @@ def userLogin(email, password):
     try:
         user = db_session.query(User).filter(and_(User.email==email, User.password==dk, User.pending!=1)).all()
         user = [i.serialize for i in user]
+        db_session.remove()
         
         if (len(user) != 0):
             logger.info('user found')
@@ -123,6 +130,7 @@ def userRegister(email, first, last):
         try:
             db_session.add(newUser)
             db_session.commit()
+            db_session.remove()
             logger.info('added user ' + email)
         except:
             logger.error('new user insert failed for ' + email)
