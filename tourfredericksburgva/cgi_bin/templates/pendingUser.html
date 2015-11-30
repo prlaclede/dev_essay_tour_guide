@@ -1,0 +1,9 @@
+{% from "icon.html" import icon with context %}
+<tr class="pendingUser">
+    <input type="hidden" name="userId" value="{{userId}}">
+    <td class="first">{{firstName}}</td>
+    <td class="last">{{lastName}}</td>
+    <td class="email">{{email}}</td>
+    <td><button type="button" class="btn btn-sm approveButton">{{ icon([''], 'check') }}</button></td>
+    <td><button type="button" class="btn btn-sm denyButton">{{ icon([''], 'close') }}</button></td>
+</tr>

@@ -41,6 +41,7 @@ $(function (etgLogic, $, undefined) {
             accLogic.generateProgressBar(thisPopup);
             console.log('starting drive post');
             var fileForm = new FormData($('#newFileForm')[0]);
+            console.log(thisPopup.attr('lat'));
             fileForm.append('lat', thisPopup.attr('lat'));
             fileForm.append('lng', thisPopup.attr('lng'));
             $.ajax({
@@ -86,7 +87,6 @@ $(function (etgLogic, $, undefined) {
             });
         })
         
-        /* https://jsfiddle.net/mattdlockyer/C5GBU/2/ */
         .on('click', function (e) {
             $('[data-toggle="popover"]').each(function () {
                 //the 'is' for buttons that trigger popups

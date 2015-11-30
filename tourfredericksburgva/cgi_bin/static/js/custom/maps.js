@@ -153,7 +153,7 @@ $(function (mapsLogic, $, undefined) {
     }
   }
   
-  function generateUploadForm(location, element) {
+  function generateUploadForm(location) {
     mapsLogic.geocodeLatLng(location.lat(), location.lng())
     var uploadForm = "<div class='essayUploadLink' lat=" + location.lat() + " lng=" + location.lng() + "> \
                         <h6 class='essayLinkTitle'>Upload Essay</h6> \
@@ -166,7 +166,7 @@ $(function (mapsLogic, $, undefined) {
   }
   
   mapsLogic.placeNewMarker = function(location) {
-     var marker = new google.maps.Marker({
+    var marker = new google.maps.Marker({
       position: location, 
       map: map
     });

@@ -60,9 +60,3 @@ def newMarker():
   except:
     logger.error('error storing new marker')
   return jsonify(meta={'userId': user, 'markerId': thisId[0], 'essayTitle': essayTitle, 'driveId': driveId, 'docLink': docLink})
-  
-@marker_api.route('/essayUploadForm', methods=['POST'])
-def essayUploadForm():
-  lat = request.values.get('lat')
-  lng = request.values.get('lng')
-  return render_template('essayUploadForm.html', lat=lat, lng=lng) 

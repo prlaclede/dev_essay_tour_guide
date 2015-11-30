@@ -1,0 +1,115 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#splash-wrapper {
+  text-align: center;
+}
+
+.loginButton, .registerButton {
+  float: right;
+}
+
+#accountActionSpan {
+  display: none;
+  float: right;
+  margin: 15px 0px 0px 0px;
+}
+
+.selectedMode {
+  background-color: steelblue;
+}
+
+#accountActionButton, #accountRegisterButton {
+  display: inline;
+  float: right;
+}
+
+#welcomeMessage {
+  float: right;
+  margin: 7px 10px 0px 5px;
+}
+
+.siteContent {
+  height: 100%;
+  width: 100%;
+}
+
+.splash-panel:hover {
+  background-color: steelblue;
+}
+
+.side-container {
+  float: right;
+  min-height: 100%;
+  width: 25%;
+  overflow-y: scroll;
+}
+
+.recent-essays {
+  display: inline-block;
+  width: 100%;
+}
+
+.essay-link {
+  float: right;
+}
+
+#register-footer, #login-footer {
+  margin: 50px 0 0 0;
+}
+
+.map-container {
+  margin: 0px 0px 0px 30px;
+  float: left;
+  width: 70%;
+  height: 100%;
+}
+
+#googleMap {
+  min-width: 200px;
+  width: 100%;
+  min-height: 200px;
+  height: 100%;
+}
+
+.mapEssayLink, .essayUploadLink {
+  text-align: center;
+}
+
+.essayUploadProgress {
+  margin: 10px 0px 0px 0px;
+}
+
+.pendingTableBody {
+  text-align: left;
+}
+
+.closeTab {
+  float: right;
+  padding: 5px 0px 0px 5px;
+}
+
+.closeTab > div.im {
+  fill: black;
+  height: 20px;
+  width: 20px;
+}
+
+.closeTab:hover > div.im {
+  fill: red;
+}
+
+.popoverMap {
+  height: 275px;
+  width: 275px;
+}
+
+.pendingContent {
+  max-height: 500px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
