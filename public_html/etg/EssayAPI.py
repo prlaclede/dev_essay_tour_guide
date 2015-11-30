@@ -66,13 +66,14 @@ def getAllEssays():
 def generatePendingEssay():
   markerId = request.values.get('marker[0][id]')
   essayId = request.values.get('id')
+  essayLink = request.values.get('doc_link')
   lat = request.values.get('marker[0][latitude]')
   lng = request.values.get('marker[0][longitude]')
   title = request.values.get('title')
   address = request.values.get('marker[0][address]')
   email = request.values.get('user[0][email]')
   return render_template('pendingEssay.html', markerId=markerId, essayId=essayId, 
-  lat=lat, lng=lng, title=title, address=address, email=email)
+  lat=lat, lng=lng, title=title, address=address, email=email, essayLink=essayLink)
   
 @essay_api.route('/newEssay', methods=['POST'])
 def newEssay():
