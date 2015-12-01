@@ -113,3 +113,10 @@ body, html {
   overflow-x: hidden;
   overflow-y: scroll;
 }
+
+.loadingIcon.spinning {
+    animation: spin 1s infinite linear;
+    @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+}
+
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

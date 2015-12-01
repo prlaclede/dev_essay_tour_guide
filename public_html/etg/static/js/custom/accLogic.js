@@ -193,6 +193,7 @@ $(function (accLogic, $, undefined) {
             type: "POST",
             dataType: "html",
             success: function(response) {
+                element.find('.submitEssay').remove();
                 element.append(response);
             },
             error: function (error) {

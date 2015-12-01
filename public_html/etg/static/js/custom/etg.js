@@ -112,7 +112,7 @@ $(function (etgLogic, $, undefined) {
     
     etgLogic.generateSVG = function (icon, addClass) {
       var image = "<div class='im " + addClass + "'> \
-                    <svg viewBox='0 0 34 34'> \
+                    <svg viewBox='0 0 25 25'> \
                       <g> \
                         <use xlink:href='#" + icon + "'></use> \
                       </g> \

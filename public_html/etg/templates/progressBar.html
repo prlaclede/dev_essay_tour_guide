@@ -1,4 +1,2 @@
-<div class="progress essayUploadProgress">
-  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-  </div>
-</div>
+{% from "icon.html" import icon with context %}
+{{ icon(['loadingIcon', 'spinning'], 'loading') }} Loading...

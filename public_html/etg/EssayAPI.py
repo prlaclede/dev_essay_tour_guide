@@ -22,7 +22,8 @@ def getAll():
 @essay_api.route('/recentEssay', methods=['POST'])
 def recentEssays():
   name = request.json['title']
-  return render_template('recentEssay.html', name=name)
+  location = request.json['doc_link']
+  return render_template('recentEssay.html', name=name, location=location)
   
 @essay_api.route('/pendingEssays')
 def getPendingEssays():
