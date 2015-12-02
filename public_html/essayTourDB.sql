@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS elizabet_essay_tour_db ; 
 CREATE DATABASE elizabet_essay_tour_db ;
 DROP USER elizabet_nfadmin; 
-CREATE USER essaytouradmin IDENTIFIED BY 'essaytourp@$$'; 
+CREATE USER elizabet_nfadmin IDENTIFIED BY 'essaytourp@$$'; 
 USE elizabet_essay_tour_db ;
 
 DROP TABLE IF EXISTS accounts;
@@ -51,7 +51,7 @@ CREATE TABLE essays (
 );
 
 
-GRANT ALL ON * TO essaytouradmin;
+GRANT ALL ON * TO elizabet_nfadmin;
 
 INSERT INTO accounts (account_name) VALUES ('admin');
 INSERT INTO accounts (account_name) VALUES ('user');

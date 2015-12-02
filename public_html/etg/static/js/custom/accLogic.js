@@ -57,10 +57,8 @@ $(function (accLogic, $, undefined) {
                     type: 'POST',
                     success: function (response) {
                         if (response['error']) {
-                            var emailParams = response['emailParams'];
                             thisForm.closest('.modal-body').before(etgLogic.generateAlert('warning', 'That email has already been registered!'));
                         } else {
-                            var emailParams = response['emailParams'];
                             thisForm.closest('.modal-body').before(etgLogic.generateAlert('success', 'You will recieve an email when your account has been approved.'));
                         }
                     },
