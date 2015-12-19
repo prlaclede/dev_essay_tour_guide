@@ -120,6 +120,7 @@ $(function (adminLogic, $, undefined) {
                 var essayForm = new FormData();
                 essayForm.append('essayId', row.find("input[name='essayId']").val());
                 essayForm.append('markerId', row.find("input[name='markerId']").val());
+                essayForm.append('driveId', row.find("input[name='driveId']").val());
                 $.ajax({
                     url: '/denyEssay',
                     data: essayForm,

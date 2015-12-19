@@ -1,0 +1,637 @@
+commit d7d4b80563c3208b71e43b6e62c77d548b944436
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Dec 2 03:08:09 2015 +0000
+
+    removed dead code, fixed map toggle mode
+
+commit 26be6f24ce962bc7f1110ed996c6aba6de7b0bd2
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Dec 1 21:36:51 2015 +0000
+
+    fixed side bar links
+
+commit 02a6900fc63edfb3afe1f11c736ae3f3b1aba7e0
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Nov 30 21:58:36 2015 +0000
+
+    pending essays view now has a link to view the essay
+
+commit be34ae22eaf63ee3641f8511be9fe659f3c4b167
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Nov 30 20:23:57 2015 +0000
+
+    potential fix for db session issues
+
+commit 5b8f1a8922fe04bc972c7d333c42833dd0a2ad5b
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Nov 30 18:24:22 2015 +0000
+
+    made changes as per wades request
+
+commit 6764af981d52a5634474498cd0e8bba9970f3ec4
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Nov 30 17:52:53 2015 +0000
+
+    essay submissions show pending message
+
+commit 8f534f94c7f0ff8e0129444ceedf8e1bb9f8a5db
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Nov 30 17:41:01 2015 +0000
+
+    half implementation of eassyuploadform ajax template, rolled back for wednesday demo
+
+commit b89f697139f53f0d27d4b07e3305a4754c965845
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Nov 30 17:40:28 2015 +0000
+
+    half implementation of eassyuploadform ajax template, rolled back for wednesday demo
+
+commit 856f6106760b049ee1a8befa922975936a87e7e0
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 22 21:49:13 2015 +0000
+
+    start of admin account and essay management options
+
+commit 6c40cd89fee00398e5c2aeae3e07d4f97282f1f7
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 22 21:33:54 2015 +0000
+
+    code cleanup
+
+commit c7c4bc2243352ba5a22b97da16d1ec83e12b866a
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 22 21:24:42 2015 +0000
+
+    fixed tab duplication issue
+
+commit 131b451daed14d8aadbd71c838288efb7fc8eb5c
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 22 21:15:27 2015 +0000
+
+    added scroll bar to pending popups
+
+commit 1b7b03968c9dd40c4f424b6b19f71bca5b6b4865
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 22 02:47:51 2015 +0000
+
+    fixed admin tools loading out of order
+
+commit 2cbec51a9283b44eb33dd492dde6052c66583115
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 22 02:43:27 2015 +0000
+
+    started to add progress bar to file uploads
+
+commit 88412ef4b63264d42606cc31f47ad6a5e753977b
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Nov 21 02:43:53 2015 +0000
+
+    fixed admin essay view popups
+
+commit 22c517a9f333fd20991d6fab71b90c35b7ec3c2c
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Nov 21 02:12:44 2015 +0000
+
+    coverted bulk javascript -> html functions to user flask templating
+
+commit 9091f3acd5aad9f5e59374f10a5158ffe04c4552
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Fri Nov 20 01:43:18 2015 +0000
+
+    js cleanup
+
+commit 1ae3960a905f321244d3caa6af060d9a08a8db16
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Fri Nov 20 01:19:29 2015 +0000
+
+    bundled css and javascript
+
+commit b399d8aae2207849a467732c2a01dbb88495e37b
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Thu Nov 19 22:08:44 2015 +0000
+
+    fixed bad data and upload issues for multiple users
+
+commit bf85e583496302528504cacfc185e610589121cb
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 18 14:32:14 2015 +0000
+
+    admin approval location popup added
+
+commit 0cd89316a2e7db8ac9091bd94c4be0fd36884efd
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 18 02:28:34 2015 +0000
+
+    add placeholder for admin pending locations view popup
+
+commit 6c4524f363cf2a077f857bbd5c00b8e54aaa42f0
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 18 01:52:49 2015 +0000
+
+    fix for geocoder
+
+commit 2b9156b9a2718c5975e04facb3ba29612258c001
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 18 01:23:41 2015 +0000
+
+    registering for an account with an email that already exists shows an error
+
+commit 089948c5acdcc2eacbd3bd7e3e56616d2bab3493
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Nov 17 22:36:08 2015 +0000
+
+    password fields are check for match on user enter
+
+commit 8b41254a91216f262d7deb940aafb22d086ba06c
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Nov 17 21:56:08 2015 +0000
+
+    only one instance of a tab can be opened
+
+commit 76792d68624d302c41061a550529f3adb670addf
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Nov 16 21:50:02 2015 +0000
+
+    essay approve/delete && user approve/delete working
+
+commit 16f28a688726f4374efce594bb7583b0f18cf4c4
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Nov 16 16:29:15 2015 +0000
+
+    page redirect to splash after password set
+
+commit 65704da11c70032baac93472c2e5c97d88056867
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 15 23:03:18 2015 +0000
+
+    emails are now bound to admin approval
+
+commit cb98706dfc0ff4a67546ce78d4a530427e696298
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 15 19:21:47 2015 +0000
+
+    user featuers and admin features protected behind login
+
+commit a46d9de1485b2001d91324a749d4317a0b7508cc
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 15 18:25:25 2015 +0000
+
+    user registration now redirects to a set password page
+
+commit b224e52353f8f365a2c9c06162f488092c627b4b
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Nov 14 20:20:39 2015 +0000
+
+    registration sends emails
+
+commit 9040563aea6724512485d3fa42c6c451fbe24c60
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Thu Nov 12 01:41:43 2015 +0000
+
+    updated popups to contain marker info
+
+commit 29a94ee03aa7c868d56a8343ffe85d979294bf73
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Thu Nov 12 01:36:58 2015 +0000
+
+    essay popup content moved to tabs
+
+commit b24625c8e223b78dfd4bd65e40bf4941937a8a6a
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 11 22:06:59 2015 +0000
+
+    essay uploads not tie into database, new submissions now link to google drive in new tab
+
+commit 90c85ab197b5fa4b805f16d443a67651a6d42c4c
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 11 21:43:38 2015 +0000
+
+    tabulated recent submissions pane
+
+commit 8b2cd86912a1999a85a5bf009edb353764f9746a
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 11 21:02:34 2015 +0000
+
+    essay database mapping working
+
+commit b9ebb068b9bd934cb772da7b64b333aadc387d38
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 11 19:52:24 2015 +0000
+
+    updated database logic
+
+commit 48a1c37ba562b50b48c0cd039e3c59b1c456d5d8
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 11 14:32:46 2015 +0000
+
+    marker insert into database
+
+commit f625ee9f24fa76fe1e41acfbe407ddbed3581745
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 11 03:17:45 2015 +0000
+
+    - updated database to hold google drive object IDs rather than urls
+    - changed around classes and code to handle new DB changes]
+    - Did horrible things for asynchonous functions in maps.js cus those are hard
+
+commit 5e5c72c45b5606a721db464ee41562ccce11b2d6
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 11 00:42:33 2015 +0000
+
+    changing ajax class to contain needed information for DB insertion
+
+commit f6985998ca22a97efbcafc2c20f3a745693ce8b2
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Nov 10 01:44:44 2015 +0000
+
+    essay now uploaded to essay folder
+
+commit 711eb1c9e8de13c188c3cef7ddb8b5bb4345ea3a
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 8 23:00:40 2015 +0000
+
+    registration inserts into db
+
+commit ad5c25e4aa8770c260696a86cb7451a7104fd0fb
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 8 22:45:09 2015 +0000
+
+    refactor for registration prep
+
+commit 05156de6e96c250986712f508ed1fc7e50867f5e
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 8 20:24:02 2015 +0000
+
+    setup for email process
+
+commit 247d25b7431d6d36464db24197eb03f46e8a7d4d
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 8 19:56:53 2015 +0000
+
+    pending views now dynamically fill content
+
+commit c8c7bedcc96640fc42c6d14f052a23d3575b0193
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 8 19:37:48 2015 +0000
+
+    start of pending user/essay views
+
+commit 56eb5f600c4caeded8bb90812fe47eb39bb07745
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 8 18:56:53 2015 +0000
+
+    pending accounts page
+
+commit ef31c0da719e4f3fbee9415765eb363cc06b7ec2
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Nov 7 22:33:39 2015 +0000
+
+    removes local essay copy after upload
+
+commit 45603dd0c9e463977d550471cf71d70701baa6ea
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Nov 7 22:16:20 2015 +0000
+
+    .
+
+commit 44dffff18eee2b38468661f167a7357c91828b1a
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Nov 7 22:12:50 2015 +0000
+
+    submitting a file now uploads to google drive :D
+
+commit c6c1252d5920298edde93d2706aa3a82e55f714c
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Nov 7 04:23:24 2015 +0000
+
+    - server accepts file uploads to /docs
+    - working on google drive upload for these docs
+    -fixed login icon duplication bug
+
+commit 68295cd7aa4c63ccef49ff51914687b3bde69444
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Nov 7 02:24:03 2015 +0000
+
+    got google drive api working, finally....
+
+commit 691599deeef6b8ae48459e9c1bd7868ea6743fa7
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Nov 4 01:48:27 2015 +0000
+
+    still f'ing around with google drive api
+
+commit 87aef854cfad813a4a08b1ba8e848944bf2bc24f
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Nov 2 22:24:24 2015 +0000
+
+    progress towards google drive api
+
+commit 4ab6c7deaa905ddb8441b58e9e55a62d758e75be
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Nov 1 18:02:35 2015 +0000
+
+    added sudo code examples from SDD
+
+commit 91ce39ba6bc7026ef89e6ec8e78fe7a650e191c6
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Thu Oct 29 00:08:02 2015 +0000
+
+    new markers can't be placed outside allowed bounds
+
+commit 875a4cff8d8c099f3cdb5ecad3669396a4f5c413
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 28 23:58:19 2015 +0000
+
+    zoom scroll limit
+
+commit a3f11acea9a94a6d6c491b237edbb9d5d2a70de5
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 28 23:46:33 2015 +0000
+
+    upload button now on new markers
+
+commit 9de9b7ed5664b2b8797b27b92263abcae8fe04da
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 28 23:35:27 2015 +0000
+
+    added map marker edit mode
+
+commit 231a95ba1f378b57d9c68f5e6be5178a71e5cc8d
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 28 16:15:34 2015 +0000
+
+    updated with more test data
+
+commit 0bbbfb213f9c6330951dd01a6ac9a34c50c108f7
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 28 15:28:51 2015 +0000
+
+    logout working, login button fixed, login fixed, upload button start
+
+commit 64ede7f81e0b3748d3bc7371717a819c95af82d4
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Oct 27 00:52:34 2015 +0000
+
+    more breakout into blueprints
+
+commit 6cda7c6332f0cd26bfa5290c05a4793e73c41a0a
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Oct 27 00:48:06 2015 +0000
+
+    not elegant...but bounce stops when box is closed
+
+commit a4ddfd84a409407d64397ea72487ec90cc906ce2
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Oct 27 00:44:44 2015 +0000
+
+    markers bounce only on click
+
+commit c780e0155c4cdb85ead7e699edb59cfc03b3d006
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Oct 27 00:40:13 2015 +0000
+
+    location essay popups buttons now reference database information
+
+commit a05949753282d1d8905c15018bcfc393f8fdbc80
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Oct 27 00:32:56 2015 +0000
+
+    splitting routes into blueprints & minor code cleanup
+
+commit ba6f703bd5a7dd2200c493fc361484b02df213e2
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Oct 27 00:18:59 2015 +0000
+
+    progress towards dynamic recent uploads list
+
+commit 269ff4e1cb226375640c9896d04a8f806d043024
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Oct 26 15:58:12 2015 +0000
+
+    got popups to display essay information
+
+commit 3ea372732189ed0a457018b420f456ffc2961e87
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Oct 26 15:29:00 2015 +0000
+
+    essay titles appear on marker if they exist
+
+commit 7379e0ad2e61bdd22a2ec27e0db3bfccfe4d01aa
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Oct 26 14:35:11 2015 +0000
+
+    refactoring to handle user sessions
+
+commit 241efc30a6493ac6f8650582d2fd7f733eef4e12
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Oct 26 14:14:48 2015 +0000
+
+    commit progres for in class work
+
+commit 825ff73b930946647740c183804ac4456894f33f
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Oct 26 00:46:40 2015 +0000
+
+    ORM setup and session management progress
+
+commit e6e27113c18ac5a5ccd591badf75c44e06c75fa5
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 21 21:21:24 2015 +0000
+
+    removed rumble button...lol
+
+commit 6dd54b04e41692f95612666c757003a91f722ad3
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 21 21:20:18 2015 +0000
+
+    map sizes based on window size
+
+commit 4143562453f5b967895de0ce664dbac37170385c
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Oct 10 21:08:28 2015 +0000
+
+    marker data now pulled from DB and displayed on page :D
+
+commit 620a78e606e9954a143de78fb2a14a74dde31cb4
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Fri Oct 9 00:58:33 2015 +0000
+
+    removed unecessary directory
+
+commit df730bcfceaf77c6351397fb291d1f79149109ec
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Fri Oct 9 00:54:44 2015 +0000
+
+    coverted python code to use mysql
+
+commit d082425a7c65a328e7040f2b6cd631bd0a68a8bf
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Thu Oct 8 23:25:19 2015 +0000
+
+    fixed borked files
+
+commit da692d39d7285725b800c1d0ee276d92e4f1d433
+Merge: ab9ef65 f427d89
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Thu Oct 8 23:17:40 2015 +0000
+
+    Merge branch 'sprint2' of https://github.com/prlaclede/dev_essay_tour_guide into sprint2
+
+commit ab9ef65f03390f8f9bb271e57084526fe5408949
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Thu Oct 8 23:16:10 2015 +0000
+
+    converted psql script to mysql, also updated documentation of gdrive
+
+commit f427d892350b9276e8af3d5f2709f56a8c84d84e
+Merge: 24db8de 0f251ac
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 7 13:31:06 2015 +0000
+
+    Merge branch 'prototype' into sprint2
+
+commit 0f251ac3656041ea8476acf608a2ac1cbd9d03be
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 7 13:30:14 2015 +0000
+
+    updated images file
+
+commit 24db8defde8521624712c15fbb1d85ff6a44f69f
+Merge: 59e5e2e 9712850
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 7 13:20:42 2015 +0000
+
+    Merge branch 'master' into sprint2
+
+commit 9712850501017e99408d2cbf983ead41a6014d9e
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 7 13:18:39 2015 +0000
+
+    added message to main page account action button
+
+commit 59e5e2eed5a0159cb1fd5b0159fb11c2c7185db6
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 7 12:38:01 2015 +0000
+
+    created branch for sprint2
+
+commit 169aa11241ee3de7a78fffa1ba58d8b9dd7af69d
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Oct 7 01:12:48 2015 +0000
+
+    got maps API functioning (pretty messy)
+
+commit a92bbfa8e061665d91b0c22e76a4036bbf9afb19
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Tue Oct 6 21:21:23 2015 +0000
+
+    functional prototype point, branching to mess with JS
+
+commit f926a1fbe5bcc64910d732ef279d293b210146b7
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Mon Oct 5 15:10:10 2015 +0000
+
+    got macros working for icons (these are really cool :D)
+
+commit b4cc7d2c0a614e6d38bba122ff0bca908e95cafa
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sun Oct 4 20:06:53 2015 +0000
+
+    after further research, moving aways from socketIO, will use flask-login
+
+commit f79f9637c6426eb47418610e0b983a9fd3cdf3cb
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Oct 3 22:10:49 2015 +0000
+
+    minor database changes
+
+commit ad6566594b0f49e11a4f5ee0ba2c76023e6f4b9a
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Oct 3 21:33:02 2015 +0000
+
+    major restructure of application for socketio
+
+commit 5d7af0a4c40f517eb04ec586ac6636081f3a6711
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Oct 3 18:27:56 2015 +0000
+
+    corrected socket.io, relocated javascript to server.js, setup for database user checking
+
+commit e9b84b37ebabad4417761bc58082cc4a8027af96
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Oct 3 17:41:22 2015 +0000
+
+    added logger in for good logging practices down the line
+
+commit f91db658fc390efa4e5d1b622113820fc836c3a3
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Oct 3 17:26:30 2015 +0000
+
+    socket.io working
+
+commit 8102e8eb1b26f382c945f3fa61e12d0e260809e9
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Sat Oct 3 16:09:20 2015 +0000
+
+    setup of socketIO (not working yet)
+
+commit bc18e815e0b0127e008e010ba015bb47d86b5b1d
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Thu Oct 1 01:01:56 2015 +0000
+
+    more work towards template generated svg images
+
+commit 8feb06c8434b45af65fed52cd71e1c92113554c2
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Sep 30 21:54:57 2015 +0000
+
+    setup for svg icons
+
+commit 5d7b7e39286335be34fd65b88e54afd34515349f
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Sep 30 21:54:16 2015 +0000
+
+    setup for svg icons
+
+commit d1ab7e869ba6d7a681646890aeac30c6f743ae1a
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Sep 30 17:29:55 2015 +0000
+
+    more style stuff
+
+commit 64a0a7bd2c9e1beb7dc3a3b949c4b0ddd1c938c2
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Sep 30 14:16:05 2015 +0000
+
+    prototype stuff
+
+commit a33803c7fff4428a76406fc2dc4fa66d0000eced
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Sep 16 19:51:20 2015 +0000
+
+    added README with git tutorial
+
+commit 4653e587f6336415e4ec53a6b73a5919fca045c7
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Sep 16 19:42:06 2015 +0000
+
+    more cleanup...
+
+commit 30f754fca720d45298085415e599c9cb8a1bccf3
+Merge: 1873bb2 930dd0d
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Sep 16 19:40:34 2015 +0000
+
+    removed duplicate directory
+
+commit 1873bb2527c5c5fa661b24231e9e507b25c7bd51
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Sep 16 19:33:40 2015 +0000
+
+    initial commit
+
+commit 930dd0db6e01b945cca74810fe4c1e3fcc26ab0f
+Author: Phillip Laclede <prlaclede@gmail.com>
+Date:   Wed Sep 16 15:31:38 2015 -0400
+
+    Initial commit

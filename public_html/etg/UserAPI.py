@@ -40,6 +40,7 @@ def checkUser():
 @user_api.route('/pendingUsers')
 def getPendingUsers():
     logger.info('getting pending users')
+    users = None
     try:
         users = db_session.query(User).filter(User.pending==1).all()
         users = [user.serialize for user in users]
@@ -51,6 +52,7 @@ def getPendingUsers():
 @user_api.route('/getAllUsers')
 def getAllUsers():
     logger.info('getting all users')
+    users = None
     try:
         users = db_session.query(User).all()
         users = [user.serialize for user in users]
@@ -90,7 +92,6 @@ def setPassword():
 def denyUser():
     userEmail = request.values.get('email')
     userId = request.values.get('userId')
-    print(userId)
     try:
         user = db_session.query(User).filter(User.id==userId).first()
         db_session.delete(user)
@@ -104,7 +105,7 @@ def denyUser():
 def userLogin(email, password):
     dk = md5.new(password).hexdigest()
     logger.info('checking DB for user')
-    
+    user = None
     try:
         user = db_session.query(User).filter(and_(User.email==email, User.password==dk, User.pending!=1)).all()
         user = [i.serialize for i in user]
@@ -121,7 +122,6 @@ def userLogin(email, password):
     return jsonify(user=user)
  
 def userRegister(email, first, last):
-    
     checkUser = db_session.query(User).filter(User.email==email).first()
     
     if (not checkUser):

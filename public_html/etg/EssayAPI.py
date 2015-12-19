@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
     
 @essay_api.route('/loadRecentEssays')
 def getAll():
+  essayList = None
   try:
     essayList = db_session.query(Essay).filter(Essay.pending!=1).limit(15).all()
     essayList = [i.serialize for i in essayList]
@@ -28,6 +29,7 @@ def recentEssays():
 @essay_api.route('/pendingEssays')
 def getPendingEssays():
     logger.info('getting pending essays')
+    essays = None
     try:
       essays = db_session.query(Essay).filter(Essay.pending==1).all()
       essays = [essay.serialize for essay in essays]
@@ -47,6 +49,7 @@ def getPendingEssays():
 @essay_api.route('/getAllEssays')
 def getAllEssays():
     logger.info('getting pending essays')
+    essays = None
     try:
       essays = db_session.query(Essay).all()
       essays = [essay.serialize for essay in essays]
@@ -67,6 +70,7 @@ def getAllEssays():
 def generatePendingEssay():
   markerId = request.values.get('marker[0][id]')
   essayId = request.values.get('id')
+  driveId = request.values.get('drive_id')
   essayLink = request.values.get('doc_link')
   lat = request.values.get('marker[0][latitude]')
   lng = request.values.get('marker[0][longitude]')
@@ -74,7 +78,7 @@ def generatePendingEssay():
   address = request.values.get('marker[0][address]')
   email = request.values.get('user[0][email]')
   return render_template('pendingEssay.html', markerId=markerId, essayId=essayId, 
-  lat=lat, lng=lng, title=title, address=address, email=email, essayLink=essayLink)
+  driveId=driveId, lat=lat, lng=lng, title=title, address=address, email=email, essayLink=essayLink)
   
 @essay_api.route('/newEssay', methods=['POST'])
 def newEssay():
@@ -110,8 +114,8 @@ def approveEssay():
 @essay_api.route('/denyEssay', methods=['POST'])
 def denyEssay():
   essayId = request.values.get('essayId')
+  fileId = request.values.get('driveId')
   markerId = request.values.get('markerId')
-  print(essayId + " " + markerId)
   try:
     essay = db_session.query(Essay).filter(Essay.id==essayId).first()
     marker = db_session.query(Marker).filter(Marker.id==markerId).first()
@@ -120,6 +124,7 @@ def denyEssay():
     db_session.commit()
     db_session.remove()
     logger.info('essay/marker pair ' + essayId + '/' + markerId + ' has been removed')
+    url_for('driveAccess_api.deleteFile', fileId=fileId, _external=True) 
   except:
     logger.error('removing essay/marker pair ' + essayId + '/' + markerId + ' failed')
   return jsonify(message='success')

@@ -43,19 +43,28 @@ def fileUpload():
     'description': '', 
     'mimeType': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   }
-  os.remove(filePath) #remove file locally
   try:
     file = driveService.files().insert(
       body=body,
       media_body=media_body).execute()
-    print(file)
+    logger.info('uploading file' % file)
     toReturn['driveId'] = file['id']
     toReturn['docLink'] = file['alternateLink']
+    os.remove(filePath) #remove file locally
     return jsonify(meta=toReturn)
   except errors.HttpError, error:
     logger.error('An error occured: %s' % error)
+    os.remove(filePath) #remove file locally
     return None
 
-@driveAccess_api.route('/getFile', methods=['POST'])
-def getFile():
-  return "TODO"
+@driveAccess_api.route('/deleteFile')
+def deleteFile(fileId):
+  print 'im here!'
+  drive = Drive()
+  creds = drive.getCreds()
+  driveService = drive.buildService(creds)
+  
+  try:
+    driveService.files().delete(fileId=fileId).execute()
+  except errors.HttpError, error:
+    logger.error('An error occured: %s' % error)

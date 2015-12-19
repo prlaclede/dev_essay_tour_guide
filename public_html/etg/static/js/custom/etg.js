@@ -49,7 +49,6 @@ $(function (etgLogic, $, undefined) {
                 data: fileForm,
                 processData: false,
                 contentType: false,
-                
             }).done(function(response) {
                 var meta = response['meta'];
                 mapsLogic.geocodeLatLng(meta['lat'], meta['lng']);

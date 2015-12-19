@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 @marker_api.route('/loadMarkers')
 def loadMarkers():
+  markerList = None
   try:
     markerList = db_session.query(Marker).filter(Marker.pending!=1).all()
     markerList = [i.serialize for i in markerList]
@@ -22,6 +23,7 @@ def loadMarkers():
 @marker_api.route('/loadMarkerEssays')
 def loadMarkerEssays():
   markerID = request.args.get('markerID', 0, type=int)
+  essayList = None
   try:
     essayList = db_session.query(Essay).filter(Essay.marker_id_fk==markerID).all()
     essayList = [i.serialize for i in essayList]
