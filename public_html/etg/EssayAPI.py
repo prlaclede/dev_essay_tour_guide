@@ -123,8 +123,8 @@ def denyEssay():
     db_session.delete(marker)
     db_session.commit()
     db_session.remove()
+    return redirect(url_for('driveAccess_api.deleteFile', fileId=fileId, _external=True, _scheme='https'))
     logger.info('essay/marker pair ' + essayId + '/' + markerId + ' has been removed')
-    url_for('driveAccess_api.deleteFile', fileId=fileId, _external=True) 
   except:
     logger.error('removing essay/marker pair ' + essayId + '/' + markerId + ' failed')
-  return jsonify(message='success')
+    return jsonify(message='error')

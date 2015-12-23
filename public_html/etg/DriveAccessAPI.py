@@ -57,14 +57,15 @@ def fileUpload():
     os.remove(filePath) #remove file locally
     return None
 
-@driveAccess_api.route('/deleteFile')
+@driveAccess_api.route('/deleteFile/<fileId>')
 def deleteFile(fileId):
-  print 'im here!'
   drive = Drive()
   creds = drive.getCreds()
   driveService = drive.buildService(creds)
   
   try:
     driveService.files().delete(fileId=fileId).execute()
+    return jsonify(message='success')
   except errors.HttpError, error:
     logger.error('An error occured: %s' % error)
+    return jsonify(message='error')

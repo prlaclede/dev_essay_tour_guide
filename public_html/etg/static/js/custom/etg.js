@@ -29,6 +29,14 @@ $(function (etgLogic, $, undefined) {
 
 /* ---------- jQuery listeners ---------- */
 
+    $(document).keypress(function(e) {
+        if(e.which === 13) {
+            if ($("#loginForm").is(":focus")) {
+                console.log('login form focus');
+            }
+        }
+    });
+
     $('body')
     
         .on('click', '.mapMode', function() {
