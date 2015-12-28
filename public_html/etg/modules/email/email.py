@@ -1,32 +1,12 @@
 from flask.ext.mail import Message, Mail
 from itsdangerous import URLSafeTimedSerializer
-import datetime
+import datetime, ConfigParser
+
+Config = ConfigParser.ConfigParser()
 
 class Email():
     
-    configProperties = {
-      'SECRET_KEY': 'wow_so_secret',
-      'SECURITY_PASSWORD_SALT': 'much_protect',
-      'MAIL_SERVER': 'smtp.googlemail.com',
-      'MAIL_PORT': 465,
-      'MAIL_USE_SSL': True,
-      'MAIL_USE_TLS': False,
-      'MAIL_USERNAME': 'fredessaytours@gmail.com',
-      'MAIL_PASSWORD': 'fredessaytour',
-      'MAIL_DEFAULT_SENDER': 'noreploy@tourfredericksburgva.com'
-    }
-    
-    SECRET_KEY = 'wow_so_secret',
-    SECURITY_PASSWORD_SALT = 'much_protect',
-    MAIL_SERVER = 'smtp.googlemail.com',
-    MAIL_PORT = 465,
-    MAIL_USE_SSL = True,
-    MAIL_USE_TLS = False,
-    MAIL_USERNAME = 'fredessaytours@gmail.com',
-    MAIL_PASSWORD = 'fredessaytour'
-
-    # mail accounts
-    MAIL_DEFAULT_SENDER = 'noreploy@tourfredericksburgva.com'
+    Config.read('etg/protected/config.ini')
     
     def get_email(self, to, template):
       mailer = Mail()
@@ -34,22 +14,20 @@ class Email():
         'Please confirm your account on ETG!',
         recipients=[to],
         html=template,
-        sender=self.configProperties['MAIL_DEFAULT_SENDER']
+        sender=Config.get('flask', 'MAIL_DEFAULT_SENDER')
       )
       return msg
       
-      
     def generate_confirmation_token(self, email):
-      serializer = URLSafeTimedSerializer(self.configProperties['SECRET_KEY'])
-      return serializer.dumps(email, salt=self.configProperties['SECURITY_PASSWORD_SALT'])
-
+      serializer = URLSafeTimedSerializer(Config.get('flask', 'SECRET_KEY'))
+      return serializer.dumps(email, salt=Config.get('flask', 'SECURITY_PASSWORD_SALT'))
 
     def confirm_token(self, token, expiration=3600):
-      serializer = URLSafeTimedSerializer(self.configProperties['SECRET_KEY'])
+      serializer = URLSafeTimedSerializer(Config.get('flask', 'SECRET_KEY'))
       try:
           email = serializer.loads(
               token,
-              salt=self.configProperties['SECURITY_PASSWORD_SALT'],
+              salt=Config.get('flask', 'SECURITY_PASSWORD_SALT'),
               max_age=expiration
           )
       except:

@@ -2,12 +2,10 @@ import os, logging, md5
 from flask import (Flask, session, render_template, request, redirect,
 url_for, jsonify, json)
 from flask.ext.mail import Mail
-from flask.ext.assets import Environment, Bundle
 from smtplib import SMTPException
-from UserAPI import user_api
-from EssayAPI import essay_api
-from MarkerAPI import marker_api
-from DriveAccessAPI import driveAccess_api
+from flask.ext.assets import Environment, Bundle
+from flask.ext.iniconfig import INIConfig
+from views import *
 from modules import *
 
 init_db()
@@ -21,19 +19,23 @@ init_db()
 #logger.basicConfig(filename='debug.log',level=logging.DEBUG)
 #logger.basicConfig(filename='error.log',level=logging.ERROR)
 #just logging to the console for now
+
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
+INIConfig(app)
+
+app.config.from_inifile_sections('etg/protected/config.ini', ['flask'])
 
 app.register_blueprint(user_api)
 app.register_blueprint(essay_api)
 app.register_blueprint(marker_api)
+app.register_blueprint(mail_api)
 app.register_blueprint(driveAccess_api)
-assets = Environment(app)
 
-emailConfigs = Email.configProperties
+assets = Environment(app)
 
 customJS = Bundle('js/custom/etg.js', 'js/custom/maps.js')
 pluginJS = Bundle('js/plugins/jquery-1.11.3.js', 'js/plugins/bootstrap/bootstrap.js')
@@ -50,20 +52,4 @@ all_CSS = Bundle(
 assets.register('all_CSS', all_CSS)    
 assets.register('all_JS', all_JS)
 
-for key, value in emailConfigs.iteritems():
-    app.config.update(key = value)
-
-app.config.update(
-    SECRET_KEY = 'wow_so_secret',
-    SECURITY_PASSWORD_SALT = 'much_protect',
-    MAIL_SERVER = 'smtp.googlemail.com',
-    MAIL_PORT = 465,
-    MAIL_USE_SSL = True,
-    MAIL_USE_TLS = False,
-    MAIL_USERNAME = 'fredessaytours@gmail.com',
-    MAIL_PASSWORD = 'fredessaytour',
-    MAIL_DEFAULT_SENDER = 'noreploy@tourfredericksburgva.com',
-    PREFERRED_URL_SCHEME = 'https'
-    )
     
-mail = Mail(app)

@@ -6,7 +6,7 @@ import json
 
 class Drive():
   
-  with open('protected/client_secret.json') as secret_file:
+  with open('etg/protected/client_secret.json') as secret_file:
     secret = json.load(secret_file)
   
   access_token = None

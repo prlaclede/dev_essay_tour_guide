@@ -2,8 +2,7 @@ import logging, md5
 from flask import (Blueprint, Flask, session, render_template, request, 
 redirect, url_for, jsonify, json, current_app)
 from flask.ext.mail import Mail
-from modules import *
-from etg import *
+from etg.modules import *
 
 user_api = Blueprint('user_api', __name__)
 

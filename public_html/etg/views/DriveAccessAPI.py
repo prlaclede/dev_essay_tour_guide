@@ -5,7 +5,7 @@ from apiclient.http import MediaFileUpload
 from werkzeug import secure_filename
 from apiclient import errors
 from os import path
-from modules import *
+from etg.modules import *
 
 
 driveAccess_api = Blueprint('driveAccess_api', __name__)

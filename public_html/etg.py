@@ -35,7 +35,7 @@ def completePending(userId):
   db_session.remove()
   return render_template('index.html', context = 'setPassword', firstName = user[0]['first_name'], lastName = user[0]['last_name'], userId = user[0]['id'])
   
-@app.route('/sendMail', methods=['POST'])
+'''@app.route('/sendMail', methods=['POST'])
 def sendMail():
   emailer = Email()
   userEmail = request.values.get('email')
@@ -67,7 +67,7 @@ def confirmEmail(token):
       email = emailer.confirm_token(token)
       return redirect(url_for('completePending', userId=user[0]['id']))
   except:
-      return "that email token is invalid or has expired!"
+      return "that email token is invalid or has expired!"'''
   
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080) 

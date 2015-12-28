@@ -1,7 +1,7 @@
 import logging, md5
 from flask import (Blueprint, Flask, session, render_template, request, 
 redirect, url_for, jsonify, json)
-from modules import *
+from etg.modules import *
 
 marker_api = Blueprint('marker_api', __name__)
 
@@ -54,8 +54,7 @@ def newMarker():
   driveId = request.values.get('driveId')
   docLink = request.values.get('docLink')
   thisId = None
-  print(address)
-  print (latitude + " " + longitude)
+
   try:
     newMarker = Marker(pending=True, address=address, latitude=latitude, longitude=longitude)
     db_session.add(newMarker)

@@ -1,7 +1,7 @@
 import logging, md5
 from flask import (Blueprint, Flask, session, render_template, request, 
 redirect, url_for, jsonify, json)
-from modules import *
+from etg.modules import *
 
 essay_api = Blueprint('essay_api', __name__)
 
