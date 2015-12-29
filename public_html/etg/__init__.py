@@ -29,10 +29,10 @@ INIConfig(app)
 
 app.config.from_inifile_sections('etg/protected/config.ini', ['flask'])
 
+app.register_blueprint(mail_api)
 app.register_blueprint(user_api)
 app.register_blueprint(essay_api)
 app.register_blueprint(marker_api)
-app.register_blueprint(mail_api)
 app.register_blueprint(driveAccess_api)
 
 assets = Environment(app)

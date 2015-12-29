@@ -62,7 +62,7 @@ $(function (adminLogic, $, undefined) {
                 userForm.append('first', row.find('.first').html());
                 userForm.append('last', row.find('.last').html());
                 $.ajax({
-                    url: '/sendMail',
+                    url: '/sendConfirmEmail',
                     data: userForm,
                     type: 'POST',
                     processData: false,

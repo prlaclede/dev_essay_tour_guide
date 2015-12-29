@@ -10,23 +10,19 @@ mail_api = Blueprint('mail_api', __name__)
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-@mail_api.route('/sendMail', methods=['POST'])
-def sendMail():
+@mail_api.route('/sendConfirmEmail', methods=['POST'])
+def sendConfirmEmail():
   app = current_app._get_current_object()
   mail = Mail(app)
-  print('mail instance')
   emailer = Email()
   userEmail = request.values.get('email')
-  userFirst = request.values.get('first')
-  userLast = request.values.get('last')
   token = emailer.generate_confirmation_token(userEmail)
-  confirmUrl = url_for('.confirmEmail', token=token, _external=True)
+  confirmUrl = url_for('.confirmEmail', token=token, purpose='confirm', _external=True)
   confirmPage = render_template('confirmAccountEmail.html', confirmUrl=confirmUrl)
   msg = emailer.get_email(userEmail, confirmPage)
   
   try:
     mail.send(msg)
-    #return redirect(url_for('/sendMail', msg=msg, email=userEmail), _external=True, _scheme='https'))
     logger.info('email sent for ' + userEmail + " has been sent")
     db_session.query(User).filter(User.email==userEmail).update({'token': token, 'pending': False}, synchronize_session='fetch')
     db_session.commit()
@@ -35,15 +31,61 @@ def sendMail():
     logger.error('email for ' + userEmail + ' failed to send')
     logger.error(error)
   return jsonify(message = 'success')
+  
+@mail_api.route('/sendResetEmail', methods=['POST'])
+def sendResetEmail():
+  app = current_app._get_current_object()
+  mail = Mail(app)
+  emailer = Email()
+  
+  userEmail = request.form['email']
+  user = None
+    
+    try:
+        user = db_session.query(User).filter(User.email==email).all()
+        user = [i.serialize for i in user]
+        db_session.remove()
+        
+        if (len(user) != 0):
+            logger.info('email found')
+            return jsonify(message=True)
+        else:
+            logger.info('email not found')
+            return jsonify(message=False)
+    except:
+        logger.error('user login check failed')
+        
+  token = emailer.generate_confirmation_token(userEmail)
+  confirmUrl = url_for('.confirmEmail', token=token, redirect='reset', _external=True)
+  confirmPage = render_template('resetPasswordEmail.html', confirmUrl=confirmUrl, userEmail=userEmail)
+  msg = emailer.get_email(userEmail, confirmPage)
+  
+  try:
+    mail.send(msg)
+    logger.info('email sent for ' + userEmail + " has been sent")
+    db_session.query(User).filter(User.email==userEmail).update({'token': token}, synchronize_session='fetch')
+    db_session.commit()
+    db_session.remove()
+  except SMTPException as error:
+    logger.error('email for ' + userEmail + ' failed to send')
+    logger.error(error)
+  return jsonify(message = 'success')
 
-@mail_api.route('/confirmEmail/<token>')
-def confirmEmail(token):
+@mail_api.route('/confirmEmail/<token>/<purpose>')
+def confirmEmail(token, purpose):
   emailer = Email()
   user = db_session.query(User).filter(User.token==token).all()
   user = [i.serialize for i in user]
   db_session.remove()
   try:
       email = emailer.confirm_token(token)
-      return redirect(url_for('completePending', userId=user[0]['id']))
+      print (user[0]['id'])
+      if (purpose == 'confirm'): 
+        print ('confirm redirect')
+        return redirect(url_for('user_api.completePending', userId=user[0]['id']))
+      elif (purpose == 'reset'):
+        return redirect(url_for('resetPassword', userId=user[0]['id'], _external=True))
   except:
       return "that email token is invalid or has expired!"
+      
+  

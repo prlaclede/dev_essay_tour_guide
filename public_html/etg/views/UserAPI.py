@@ -1,7 +1,6 @@
 import logging, md5
 from flask import (Blueprint, Flask, session, render_template, request, 
 redirect, url_for, jsonify, json, current_app)
-from flask.ext.mail import Mail
 from etg.modules import *
 
 user_api = Blueprint('user_api', __name__)
@@ -33,7 +32,6 @@ def logout():
   
 @user_api.route('/checkUser')
 def checkUser():
-    print(session.get('user'))
     return jsonify(user=session.get('user'))
     
 @user_api.route('/pendingUsers')
@@ -76,7 +74,6 @@ def generateProgressBar():
 def setPassword():
     userPass = request.form['password']
     userId = request.form['userId']
-    print(userPass + " " + userId)
     password = md5.new(userPass).hexdigest()
     try:
         db_session.query(User).filter(User.id==userId).update({'password': password}, synchronize_session='fetch')
@@ -86,6 +83,10 @@ def setPassword():
     except:
         logger.error('the user could not be updated')
     return url_for('mainIndex', _external=True)
+
+@user_api.route('/forgotPassword')
+def forgotPassword():
+    return render_template('forgotPassword.html')
     
 @user_api.route('/denyUser', methods=['POST'])
 def denyUser():
@@ -100,6 +101,20 @@ def denyUser():
     except:
         logger.error('error removing user')
     return jsonify(message='success')
+    
+@user_api.route('/completePending/<userId>')
+def completePending(userId):
+  user = db_session.query(User).filter(User.id==userId).all()
+  user = [i.serialize for i in user]
+  db_session.remove()
+  return render_template('index.html', context='setPassword', firstName=user[0]['first_name'], lastName=user[0]['last_name'], userId=user[0]['id'])
+    
+@user_api.route('/resetPassword/<userId>')
+def resetPassword(userId):
+    user = db_session.query(User).filter(User.id==userId).all()
+    user = [i.serialize for i in user]
+    db_session.remove()
+    return render_template('index.html', context='resetPassword', firstName=user[0]['first_name'], lastName=user[0]['last_name'], userId=user[0]['id'])
 
 def userLogin(email, password):
     dk = md5.new(password).hexdigest()

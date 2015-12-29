@@ -89,7 +89,6 @@ def newEssay():
   docLink = request.values.get('docLink')
   try:
     newEssay = Essay(pending=True, title=essayTitle, drive_id=driveId, doc_link=docLink, marker_id_fk=markerId, user_id_fk=userId)
-    print newEssay
     db_session.add(newEssay)
     db_session.commit()
     db_session.remove()
