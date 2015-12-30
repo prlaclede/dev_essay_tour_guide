@@ -38,25 +38,24 @@ def sendResetEmail():
   mail = Mail(app)
   emailer = Email()
   
-  userEmail = request.form['email']
+  userEmail = request.values.get('email')
   user = None
     
-    try:
-        user = db_session.query(User).filter(User.email==email).all()
-        user = [i.serialize for i in user]
-        db_session.remove()
-        
-        if (len(user) != 0):
-            logger.info('email found')
-            return jsonify(message=True)
-        else:
-            logger.info('email not found')
-            return jsonify(message=False)
-    except:
-        logger.error('user login check failed')
+  try:
+    user = db_session.query(User).filter(User.email==userEmail).all()
+    user = [i.serialize for i in user]
+    db_session.remove()
+    
+    if (len(user) == 0):
+      logger.info('email not found')
+      return jsonify(message=False)
+    else:
+        logger.info('email found')
+  except:
+      logger.error('user login check failed')
         
   token = emailer.generate_confirmation_token(userEmail)
-  confirmUrl = url_for('.confirmEmail', token=token, redirect='reset', _external=True)
+  confirmUrl = url_for('.confirmEmail', token=token, purpose='reset', _external=True)
   confirmPage = render_template('resetPasswordEmail.html', confirmUrl=confirmUrl, userEmail=userEmail)
   msg = emailer.get_email(userEmail, confirmPage)
   
@@ -78,13 +77,13 @@ def confirmEmail(token, purpose):
   user = [i.serialize for i in user]
   db_session.remove()
   try:
-      email = emailer.confirm_token(token)
-      print (user[0]['id'])
-      if (purpose == 'confirm'): 
-        print ('confirm redirect')
-        return redirect(url_for('user_api.completePending', userId=user[0]['id']))
-      elif (purpose == 'reset'):
-        return redirect(url_for('resetPassword', userId=user[0]['id'], _external=True))
+    email = emailer.confirm_token(token)
+    print (user[0]['id'])
+    if (purpose == 'confirm'): 
+      print ('confirm redirect')
+      return redirect(url_for('user_api.completePending', userId=user[0]['id']))
+    elif (purpose == 'reset'):
+      return redirect(url_for('user_api.resetPassword', userId=user[0]['id']))
   except:
       return "that email token is invalid or has expired!"
       
