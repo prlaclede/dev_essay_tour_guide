@@ -139,8 +139,32 @@ $(function (accLogic, $, undefined) {
                     }
                 });
             } else {
-                thisForm.closest('.modal-body').before(etgLogic.generateAlert("warning", "The passwords don't match!"));
+                thisForm.closest('.modal-body').before(etgLogic.generateAlert("warning", "The passwords entered don't match!"));
             }
+        })
+        
+        .on('click', '.submitPasswordReset', function() {
+           var thisForm = $(this).closest('#forgotPasswordForm');
+           if ($('.emailField').val()) {
+                $.ajax({
+                    url: '/sendResetEmail',
+                    type: 'POST',
+                    data: thisForm.serialize(),
+                    success: function(response) {
+                        console.log(response['error']);
+                        if (response['error']) {
+                            $('#forgotPasswordForm').before(etgLogic.generateAlert("warning", "The email address you entered is not currently registered!"));
+                        } else {
+                            $('#forgotPasswordForm').before(etgLogic.generateAlert("info", "You will recieve an email with a link to reset your password!"));      
+                        }
+                    },
+                    error: function (error) {
+                        return("error" + JSON.stringify(error));
+                    }
+               });
+           } else {
+               $('#forgotPasswordForm').before(etgLogic.generateAlert("warning", "Please enter an email address"));
+           }
         });
         
 /* ---------- end jQuery listeners ---------- */  

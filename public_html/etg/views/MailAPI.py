@@ -28,9 +28,9 @@ def sendConfirmEmail():
     db_session.commit()
     db_session.remove()
   except SMTPException as error:
-    logger.error('email for ' + userEmail + ' failed to send')
+    logger.error('confirmation email for ' + userEmail + ' failed to send')
     logger.error(error)
-  return jsonify(message = 'success')
+  return jsonify(message='success')
   
 @mail_api.route('/sendResetEmail', methods=['POST'])
 def sendResetEmail():
@@ -48,27 +48,26 @@ def sendResetEmail():
     
     if (len(user) == 0):
       logger.info('email not found')
-      return jsonify(message=False)
+      return jsonify(error="email not found")
     else:
         logger.info('email found')
-  except:
-      logger.error('user login check failed')
+        token = emailer.generate_confirmation_token(userEmail)
+        confirmUrl = url_for('.confirmEmail', token=token, purpose='reset', _external=True)
+        confirmPage = render_template('resetPasswordEmail.html', confirmUrl=confirmUrl, userEmail=userEmail)
+        msg = emailer.get_email(userEmail, confirmPage)
         
-  token = emailer.generate_confirmation_token(userEmail)
-  confirmUrl = url_for('.confirmEmail', token=token, purpose='reset', _external=True)
-  confirmPage = render_template('resetPasswordEmail.html', confirmUrl=confirmUrl, userEmail=userEmail)
-  msg = emailer.get_email(userEmail, confirmPage)
-  
-  try:
-    mail.send(msg)
-    logger.info('email sent for ' + userEmail + " has been sent")
-    db_session.query(User).filter(User.email==userEmail).update({'token': token}, synchronize_session='fetch')
-    db_session.commit()
-    db_session.remove()
-  except SMTPException as error:
-    logger.error('email for ' + userEmail + ' failed to send')
-    logger.error(error)
-  return jsonify(message = 'success')
+        try:
+          mail.send(msg)
+          logger.info('email sent for ' + userEmail + " has been sent")
+          db_session.query(User).filter(User.email==userEmail).update({'token': token}, synchronize_session='fetch')
+          db_session.commit()
+          db_session.remove()
+        except SMTPException as error:
+          logger.error('password reset email for ' + userEmail + ' failed to send')
+          logger.error(error)
+        return jsonify(message='success')
+  except:
+      logger.error('email check failed')
 
 @mail_api.route('/confirmEmail/<token>/<purpose>')
 def confirmEmail(token, purpose):
