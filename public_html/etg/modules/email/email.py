@@ -8,14 +8,23 @@ class Email():
     
     Config.read('etg/protected/config.ini')
     
-    def get_email(self, to, template):
+    def get_email(self, to, subject, template):
       mailer = Mail()
-      msg = Message(
-        'Please confirm your account on ETG!',
-        recipients=[to],
-        html=template,
-        sender=Config.get('flask', 'MAIL_DEFAULT_SENDER')
-      )
+      print subject
+      if (subject == 'reset'): 
+        msg = Message(
+          'Use the following link to reset your password with Fredericksburg Essay Tours',
+          recipients=[to],
+          html=template,
+          sender=Config.get('flask', 'MAIL_DEFAULT_SENDER')
+        )
+      elif (subject == 'confirm'):
+        msg = Message(
+          'Please confirm your account with Fredericksburg Essay Tours!',
+          recipients=[to],
+          html=template,
+          sender=Config.get('flask', 'MAIL_DEFAULT_SENDER')
+        )
       return msg
       
     def generate_confirmation_token(self, email):

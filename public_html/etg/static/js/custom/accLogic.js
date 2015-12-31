@@ -144,8 +144,8 @@ $(function (accLogic, $, undefined) {
         })
         
         .on('click', '.submitPasswordReset', function() {
-           var thisForm = $(this).closest('#forgotPasswordForm');
-           if ($('.emailField').val()) {
+            var thisForm = $(this).closest('#forgotPasswordForm');
+            if (accLogic.isValidEmailAddress(thisForm.find('.emailField').val())) {
                 $.ajax({
                     url: '/sendResetEmail',
                     type: 'POST',

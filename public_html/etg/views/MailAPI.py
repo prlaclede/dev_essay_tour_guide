@@ -19,7 +19,7 @@ def sendConfirmEmail():
   token = emailer.generate_confirmation_token(userEmail)
   confirmUrl = url_for('.confirmEmail', token=token, purpose='confirm', _external=True)
   confirmPage = render_template('confirmAccountEmail.html', confirmUrl=confirmUrl)
-  msg = emailer.get_email(userEmail, confirmPage)
+  msg = emailer.get_email(userEmail, 'confirm', confirmPage)
   
   try:
     mail.send(msg)
@@ -54,7 +54,7 @@ def sendResetEmail():
         token = emailer.generate_confirmation_token(userEmail)
         confirmUrl = url_for('.confirmEmail', token=token, purpose='reset', _external=True)
         confirmPage = render_template('resetPasswordEmail.html', confirmUrl=confirmUrl, userEmail=userEmail)
-        msg = emailer.get_email(userEmail, confirmPage)
+        msg = emailer.get_email(userEmail, 'reset', confirmPage)
         
         try:
           mail.send(msg)
