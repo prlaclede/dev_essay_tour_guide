@@ -45,11 +45,16 @@ all_JS = Bundle(
     'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDeovcMJI1fqgbiZeyKwNDiBI3N8ghcmEc&dummy=.js'),
     Bundle('js/custom/etg.js', 'js/custom/maps.js', 'js/custom/accLogic.js', 'js/custom/admin.js'))
     
+external_JS = Bundle(
+    Bundle('js/plugins/jquery-1.11.3.js', 'js/plugins/bootstrap/bootstrap.js'), 
+    Bundle('js/custom/etg.js', 'js/custom/accLogic.js', 'js/custom/admin.js'))
+    
 all_CSS = Bundle(
     Bundle('css/plugins/bootstrap/bootstrap.css', 'css/plugins/animate.css'),
     Bundle('css/custom/icons.css', 'css/custom/style.css'))
 
 assets.register('all_CSS', all_CSS)    
 assets.register('all_JS', all_JS)
+assets.register('external_JS', external_JS)
 
     

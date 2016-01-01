@@ -44,8 +44,14 @@
           {% block content %}
           {% endblock %}
         </div>
-        {% assets "all_JS" %}
-            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-        {% endassets %}
+        {% if external %}
+          {% assets "external_JS" %}
+                <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+          {% endassets %}
+        {% else %}
+          {% assets "all_JS" %}
+              <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+          {% endassets %}
+        {% endif %}
     </body>
 </html>

@@ -86,7 +86,7 @@ def setPassword():
 
 @user_api.route('/forgotPassword')
 def forgotPassword():
-    return render_template('forgotPassword.html')
+    return render_template('forgotPassword.html', external=True)
     
 @user_api.route('/denyUser', methods=['POST'])
 def denyUser():
@@ -104,10 +104,10 @@ def denyUser():
     
 @user_api.route('/completePending/<userId>')
 def completePending(userId):
-  user = db_session.query(User).filter(User.id==userId).all()
-  user = [i.serialize for i in user]
-  db_session.remove()
-  return render_template('index.html', context='setPassword', firstName=user[0]['first_name'], lastName=user[0]['last_name'], userId=user[0]['id'])
+    user = db_session.query(User).filter(User.id==userId).all()
+    user = [i.serialize for i in user]
+    db_session.remove()
+    return render_template('index.html', context='setPassword', firstName=user[0]['first_name'], lastName=user[0]['last_name'], userId=user[0]['id'])
     
 @user_api.route('/resetPassword/<userId>')
 def resetPassword(userId):
