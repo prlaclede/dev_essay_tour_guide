@@ -128,7 +128,7 @@ $(function (adminLogic, $, undefined) {
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        row.remove()
+                        row.remove();
                     },
                     error: function (error) {
                         return("error" + JSON.stringify(error));

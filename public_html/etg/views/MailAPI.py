@@ -79,7 +79,6 @@ def confirmEmail(token, purpose):
     email = emailer.confirm_token(token)
     print (user[0]['id'])
     if (purpose == 'confirm'): 
-      print ('confirm redirect')
       return redirect(url_for('user_api.completePending', userId=user[0]['id']))
     elif (purpose == 'reset'):
       return redirect(url_for('user_api.resetPassword', userId=user[0]['id']))
