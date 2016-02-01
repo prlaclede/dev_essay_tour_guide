@@ -29,14 +29,6 @@ $(function (etgLogic, $, undefined) {
 
 /* ---------- jQuery listeners ---------- */
 
-    $(document).keypress(function(e) {
-        if(e.which === 13) {
-            if ($("#loginForm").is(":focus")) {
-                console.log('login form focus');
-            }
-        }
-    });
-
     $('body')
     
         .on('click', '.mapMode', function() {
@@ -97,7 +89,7 @@ $(function (etgLogic, $, undefined) {
             var prevContent = previousTab.find('a').attr('href');
             previousTab.addClass('active');
             $(prevContent).addClass('active in');
-            var tabId = $this.closest('a').attr('href');
+            var tabId = $this.closest('li').attr('id');
             $(tabId).remove();
             $this.closest('li').remove(); 
         });
@@ -119,7 +111,7 @@ $(function (etgLogic, $, undefined) {
         $('.alert').remove();
         var alert = '<div class="alert alert-' + type + '"> \
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> \
-                ' + message + '</div>'
+                ' + message + '</div>';
         return alert;
     }
     

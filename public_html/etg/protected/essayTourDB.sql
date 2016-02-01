@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS elizabet_essay_tour_db ; 
-CREATE DATABASE elizabet_essay_tour_db ;
-DROP USER elizabet_nfadmin; 
-CREATE USER elizabet_nfadmin IDENTIFIED BY 'essaytourp@$$'; 
-USE elizabet_essay_tour_db ;
+DROP DATABASE IF EXISTS essay_tour_db ; 
+CREATE DATABASE essay_tour_db ;
+DROP USER essay_tour_user; 
+CREATE USER essay_tour_user IDENTIFIED BY 'essaytourpass'; 
+USE essay_tour_db ;
 
 DROP TABLE IF EXISTS accounts;
 CREATE TABLE accounts (
@@ -51,7 +51,7 @@ CREATE TABLE essays (
 );
 
 
-GRANT ALL ON * TO elizabet_nfadmin;
+GRANT ALL PRIVILEGES ON essay_tour_db.* TO essay_tour_user;
 
 INSERT INTO accounts (account_name) VALUES ('admin');
 INSERT INTO accounts (account_name) VALUES ('user');

@@ -33,7 +33,7 @@ def fileUpload():
   
   media_body = MediaFileUpload(filePath, mimetype='application/octet-stream', resumable=True)
   
-  folders = driveService.files().list(q = "mimeType = 'application/vnd.google-apps.folder'").execute()
+  folders = driveService.files().list(q = "mimeType='application/vnd.google-apps.folder'").execute()
   folderId = drive.getItem(folders, 'essays')
   
   body = {
