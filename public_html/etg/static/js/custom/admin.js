@@ -28,6 +28,23 @@ $(function (adminLogic, $, undefined) {
            $('#pendingPopup').modal('show').find('.modal-title').html($(this).text());   
         })
         
+        .on('click', '#adminCode', function() {
+            $.ajax({
+                url: '/getSetAdminCode',
+                type: "POST",
+                contentType: 'application/json',
+                dataType: "html",
+                success: function(response) {
+                    //clear old form, append newly ajax'd form
+                    $('body').append(response);
+                    $('#adminCodePopup').modal('show');  
+                },
+                error: function (error) {
+                    return("error" + JSON.stringify(error));
+                }
+            });
+        })
+        
         .on('click', '#allEssays', function() {
            $.getJSON('/getAllEssays').done(function (response) {
               var essays = response['essays'];

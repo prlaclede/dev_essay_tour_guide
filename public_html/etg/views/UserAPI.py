@@ -20,6 +20,9 @@ def register():
     userEmail = request.form['reg_email']
     userFirst = request.form['reg_first']
     userLast = request.form['reg_last']
+    isAdmin = request.form['reg_admin_code']
+    if (isAdmin):
+        print(isAdmin)
     logger.info('register of ' + userEmail + " " + userFirst + " " + userLast)
     return (userRegister(userEmail, userFirst, userLast))
     
@@ -87,6 +90,19 @@ def setPassword():
 @user_api.route('/forgotPassword')
 def forgotPassword():
     return render_template('forgotPassword.html', external=True)
+    
+@user_api.route('/setAdminCode')
+def setAdminCode():
+    adminCode = request.form['code']
+    code = md5.new(adminCode).hexdigest()
+    try: 
+        db_session.query(AdminCode).update({'code': code}, synchronized_session='fetch')
+        db_session.commit()
+        db_session.remove()
+        logger.info('admin code updated sucessfully')
+    except:
+        logger.error('admin code could not be updated')
+    return jsonify(message='success')
     
 @user_api.route('/denyUser', methods=['POST'])
 def denyUser():

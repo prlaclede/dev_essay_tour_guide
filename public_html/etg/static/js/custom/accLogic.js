@@ -45,6 +45,10 @@ $(function (accLogic, $, undefined) {
                 });
             }
         })
+        
+        .on('change', '.adminCheckbox', function() {
+            $('.adminCode').toggleClass('hidden');
+        })
     
         .on('click', '.registerButton', function() {
             var thisForm = $(this).closest('#registerForm');

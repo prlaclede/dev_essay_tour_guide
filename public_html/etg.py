@@ -22,6 +22,10 @@ def returnLoginForm():
 def getAdminTools():
   return render_template('adminTools.html')
   
+@app.route('/getSetAdminCode', methods=['POST'])
+def getSetAdminCode():
+  return render_template('adminCode.html')
+  
 @app.route('/getUserTools', methods=['POST'])
 def getUserTools():
   return render_template('mapEditTools.html')

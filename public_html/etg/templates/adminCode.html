@@ -1,0 +1,27 @@
+{% from "icon.html" import icon with context %}
+<div id="adminCodePopup" class="modal fade" role="dialog">
+  <div id="splash-wrapper" class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Set Admin Code</h4>
+      </div>
+      <div class="modal-body">
+        <form id="adminCodeForm" action="" method="post">
+          <div class="form-group">
+            <span>
+              <div class="col-xs-5">
+                <input type="password" id="code" class="form-control" name="code" placeholder="Enter Admin Code...">
+              </div>
+              <div class="col-xs-5">
+                <input type="password" id="codeVerify" class="form-control" name="codeVerify" placeholder="Enter Admin Code again...">
+              </div>
+              <input type="hidden" name="userId" value="{{userId}}">
+            </span>
+            <button type="button" class="btn btn-primary setAdminCode">Set Admin Code</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

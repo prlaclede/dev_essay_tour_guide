@@ -2,6 +2,7 @@ $(function (etgLogic, $, undefined) {
     
     etgLogic.initPage = function () {
         $('[data-toggle="popover"]').popover();
+        $('[data-toggle="tooltip"]').tooltip(); 
         $('#splash_modal').modal('show');
         $("#svg-icons").load("/static/img/icons.svg");
     }
