@@ -45,6 +45,29 @@ $(function (adminLogic, $, undefined) {
             });
         })
         
+        .on('click', '.setAdminCode', function() {
+          var thisForm = $(this).closest('#adminCodeForm');
+          var code1Val = thisForm.find('#code').val();
+          var code2Val = thisForm.find('#codeVerify').val();
+          if (code1Val == code2Val) {
+            $('.alert').remove();
+            $.ajax({
+                url: '/setAdminCode', 
+                type: 'POST',
+                data: thisForm.serialize(),
+                dataType: "html",
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    return("error" + JSON.stringify(error));
+                }
+              }); 
+          } else {
+              thisForm.closest('.modal-body').before(etgLogic.generateAlert("warning", "The codes entered don't match!"));
+          }
+        })
+        
         .on('click', '#allEssays', function() {
            $.getJSON('/getAllEssays').done(function (response) {
               var essays = response['essays'];

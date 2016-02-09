@@ -91,18 +91,26 @@ def setPassword():
 def forgotPassword():
     return render_template('forgotPassword.html', external=True)
     
-@user_api.route('/setAdminCode')
+@user_api.route('/setAdminCode', methods=['POST'])
 def setAdminCode():
     adminCode = request.form['code']
+    print(adminCode)
     code = md5.new(adminCode).hexdigest()
-    try: 
-        db_session.query(AdminCode).update({'code': code}, synchronized_session='fetch')
+    print(code)
+    try:
+        result = db_session.query(AdminCode).first()
+        if (result):
+            db_session.query(AdminCode).filter(AdminCode.id==result.id).update({'code': code}, synchronize_session='fetch')
+        else:
+            newCode = AdminCode(code=code)
+            db_session.add(newCode)
         db_session.commit()
         db_session.remove()
         logger.info('admin code updated sucessfully')
+        return jsonify(message='success')
     except:
         logger.error('admin code could not be updated')
-    return jsonify(message='success')
+        return jsonify(error='error')
     
 @user_api.route('/denyUser', methods=['POST'])
 def denyUser():

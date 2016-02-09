@@ -82,7 +82,6 @@ $(function (accLogic, $, undefined) {
         })
         
         .on('click', '#accountActionButton', function() {
-            console.log('checking this');
             var buttonText = $(this).html();
             if (buttonText == 'Login') {
                 $.ajax({
