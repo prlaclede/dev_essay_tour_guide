@@ -9,16 +9,6 @@ from views import *
 from modules import *
 
 init_db()
-#for testing purposes
-#password = md5.new('basicpass').hexdigest()
-#user = User(email='basic@email.com', password=password, first_name='Mac', last_name="N'Cheese", pending=True, account_type_id_fk=2, instr_id_fk=2)
-#db_session.add(user)
-#db_session.commit()
-
-#setup for different levels of log files later
-#logger.basicConfig(filename='debug.log',level=logging.DEBUG)
-#logger.basicConfig(filename='error.log',level=logging.ERROR)
-#just logging to the console for now
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

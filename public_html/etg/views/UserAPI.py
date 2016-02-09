@@ -22,9 +22,12 @@ def register():
     userLast = request.form['reg_last']
     isAdmin = request.form['reg_admin_code']
     if (isAdmin):
-        print(isAdmin)
-    logger.info('register of ' + userEmail + " " + userFirst + " " + userLast)
-    return (userRegister(userEmail, userFirst, userLast))
+        logger.info('registering of admin' + userEmail + " " + userFirst + " " + userLast)
+        return (userRegister(userEmail, userFirst, userLast, isAdmin))
+    else:
+        logger.info('registering of ' + userEmail + " " + userFirst + " " + userLast)
+        return (userRegister(userEmail, userFirst, userLast))
+    
     
 @user_api.route('/logout')
 def logout():
@@ -94,9 +97,7 @@ def forgotPassword():
 @user_api.route('/setAdminCode', methods=['POST'])
 def setAdminCode():
     adminCode = request.form['code']
-    print(adminCode)
     code = md5.new(adminCode).hexdigest()
-    print(code)
     try:
         result = db_session.query(AdminCode).first()
         if (result):
@@ -159,11 +160,26 @@ def userLogin(email, password):
         
     return jsonify(user=user)
  
-def userRegister(email, first, last):
+def userRegister(email, first, last, isAdmin="user"):
+    dk = md5.new(isAdmin).hexdigest()
     checkUser = db_session.query(User).filter(User.email==email).first()
+    accountType = 2
+    adminPass = None
     
     if (not checkUser):
-        newUser = User(email=email, first_name=first, last_name=last, pending=True, account_type_id_fk=2, instr_id_fk=2)
+        
+        if (isAdmin != "user"):
+            adminPass = db_session.query(AdminCode).filter(AdminCode.code==dk).all()
+            adminPass = [i.serialize for i in adminPass]
+            db_session.remove()
+        
+            if (len(adminPass) == 0):
+                logger.error('incorrect admin code')
+                return jsonify(error='errorCode')
+            else:
+                accountType = 1
+        
+        newUser = User(email=email, first_name=first, last_name=last, pending=True, account_type_id_fk=accountType)
         
         try:
             db_session.add(newUser)

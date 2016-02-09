@@ -19,6 +19,6 @@ class AdminCode(Base):
     def serialize(self):
      return {
        'id': self.id,
-       'code': self.pending,
+       'code': self.code,
       }
     

@@ -29,6 +29,7 @@ $(function (adminLogic, $, undefined) {
         })
         
         .on('click', '#adminCode', function() {
+            $('.alert').remove();
             $.ajax({
                 url: '/getSetAdminCode',
                 type: "POST",
@@ -57,7 +58,7 @@ $(function (adminLogic, $, undefined) {
                 data: thisForm.serialize(),
                 dataType: "html",
                 success: function(response) {
-                    console.log(response);
+                    thisForm.closest('.modal-body').before(etgLogic.generateAlert("success", "Admin code updated successfully!"));
                 },
                 error: function (error) {
                     return("error" + JSON.stringify(error));

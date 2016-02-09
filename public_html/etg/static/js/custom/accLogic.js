@@ -61,7 +61,13 @@ $(function (accLogic, $, undefined) {
                     type: 'POST',
                     success: function (response) {
                         if (response['error']) {
-                            thisForm.closest('.modal-body').before(etgLogic.generateAlert('warning', 'That email has already been registered!'));
+                            console.log(response);
+                            if (response['error'] == 'errorCode') {
+                                thisForm.closest('.modal-body').before(etgLogic.generateAlert('warning', 'Invalid Admin Code!'));
+                            } else {
+                                thisForm.closest('.modal-body').before(etgLogic.generateAlert('warning', 'That email has already been registered!'));
+                            }
+                            
                         } else {
                             thisForm.closest('.modal-body').before(etgLogic.generateAlert('success', 'You will recieve an email when your account has been approved.'));
                         }

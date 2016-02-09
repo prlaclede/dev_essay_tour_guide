@@ -28,8 +28,7 @@ CREATE TABLE users (
     password VARCHAR(300),
     first_name VARCHAR(20), 
     last_name VARCHAR(20),
-    account_type_id_fk INT NOT NULL REFERENCES accounts(id), 
-    instr_id_fk INT NOT NULL REFERENCES instructions(id)
+    account_type_id_fk INT NOT NULL REFERENCES accounts(id)
 );
 
 DROP TABLES IF EXISTS admin_code;
@@ -55,8 +54,8 @@ GRANT ALL PRIVILEGES ON essay_tour_db.* TO essay_tour_user;
 INSERT INTO accounts (account_name) VALUES ('admin');
 INSERT INTO accounts (account_name) VALUES ('user');
 
-INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk, instr_id_fk) 
-    VALUES ('admin@admin.com', MD5('adminp@$$'), 'Ally', 'Gator', false,  1, 1);
+INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk) 
+    VALUES ('admin@admin.com', MD5('adminp@$$'), 'Ally', 'Gator', false,  1);
 
 
 
