@@ -1,4 +1,4 @@
-import logging, md5
+import logging
 from flask import (Blueprint, Flask, session, render_template, request, 
 redirect, url_for, jsonify, json)
 from etg.modules import *

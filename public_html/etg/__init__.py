@@ -1,4 +1,4 @@
-import os, logging, md5
+import os, logging
 from flask import (Flask, session, render_template, request, redirect,
 url_for, jsonify, json)
 from flask.ext.mail import Mail

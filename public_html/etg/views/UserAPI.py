@@ -1,12 +1,16 @@
-import logging, md5
+import logging, ConfigParser
 from flask import (Blueprint, Flask, session, render_template, request, 
 redirect, url_for, jsonify, json, current_app)
+from Crypto.Hash import SHA256
 from etg.modules import *
 
 user_api = Blueprint('user_api', __name__)
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+Config = ConfigParser.ConfigParser()
+Config.read('etg/protected/config.ini')
 
 @user_api.route('/login', methods=['POST'])
 def login():
@@ -80,7 +84,7 @@ def generateProgressBar():
 def setPassword():
     userPass = request.form['password']
     userId = request.form['userId']
-    password = md5.new(userPass).hexdigest()
+    password = SHA256.new(Config.get('flask', 'SECURITY_PASSWORD_SALT') + userPass).hexdigest()
     try:
         db_session.query(User).filter(User.id==userId).update({'password': password}, synchronize_session='fetch')
         db_session.commit()
@@ -97,7 +101,7 @@ def forgotPassword():
 @user_api.route('/setAdminCode', methods=['POST'])
 def setAdminCode():
     adminCode = request.form['code']
-    code = md5.new(adminCode).hexdigest()
+    code = SHA256.new(Config.get('flask', 'SECURITY_PASSWORD_SALT') + adminCode).hexdigest()
     try:
         result = db_session.query(AdminCode).first()
         if (result):
@@ -142,7 +146,8 @@ def resetPassword(userId):
     return render_template('index.html', context='resetPassword', firstName=user[0]['first_name'], lastName=user[0]['last_name'], userId=user[0]['id'])
 
 def userLogin(email, password):
-    dk = md5.new(password).hexdigest()
+    dk = SHA256.new(Config.get('flask', 'SECURITY_PASSWORD_SALT') + password).hexdigest()
+    print(dk)
     logger.info('checking DB for user')
     user = None
     try:
@@ -161,7 +166,7 @@ def userLogin(email, password):
     return jsonify(user=user)
  
 def userRegister(email, first, last, isAdmin="user"):
-    dk = md5.new(isAdmin).hexdigest()
+    dk = SHA256.new(Config.get('flask', 'SECURITY_PASSWORD_SALT') + isAdmin).hexdigest()
     checkUser = db_session.query(User).filter(User.email==email).first()
     accountType = 2
     adminPass = None

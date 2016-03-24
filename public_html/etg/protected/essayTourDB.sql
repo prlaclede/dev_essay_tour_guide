@@ -55,7 +55,7 @@ INSERT INTO accounts (account_name) VALUES ('admin');
 INSERT INTO accounts (account_name) VALUES ('user');
 
 INSERT INTO users (email, password, first_name, last_name, pending, account_type_id_fk) 
-    VALUES ('admin@admin.com', MD5('adminp@$$'), 'Ally', 'Gator', false,  1);
+    VALUES ('admin@admin.com', '5bb1cae532fc996d5cbd3f78715d213a9f875cf765d7e37348834b70f97e55a5', 'Ally', 'Gator', false,  1);
 
 
 
