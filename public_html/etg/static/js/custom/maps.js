@@ -32,7 +32,7 @@ $(function (mapsLogic, $, undefined) {
   
   var allowedBounds = new google.maps.LatLngBounds (
    new google.maps.LatLng(38.273763, -77.485478), 
-   new google.maps.LatLng(38.352718, -77.460838)
+   new google.maps.LatLng(38.352369, -77.432362)
   );
   
   function checkBounds() {    
@@ -86,6 +86,8 @@ $(function (mapsLogic, $, undefined) {
               newMarkerListener = google.maps.event.addListener(map, 'click', function(event) {
                 if (allowedBounds.contains(event.latLng)) {
                  mapsLogic.placeNewMarker(event.latLng);
+                } else {
+                  console.log('out of bounds');
                 }
               });
             });
